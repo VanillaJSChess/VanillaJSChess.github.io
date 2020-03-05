@@ -1442,9 +1442,13 @@ function dragElement(elmnt) {
     let elmntBounds, leftBoundElmnt,topBoundElmnt;
     let squareBounds, leftBoundSquare;
     let rowBounds,leftBoundRow;
-    if (elmnt !== prevHeldPiece[0]) {
-      hideAvailableMoveIcons();
-    }
+    
+    let clickedSqaure = document.elementsFromPoint(e.clientX, e.clientY).find(item=>item.classList.contains('square'))
+    if (!clickedSqaure.children[0].classList.contains('hidden')){
+      completeMove(activePiece.parentElement,activePiece,clickedSqaure)
+    } 
+
+    hideAvailableMoveIcons(); 
     prevHeldPiece = [elmnt,elmnt.parentElement,pieceArea.childElementCount];
     let pieceInGraveyard = (elmnt.parentElement.id == 'p1graveyard' || elmnt.parentElement.id == 'p2graveyard')
     if (trblesht) {} else if (isp1(elmnt) !== turn || midPromotion || displaySimulateIndex !== 0
