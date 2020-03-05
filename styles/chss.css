@@ -1,0 +1,394 @@
+#game-area{
+  font-size: 0;
+  padding-bottom:20px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  position:relative;
+}
+
+.gameRow{
+  display:flex;
+}
+
+#board{
+  display:inline-block;
+  font-size: 0;
+}
+
+.square{
+  width:40px;
+  height:40px;
+  font-size: 5px;
+  text-align: right;
+  position: relative;
+  z-index:0;
+  /* font-size: 0; */
+  display: flex;
+  /* justify-content:center; */
+  /* align-items:center; */
+  box-sizing: content-box;
+  /*some set in js*/
+}
+.square{
+  background-color: #dbb7b7;
+}
+
+.square.dark{
+  background-color: #824100;
+}
+
+.p1piece, .p2piece{
+  font-size:12px;
+  color:black;
+  text-align:center;
+}
+
+.p2piece{
+  color:white;
+}
+
+.piece:hover {
+  cursor: pointer;
+}
+
+#p1graveyard, #p2graveyard{
+  width: 40px;
+  height: 20px;
+  display: flex;
+  justify-content:center;
+  align-items:center;
+  /* margin:0 30px; */
+  position:absolute;
+}
+
+#p1graveyard{
+  left: -40px;
+} 
+
+#p2graveyard{
+  left: 325px;
+  top: 285px;
+}
+.avail-move{
+  margin:auto; 
+  background-color: #a4ff3f;
+  opacity:80%;
+  display:block;
+  border-radius:50%;
+  border: 1px solid black;
+  width:15px;
+  height:15px;
+  transition: all .2s;
+  z-index:0;
+}
+
+.avail-move.hidden{
+  border:none; 
+  width:0;
+  height:0;
+  margin:20px;
+  transition: all .2s;
+}
+
+#p1icon, #p2icon{
+  border: 1px solid black;
+}
+
+.forfeit-banner{
+  background-color: #white;
+/*   width: 45px;  */
+/*   height: 25px; */
+  font-size:0;
+  position:relative;
+  top:-40px;
+  left:0px;
+  margin:auto;
+  color: whitesmoke;
+  white-space:nowrap;
+  border-radius:4px;
+  font-family:  sans-serif;
+  display:flex;
+  justify-content:center;
+  flex-direction:column;
+}
+
+
+
+
+/* #forfeit:focus ~ .forfeit-banner, .forfeit-banner:hover{ */
+.forfeit-banner, .forfeit-banner:hover{
+  transition:1s;
+  padding: 4px;
+  left:85px;
+  width:100px;
+  height:45px;
+  font-size:12px;
+  background-color:#383838;
+}
+
+#ff-yes:hover, #ff-no:hover{
+  cursor:pointer;
+}
+
+#ff-yes, #ff-no{
+  display:inline-block;
+}
+
+.forfeit-banner.hidden{
+  top:-40px;
+  left:0px;
+  width: 0; 
+  height: 0;
+  font-size:0;
+  background-color: white;
+}
+
+.white.pawn{
+  background-image:url("../images/white-pawn.png");
+}
+
+.black.pawn{
+  background-image:url("../images/black-pawn.png");
+}
+
+.white.knight, .promotion-piece.p1knight{
+  background-image:url("../images/white-knight.png");
+}
+
+.black.knight, .promotion-piece.p2knight{
+  background-image:url("../images/black-knight.png");
+}
+
+.white.bishop, .promotion-piece.p1bishop{
+  background-image:url("../images/white-bishop.png");
+}
+
+.black.bishop, .promotion-piece.p2bishop{
+  background-image:url("../images/black-bishop.png");
+}
+
+.white.rook, .promotion-piece.p1rook{
+  background-image:url("../images/white-rook.png");
+}
+
+.black.rook, .promotion-piece.p2rook{
+  background-image:url("../images/black-rook.png");
+}
+
+.white.queen, .promotion-piece.p1queen {
+  background-image:url("../images/white-queen.png");
+}
+
+.black.queen, .promotion-piece.p2queen{
+  background-image:url("../images/black-queen.png");
+}
+
+.white.king{
+  background-image:url("../images/white-king.png");
+}
+
+.black.king{
+  background-image:url("../images/black-king.png");
+}
+
+.p1piece, .p2piece, .promotion-piece{
+  background:transparent;
+  background-color:none;
+  position: absolute;
+  background:transparent;
+  background-position: 50% 50%;
+  width:40px;
+  height:40px;
+  background-size:40px;
+}
+
+#choose-promotion > .promotion-piece {
+  margin: 8px;
+  position: relative;
+}
+
+#piece-area{
+  position:absolute;
+  height: 0;
+  width: 0;
+  top: 0;
+  left: 0;
+}
+
+#choose-promotion > .promotion-piece:hover {
+  cursor:pointer;
+  border: 2px solid green;
+  border-radius: 5px; 
+}
+
+#board-with-promotion{
+  position:relative;
+}
+
+#choose-promotion {
+  position:absolute;
+  margin:auto;
+  top:100px;
+  left:100px;
+  width: 120px;
+  height: 120px;
+  background-color: grey;
+  opacity: 90%;
+  border-radius: 15px;
+  z-index: 2;
+  box-shadow: 2px 2px 3px 1px #ccc;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding: 4px;
+  visibility: hidden;
+}
+
+#jump-to-sim {
+  width:30px;
+  text-align: center;
+}
+
+.coords {
+  position: absolute;
+  color: #009688;
+  font-size: 12px;
+  font-weight:bold;
+}
+
+#toggleComputer{
+  background-color:#3F51B5;
+}
+#toggleComputer:hover{
+  background-color:#2d3b87;
+  transition:200ms ease;
+}
+#toggleComputer:active{
+  background-color:#181f48;
+  transition:200ms ease;
+}
+
+#new,.new-game-color{
+  background-color:#4CAF50;
+}
+#new:hover, .new-game-color:hover{
+  background-color:#37823a;
+  transition:200ms ease;
+}
+#new:active, .new-game-color:active{
+  background-color:#255326;
+  transition:200ms ease;
+}
+
+#reset{
+  background-color:#cc3b31e8;
+}
+#reset:hover{
+  background-color:#a1312ae8;
+  transition:200ms ease;
+}
+#reset:active{
+  background-color:#671f1ae8;
+  transition:200ms ease;
+}
+
+#toggleFirst{
+  background-color:#7a7a7a;
+}
+#toggleFirst:hover{
+  background-color:#5a5a5a;
+  transition:200ms ease;
+}
+#toggleFirst:active{
+  background-color:#282828;
+  transition:200ms ease;
+}
+
+
+.forfeit-color, #traverse-moves button{
+  background-color:#383838;
+}
+.forfeit-color:hover, #traverse-moves button:hover{
+  background-color:#262932;
+  transition:200ms ease;
+}
+.forfeit-color:active. #traverse-moves button:active{
+  background-color:#000000;
+  transition:200ms ease;
+}
+
+#forfeit{
+  z-index: 1;
+  position: relative;
+}
+
+
+#traverse-moves{
+  display:flex;
+  justify-content:center;
+}
+
+#traverse-moves button {
+  margin:3px;
+  padding:3px 10px;
+}
+
+button:focus{
+  outline-color:#757575;
+}
+
+#thinking{
+  display:flex;
+  justify-content:center;
+  font-size: 15px;
+  margin-left:28px;
+  visibility:hidden;
+}
+
+
+#thinking.visible{
+  visibility:visible;
+}
+
+#thinking *{
+  margin: 0 2px;
+
+}
+
+.rotate-anim{
+  position:relative;
+}
+
+.rotate1{
+  position:absolute;
+/*   border: 1pt solid black; */
+  border-top: 1pt solid black;
+  border-right: 1pt solid black;  
+  border-radius:50%;
+  padding: 5px;
+  animation: rotation 2s infinite linear;  
+}
+
+.rotate2{
+  position:absolute;
+  border-bottom: 1pt solid black;
+  border-radius:50%;
+  padding: 5px;
+  animation: rotation 1s infinite linear;  
+}
+
+@keyframes rotation {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(359deg);
+  }
+}
+
+#placeholder{
+
+  font-size: 15px;
+  visibility:hidden;
+}

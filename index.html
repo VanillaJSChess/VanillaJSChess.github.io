@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<link rel="stylesheet" type="text/css" href="styles/base.css">
+<link rel="stylesheet" type="text/css" href="styles/chss.css">
+</head>
+
+<body>
+  <div id="main-container">
+    <div id="buttons">
+        <button id="reset">Reset All</button>
+        <button id="toggleFirst">Toggle First Move</button>
+        <button id="toggleComputer">Turn Computer Off</button>
+        <button id="new">New Game</button>
+    </div>
+    <div id="scbd">
+      <div id="p1">
+        <div id="placeholder"> 
+        placeholder
+<!--         <div id="rotate-anim"> 
+             <div class="rotate1"></div>
+          <div class="rotate2"></div> -->
+<!--         </div> -->
+      </div>
+      <span id="p1icon"></span>P1: <span id="p1s"></span>
+      <div id="winner1">winner</div>
+      </div>
+      <div id="draw">draw</div>
+      <div id= "p2">
+      <div id="thinking"> 
+          Thinking
+          <div id="rotate-anim"> 
+              <div class="rotate1"></div>
+              <div class="rotate2"></div>
+          </div>
+        </div>
+        <span id="p2icon"></span>P2: <span id="p2s"></span>
+        <div id="winner2">winner</div>
+      </div>
+    </div>
+    <div id="game-area">
+        <div id="board-with-promotion">
+        <div id="p1graveyard">
+            <div class="p1piece white rook"></div>
+            <div class="p1piece white knight"></div>
+            <div class="p1piece white bishop"></div>
+            <div class="p1piece white king"></div>
+            <div class="p1piece white queen"></div>
+            <div class="p1piece white bishop"></div>
+            <div class="p1piece white knight"></div>
+            <div class="p1piece white rook"></div>
+            <div class="p1piece white pawn"></div>
+            <div class="p1piece white pawn"></div>
+            <div class="p1piece white pawn"></div>
+            <div class="p1piece white pawn"></div>
+            <div class="p1piece white pawn"></div>
+            <div class="p1piece white pawn"></div>
+            <div class="p1piece white pawn"></div>
+            <div class="p1piece white pawn"></div>
+          </div>
+          <span id = "choose-promotion"> 
+            <div class = "promotion-piece"></div>
+            <div class = "promotion-piece"></div>
+            <div class = "promotion-piece"></div>
+            <div class = "promotion-piece"></div>
+          </span>
+          <div id="board">
+            <div class="gameRow">
+               <span class="square"><span class="avail-move hidden"></span></span><span class="dark square"><span class="avail-move hidden"></span></span><span class="square"><span class="avail-move hidden"></span></span><span class="dark square"><span class="avail-move hidden"></span></span>
+               <span class="square"><span class="avail-move hidden"></span></span><span class="dark square"><span class="avail-move hidden"></span></span><span class="square"><span class="avail-move hidden"></span></span><span class="dark square"><span class="avail-move hidden"></span></span>
+            </div>
+            <div class="gameRow">
+               <span class="dark square"><span class="avail-move hidden"></span></span><span class="square"><span class="avail-move hidden"></span></span><span class="dark square"><span class="avail-move hidden"></span></span><span class="square"><span class="avail-move hidden"></span></span>
+               <span class="dark square"><span class="avail-move hidden"></span></span><span class="square"><span class="avail-move hidden"></span></span><span class="dark square"><span class="avail-move hidden"></span></span><span class="square"><span class="avail-move hidden"></span></span>
+            </div>
+            <div class="gameRow">
+               <span class="square"><span class="avail-move hidden"></span></span><span class="dark square"><span class="avail-move hidden"></span></span><span class="square"><span class="avail-move hidden"></span></span><span class="dark square"><span class="avail-move hidden"></span></span>
+               <span class="square"><span class="avail-move hidden"></span></span><span class="dark square"><span class="avail-move hidden"></span></span><span class="square"><span class="avail-move hidden"></span></span><span class="dark square"><span class="avail-move hidden"></span></span>
+            </div>
+            <div class="gameRow">
+               <span class="dark square"><span class="avail-move hidden"></span></span><span class="square"><span class="avail-move hidden"></span></span><span class="dark square"><span class="avail-move hidden"></span></span><span class="square"><span class="avail-move hidden"></span></span>
+               <span class="dark square"><span class="avail-move hidden"></span></span><span class="square"><span class="avail-move hidden"></span></span><span class="dark square"><span class="avail-move hidden"></span></span><span class="square"><span class="avail-move hidden"></span></span>
+            </div>
+            <div class="gameRow">
+               <span class="square"><span class="avail-move hidden"></span></span><span class="dark square"><span class="avail-move hidden"></span></span><span class="square"><span class="avail-move hidden"></span></span><span class="dark square"><span class="avail-move hidden"></span></span>
+               <span class="square"><span class="avail-move hidden"></span></span><span class="dark square"><span class="avail-move hidden"></span></span><span class="square"><span class="avail-move hidden"></span></span><span class="dark square"><span class="avail-move hidden"></span></span>
+            </div>
+            <div class="gameRow">
+               <span class="dark square"><span class="avail-move hidden"></span></span><span class="square"><span class="avail-move hidden"></span></span><span class="dark square"><span class="avail-move hidden"></span></span><span class="square"><span class="avail-move hidden"></span></span>
+               <span class="dark square"><span class="avail-move hidden"></span></span><span class="square"><span class="avail-move hidden"></span></span><span class="dark square"><span class="avail-move hidden"></span></span><span class="square"><span class="avail-move hidden"></span></span>
+            </div>
+            <div class="gameRow">
+               <span class="square"><span class="avail-move hidden"></span></span><span class="dark square"><span class="avail-move hidden"></span></span><span class="square"><span class="avail-move hidden"></span></span><span class="dark square"><span class="avail-move hidden"></span></span>
+               <span class="square"><span class="avail-move hidden"></span></span><span class="dark square"><span class="avail-move hidden"></span></span><span class="square"><span class="avail-move hidden"></span></span><span class="dark square"><span class="avail-move hidden"></span></span>
+            </div>
+            <div class="gameRow">
+               <span class="dark square"><span class="avail-move hidden"></span></span><span class="square"><span class="avail-move hidden"></span></span><span class="dark square"><span class="avail-move hidden"></span></span><span class="square"><span class="avail-move hidden"></span></span>
+               <span class="dark square"><span class="avail-move hidden"></span></span><span class="square"><span class="avail-move hidden"></span></span><span class="dark square"><span class="avail-move hidden"></span></span><span class="square"><span class="avail-move hidden"></span></span>
+            </div>
+          </div>
+          <div id="piece-area"></div>
+          <div id="p2graveyard">
+            <div class="p2piece black pawn"></div>
+            <div class="p2piece black pawn"></div>
+            <div class="p2piece black pawn"></div>
+            <div class="p2piece black pawn"></div>
+            <div class="p2piece black pawn"></div>
+            <div class="p2piece black pawn"></div>
+            <div class="p2piece black pawn"></div>
+            <div class="p2piece black pawn"></div>
+            <div class="p2piece black rook"></div>
+            <div class="p2piece black knight"></div>
+            <div class="p2piece black bishop"></div>
+            <div class="p2piece black king"></div>
+            <div class="p2piece black queen"></div>
+            <div class="p2piece black bishop"></div>
+            <div class="p2piece black knight"></div>
+            <div class="p2piece black rook"></div>
+          </div>
+      </div>
+      
+    </div>
+    <div class="bottom-area">
+      <div id="traverse-moves">
+        <button id = "prev-move"><</button>
+        <button id = "next-move">></button>
+      </div>
+<!--       <div>
+        Sim: <button id = "prev-sim"><</button>
+        <input type="text" id ="jump-to-sim">
+        <button id = "next-sim">></button>
+      </div> -->
+      <button class = "forfeit-color" id="forfeit">Forfeit</button>
+      <div class="forfeit-banner hidden">
+          <div>
+            <span id="ff-name">Player 1</span> Forfeit?
+          </div>
+          <div>
+            <div id="ff-yes">Yes</div> | <div id="ff-no">No</div>
+          </div>
+      </div>
+
+
+    </div>
+  <script type="text/javascript" src="scripts/chss.js"></script>
+</body>
+
+</html>
+
+
+
+
+
+
+
+
+
+
+

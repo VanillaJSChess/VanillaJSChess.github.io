@@ -1,0 +1,116 @@
+html, body{
+  height:100%;
+  font-family:sans-serif;
+  padding-top:0;
+  margin-top:0;
+
+}
+
+#main-container{
+  padding: 0 10px;
+  min-height:100%;
+  background-color:white;
+  width: 70%;
+  margin: auto;
+}
+
+@media screen and (max-width:1024px){
+  #main-container{
+    width: 80%;
+  }
+}
+
+@media screen and (max-width:768px){
+  #main-container{
+    width: 90%;
+  }
+}
+
+body{
+  text-align:center;
+/*   background-color:#8cd8cd; */
+  background-color:#1d1d1de0;
+}
+
+#title{
+
+  margin-top: 40px;
+}
+
+#scbd{
+  font-size: 25px;
+  justify-content: center;
+  position: relative;
+  display:flex;
+}
+
+#colorPicker{
+  text-align:center;
+}
+
+#colorPicker input{
+  border: none;
+  background-color:white;
+}
+
+#draw{
+  position: absolute;
+  bottom: 0;
+}
+
+#p1{
+  margin: 0 10%;
+}
+
+#p2{
+  margin: 0 10%;
+}
+
+#p1icon, #p2icon{
+  display: inline-block;
+  width: 19px;
+  height: 19px;
+  border-radius: 50%;
+  margin-right: 5px;
+}
+
+#winner1, #winner2 {
+  border-radius:5px;
+  color:black;
+  padding: 0px 5px;
+  margin: 5px;
+}
+
+#draw{
+  visibility:hidden;
+}
+
+#buttons{
+  padding: 20px;
+  text-align:center;
+  justify-content:center;
+  align-items:center;
+  display:flex;
+  flex-direction:column;
+}
+
+button{
+  border:none;
+  color:white;
+  padding: 5px 15px;
+  text-align:center;
+  text-decoration:none;
+  display:inline-block;
+  font-size:14px;
+  background-color:pink;
+  width: auto;
+  margin: 5px 20%;
+  border-radius: 15px;
+  width: fit-content;
+}
+
+
+.bottom-area{
+  padding-bottom:50px;
+}
+
