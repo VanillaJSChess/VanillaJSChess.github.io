@@ -159,11 +159,11 @@ class ChessPiece{
   }
 
   addMoveifKingisSafeFrom(piecesToCheck,board){
-    let capturablePiece,defendedPiece;
+    let capturablePiece,defendedPiece,enPassant;
     this.action.potential.moves = this.action.potential.moves.filter(val=>val!==undefined); // remove any bpgus moves
     //go thrpugh the potential moves and see the board state for each move. 
     //if the king is in check in a state do not save as legal move
-   board[this.rowCol[0]][this.rowCol[1]] = null; //remove the piece from the board (to be moved somewhere else)
+    board[this.rowCol[0]][this.rowCol[1]] = null; //remove the piece from the board (to be moved somewhere else)
     this.action.potential.moves.forEach(move=>{
       if(boards[this.boardID].state[move[0]][move[1]] !== null){ //if one of the moves is wrong (it shouldnt be)
         return
@@ -179,14 +179,23 @@ class ChessPiece{
       capturablePiece = board[move[0]][move[1]];
       if (!capturablePiece && this.constructor.name === "Pawn") { //if it is a pawn check for en passant 
         capturablePiece = board[move[0]-this.direction][move[1]];
+        board[capturablePiece.rowCol[0]][capturablePiece.rowCol[1]] = null;
         if (!capturablePiece) { throw 'no capturable piece found where expected'}
+        enPassant = true;
       } 
       capturablePiece.isCaptured = true; 
       board[move[0]][move[1]] = this; //add this piece to where the old piece was 
       if (kingSafe(piecesToCheck,board)){
         this.action.legal.captures.push(move); //add capture if king is safe 
       }
-      board[move[0]][move[1]] = capturablePiece; //put the captured piece back 
+      if (enPassant){ //put the captured piece back 
+        board[capturablePiece.rowCol[0]][capturablePiece.rowCol[1]] = capturablePiece
+        board[move[0]][move[1]] = null;
+        enPassant = false;
+      } else {
+        board[move[0]][move[1]] = capturablePiece;   
+      }
+      
       capturablePiece.isCaptured = false 
      });
    board[this.rowCol[0]][this.rowCol[1]] = this; //put the original back 
@@ -580,6 +589,7 @@ function getAllLegalMoves(piecesOnBoard){
   
   function loopThroughMoves(pieces){
     pieces.forEach(piece=>{
+//       if (f8count === 52) {debugger}
       piece.getLegalMoves(piecesOnBoard,piecesWithCaptures[!piece.color]);
       classifyMoves(piece);
     }); 
@@ -638,7 +648,7 @@ function rateBoardstate(piecesOnBoard,boardIndex){
                 }
   let legalOrPotential;
 
-
+//   if (boards.length === 2){debugger}
   Object.values(piecesOnBoard).forEach(side=>{
     legalOrPotential = 'legal';
     let kingAttackers = side.find(piece=>piece.isKing).attackedBy; 
@@ -670,7 +680,7 @@ function rateBoardstate(piecesOnBoard,boardIndex){
 
   function sumPosStrength(side){
     //weights based on guess + trial and error 
-    return side.pieceSum*1.45 + 
+    return side.pieceSum*1.25 + 
            side.pieceDanger + 
            (side.squareControl)/20  + 
            (side.pieceSecurity)/10  + 
@@ -689,9 +699,18 @@ function rateBoardstate(piecesOnBoard,boardIndex){
     let colValArray = [0,1,3,6,6,3,1,0];
 
     if (piece.constructor.name === 'Pawn'){ //calculate only attacked sqaures for pawns (diagonals)
+      if (moveHistory.length > 50 && piecesOnBoard[piece.color].length<8){
+        if (piece.color) {
+          rowValArray = [7,6,5,4,3,2,1,0];
+        } else {
+          rowValArray = [0,1,2,3,4,5,6,7];
+        }
+        let colValArray = [4,4,4,4,4,4,4,4];
+      }
       posStrength[piece.color].squareControl += getPawnValue();
-      return
     }
+
+
     let squareValueSum = 0;
     let totalMoves = 0;
     Object.values(piece.action[legalOrPotential]).forEach(moveType=>{ 
@@ -755,6 +774,10 @@ function rateBoardstate(piecesOnBoard,boardIndex){
           } else {
             debugger
           }
+        }
+      } else {
+        if (pieceContentionScore - attacker >= 0){
+          posStrength[piece.color].pieceDanger -= pieceContentionScore; 
         }
       }
     });
@@ -840,8 +863,8 @@ function rateBoardstate(piecesOnBoard,boardIndex){
         if (piece.hasCastled) {
           posStrength[piece.color].development += 4; 
         } else {
-          if (moveHistory.length < 20){
-            posStrength[piece.color].development -= 3; 
+          if (moveHistory.length < 30){
+            posStrength[piece.color].development -= 5; 
           } else {
             posStrength[piece.color].development += 1; 
           }
@@ -853,6 +876,7 @@ function rateBoardstate(piecesOnBoard,boardIndex){
       if (piece.constructor.name === 'Pawn'){
         posStrength[piece.color].development += 1;
       } else if (piece.constructor.name === 'Rook' || piece.constructor.name === 'Queen') {
+        checkOpenFile(piece);
         if (moveHistory.length > 7){
           if ((piece.rowCol[0] === 7) !== piece.color || (piece.rowCol[0] === 0) !== !piece.color){
             posStrength[piece.color].development += 1;
@@ -862,8 +886,8 @@ function rateBoardstate(piecesOnBoard,boardIndex){
         posStrength[piece.color].development += 2;
       }
     }
-    function checkOpenFile(){
-
+    function checkOpenFile(piece){
+//       debugger
     }
   }
 }
@@ -918,6 +942,7 @@ function swapTurn(boardIndex) {
       if (winnerBool || drawBool || midPromotion){ return }
       t0 = performance.now()
       let nextMove = computerMove(0,4,6);
+      lastDitchEffortAttempted = false;
       t1 = performance.now();
 //       console.log(t1-t0);
       if (nextMove){
@@ -977,62 +1002,67 @@ function turnOnThinking(){
     window.requestAnimationFrame(resolve);
   });
 }
-
+//
 let moveTreeG;
+let lastDitchEffortAttempted = false;
 function computerMove(boardIndex,depth,maxWidth){
-//   if (turn) {maxWidth -=1}
   if (maxWidth === 0) {maxWidth = 1}
   let castle = null ;
   let previousOccupant = null;
   let hasPieceMoved = null;
   let enPassant = null;
-//   ratedMoveLog = [];
-  let bestMoves, orderedMoves,bestMove,moveTree;
-  boards.push({state:[],rating:[]});
-
+  let orderedMoves,bestMove,moveTree;
+  //create new board from current simulation 
+  boards.push({state:[],rating:[]}); 
   boards[boardIndex+1].state = createSimulatedBoard(boards[boardIndex].state); //boardIndex
-
+  
+  //get object of all pieces to loop over 
   let piecesOnBoard = getPiecesOnBoard(boards[boardIndex+1]); //organize pieces on the simulated board into a split array
+  
+  //change the chess piece objects so they know what board to access. 
   changePieceBoardID(piecesOnBoard,boardIndex+1); //tell the pieces they are on a simulated board 
 
+  //get all legal moves on the board 
   let ratedSimulatedMoves = checkAndRateAvailableMoves(piecesOnBoard,boardIndex+1);
+  //make sure to use any available checkmate 
   let checkmates = ratedSimulatedMoves.filter(move=>move.checkmate);
 
   if (checkmates.length > 0 ){ 
+    //always do a mate in 1
     bestMove = checkmates[0];
     moveTree = [{'move':bestMove,
                'winningMate':(computerPlayer === turn),
                'losingMate':!(computerPlayer === turn),
                'futureMoves':null}]
   } else { 
+    //see what the difference is between each side 
     let ratingChangeArray =  getRatingChange(ratedSimulatedMoves);
-    if (computerPlayer === turn && turn === false ){
+    if (!turn){
       orderedMoves = ratingChangeArray.map((arr,i)=>[arr[1]-arr[0],i]).sort((a,b)=>b[0]-a[0]) //map the index to the rating difference, then sort by rating difference 
-      bestMoves = orderedMoves.filter(arr=>orderedMoves[0][0]-arr[0]<.25)
+//       bestMoves = orderedMoves.filter(arr=>orderedMoves[0][0]-arr[0]<.25)
     } else {
       orderedMoves = ratingChangeArray.map((arr,i)=>[arr[1]-arr[0],i]).sort((a,b)=>a[0]-b[0]) //map the index to the rating difference, then sort by rating difference 
-      bestMoves = orderedMoves.filter(arr=>arr[0]-orderedMoves[0][0]<.25)
+//       bestMoves = orderedMoves.filter(arr=>arr[0]-orderedMoves[0][0]<.25)
     }
     if (orderedMoves.length === 0){
+      //if there are no moves available
       if (boards.length === 2) {
+
         boards.pop();
         return
       }
-//       if (bestMove === undefined){ debugger }//stalemate
       moveTree = [{'move':bestMove,
                      'winningMate':false,
                      'losingMate':false,
                      'futureMoves':null}]
     } else {
-      let width;
-      if (orderedMoves.length === 1){
-        width = 1;
-        bestMove = orderedMoves[0]; 
+      if (lastDitchEffortAttempted){
+        width = ratedSimulatedMoves.length;
       } else {
-//         width = decideMovesWorthConsidering();
-        width = maxWidth;
-        bestMove = getBestMove(bestMoves); 
+        width = decideMovesWorthConsidering(); 
       }
+      bestMove = ratedSimulatedMoves[orderedMoves[0][1]];
+      bestMove.index = 0;
       moveTree = buildRecursionListTree(width,depth,bestMove); 
     }
   }
@@ -1044,7 +1074,6 @@ function computerMove(boardIndex,depth,maxWidth){
       return bestMove
     }
     let chosenMove = evaluateFuturePositions(moveTree);
-    moveTreeG = moveTree; //for troubleshooting
     return chosenMove
   } else {
     return moveTree
@@ -1066,6 +1095,7 @@ function computerMove(boardIndex,depth,maxWidth){
                      'losingMate':false,
                      'futureMoves':undefined})
     } else {
+//       if (f8count === 51) {debugger}
       for (let i=0;i<orderedMoves.length && i<width && i<maxWidth;i++){
         let testMove = ratedSimulatedMoves[orderedMoves[i][1]];
         simulateMove(testMove.from,testMove.to,boards[boardIndex+1]);
@@ -1086,9 +1116,9 @@ function computerMove(boardIndex,depth,maxWidth){
   function decideMovesWorthConsidering(){
     //if any move is 10 better just do it or assume it will be done 
     //this may remove possibilties for queen sacrifices, but at the moment it is missing simple captures 
-    if (Math.abs(orderedMoves[0][0]-orderedMoves[1][0])>10) {
-      return 3} 
-    let threshold = 7; //if the future moves are 5 under the best move just trim it there and dont look at all moves 
+//     if (Math.abs(orderedMoves[0][0]-orderedMoves[1][0])>10) {
+//       return 3} 
+    let threshold = 15; //if the future moves are 5 under the best move just trim it there and dont look at all moves 
     let trimmedOrderedMoves = orderedMoves.filter(x=>(Math.abs(orderedMoves[0][0]-x[0]))<threshold);
     let width = trimmedOrderedMoves.length;
     return width
@@ -1096,16 +1126,26 @@ function computerMove(boardIndex,depth,maxWidth){
 
   function evaluateFuturePositions(tree){
     let enemyFutureWorstOutcomeIndex;
+    let moveIfMate = tree[0].move;
 
-    if (tree.length === 1) { return tree[0].move} //jump the function if theres only one choice 
+    if (tree.length === 1) { return moveIfMate} //jump the function if theres only one choice 
 
     checkForcedMates(tree); //see if all entries with this move have a following checkmate
     if (tree.some(move=>move.losingMate)) {
       tree = tree.filter(move=>!move.losingMate)
     }
-//     else {
-//       return tree[0].move
-//     }
+    if(tree.length === 0){
+      let lastDitchEffort
+      if (!lastDitchEffortAttempted) {
+        lastDitchEffortAttempted = true;
+        lastDitchEffort = computerMove(0,2,1000)
+      } 
+      if (lastDitchEffort){
+        return lastDitchEffort
+      } else {
+        return moveIfMate
+      }
+    } else if (tree.length === 1) { return moveIfMate }
     //look for a forced mate 
     let forcedMate = tree.find(move=>move.winningMate);
     if (forcedMate) { return forcedMate.move}
@@ -1121,6 +1161,9 @@ function computerMove(boardIndex,depth,maxWidth){
       //Best outcome assuming enemy moves guessed correctly (usually not)
       //finding the move that results in the lowest available best move for enemy after 2 moves 
       let assumedDepth = Math.max(...lastMoves.map(move=>move[1])) //how many moves have been evaluated 
+      if (assumedDepth === 0) {
+        return tree[0].move;
+      }
       let bestEnemyOutcomes = [];
       let lastMoveAverages = [];
       //the last evaluated moves are the enemy moves. 
@@ -1140,27 +1183,61 @@ function computerMove(boardIndex,depth,maxWidth){
       }
       bestEnemyOutcomes = bestEnemyOutcomes.sort((a,b)=>(a[0]-b[0]));
       lastMoveAverages = lastMoveAverages.sort((a,b)=>(a[0]-b[0]));
-      
-      if (bestEnemyOutcomes[0][1] === lastMoveAverages[0][1]){
+
+      viable_moves = getViableMoves(bestEnemyOutcomes,lastMoveAverages)
+
+      let bestEnemyOutcomes_difference = bestEnemyOutcomes[1][0] - bestEnemyOutcomes[0][0];
+      let lastMoveAverages_difference = lastMoveAverages[1][0] - lastMoveAverages[0][0];
+      if (viable_moves.length>1){
+        enemyFutureWorstOutcomeIndex = viable_moves[Math.floor(Math.random()*viable_moves.length)]
+      } else if (bestEnemyOutcomes[0][1] === lastMoveAverages[0][1]){
         console.log('strong move')
-      } else if (bestEnemyOutcomes[0][1] === lastMoveAverages[1][1] || (bestEnemyOutcomes[1][1] === lastMoveAverages[0][1])){
-        console.log('probably good')
-      } else if (bestEnemyOutcomes[0][1] === lastMoveAverages[2][1]){
-        console.log('questionable')
-      } else {
-        console.log('probably bad')
-      }
-      console.log(bestEnemyOutcomes,lastMoveAverages)
-//       let similarOutcomes = bestEnemyOutcomes.filter(x=>x!==undefined).filter(x=>(bestEnemyOutcomes[0][0]-x[0])>-.45)
-//       let randomBestMoveIndex = Math.floor(Math.random()*similarOutcomes.length)
-//       enemyFutureWorstOutcomeIndex = bestEnemyOutcomes[randomBestMoveIndex][1]
-//         enemyFutureWorstOutcomeIndex = bestEnemyOutcomes[0][1];
+        enemyFutureWorstOutcomeIndex = bestEnemyOutcomes[0][1];
+      } else if (bestEnemyOutcomes_difference > 5) {
+        if (bestEnemyOutcomes_difference > lastMoveAverages_difference){
+          console.log('beo better')
+          enemyFutureWorstOutcomeIndex = bestEnemyOutcomes[0][1];
+        }
+      } else if (lastMoveAverages_difference > 5) {
+        console.log('lma better')
         enemyFutureWorstOutcomeIndex = lastMoveAverages[0][1];
-//         debugger
+      } else if (bestEnemyOutcomes[0][1] === lastMoveAverages[1][1]) {
+        console.log('probably good')
+        enemyFutureWorstOutcomeIndex = bestEnemyOutcomes[0][1];        
+      } else if (bestEnemyOutcomes[1][1] === lastMoveAverages[0][1]){
+        console.log('probably good')
+        enemyFutureWorstOutcomeIndex = bestEnemyOutcomes[1][1]; 
+      } else if (bestEnemyOutcomes[1][1] === lastMoveAverages[1][1]) {
+        console.log('second agree')
+        enemyFutureWorstOutcomeIndex = lastMoveAverages[1][1];  
+      } else {
+        if (bestEnemyOutcomes[0][1] === 0 || lastMoveAverages[0][1] == 0) { 
+          console.log('best move this turn still holds')
+          enemyFutureWorstOutcomeIndex = 0;
+        } else {
+          console.log('go with enemys worst outcome next move')
+          let nextBestEnemyMoves = [];
+          ratingTree.nextMovesRatings.forEach((move,i)=>{
+            nextBestEnemyMoves.push([move.moveRating[0],i]);
+          });
+          nextBestEnemyMoves.sort((a,b)=>(a[0]-b[0]));
+          enemyFutureWorstOutcomeIndex = nextBestEnemyMoves[0][1]
+        }
+        
+      }
     }
-    //
     return tree[enemyFutureWorstOutcomeIndex].move;
     
+    function getViableMoves(...moveSets){
+      viable_moves = []
+      moveSets.forEach(set=>{
+        set = set.filter(rating=>rating[0] - set[0][0] < 1)
+        set = set.map(x=>x[1]);
+        viable_moves.push(set);
+      })
+      return arrayIntersection(viable_moves)      
+    }
+
     function collectFinalOutcomes(tree, thisMove=false){
       if (tree.nextMovesRatings.some(move=>move.moveRating.length) > 0){ //if the next move has at least 1 rated move (meaning there are moves to check after this move )
         tree.nextMovesRatings.forEach((move,i)=>{
@@ -1170,14 +1247,34 @@ function computerMove(boardIndex,depth,maxWidth){
 //             let movesAfterBestReply = getOnlyMax(move) //this is assuming what move the other player will make. maybe I should just check every move  
 // //             if (movesAfterBestReply)
 //                collectFinalOutcomes(movesAfterBestReply)
+
+            for (let i=0;i<move.moveRating.length;i++){
+              if (move.moveRating[i]-move.moveRating[0] < -5){
+                move.nextMovesRatings.splice(i)
+                break
+              }
+            }
+          
+            move.nextMovesRatings.forEach(nextMove=>{
+              for (let i=0;i<nextMove.moveRating.length;i++){
+                if (nextMove.moveRating[i]-nextMove.moveRating[0] > 5){
+                  nextMove.nextMovesRatings.splice(i)
+                  break
+                }
+              }
+            });
+
+
             move.nextMovesRatings.forEach((move)=>{ //maybe dont save the move if the move follows a terrible enemy move. (assume they play well)
               collectFinalOutcomes(move);
             });
+
+
           }
         });
       } else { //if there are no more ratings
-        lastMoves.push([tree.moveRating[0],currMove]) //push the moverating resulting from this tree and the originalmove
-        if (tree.moveRating.length > 1) { debugger } //it should only be 1 move at the end, maybe not for checkmate 
+        lastMoves.push([tree.moveRating[0],currMove,tree.level]) //push the moverating resulting from this tree and the originalmove
+//         if (tree.moveRating.length > 1) { debugger } //it should only be 1 move at the end, maybe not for checkmate 
       }
 //       function getOnlyMax(move){ //find which move has the best outcome for the enemy
 //         let highestRating = move.moveRating.sort((a,b)=>a[0]-b[0])[0] //find the highest rating 
@@ -1186,20 +1283,16 @@ function computerMove(boardIndex,depth,maxWidth){
 //       }
     }
 
-    //creates ratingrarray 
+    //creates ratingrtree` 
     function rateMoveTree(tree,i=0){
-      let tempArray = {'moveRating':[],'nextMovesRatings':[]};
+      let tempArray = {'moveRating':[],'nextMovesRatings':[],'level':i};
       if (tree) {
         tree.forEach(branch=>{
           if (branch.move === undefined) {
             tempArray.moveRating.push(0)
           } else if (branch.move.rating){
             tempArray.moveRating.push(branch.move.rating[2]);
-//             if (branch.futureMoves){
               tempArray.nextMovesRatings.push(rateMoveTree(branch.futureMoves,i+1));  
-//             } else {
-//               tempArray.nextMovesRatings.push(undefined)
-//             }
           } else {
             tempArray.moveRating.push(-1000);//should be avoided, probably checkmate or stalemate
           }
@@ -1207,6 +1300,7 @@ function computerMove(boardIndex,depth,maxWidth){
       } 
       return tempArray
     }
+
     function checkForcedMates(tree){
       addCheckmatesUpTree(tree,'winningMate')
       addCheckmatesUpTree(tree,'losingMate')
@@ -1224,13 +1318,6 @@ function computerMove(boardIndex,depth,maxWidth){
       }
     }
   }
-
-  function getBestMove(bestMoves){
-    let randomBestMoveIndex = Math.floor(Math.random()*bestMoves.length)
-    let bestMove = ratedSimulatedMoves[bestMoves[randomBestMoveIndex][1]];
-    bestMove.index = randomBestMoveIndex;
-    return bestMove //select simulatedmove by best move index. 
-  }
   
   function createSimulatedBoard(board){
     let nextBoard = board.map(a=> Object.assign([],a)); //creates a board with all copied pieces 
@@ -1238,10 +1325,6 @@ function computerMove(boardIndex,depth,maxWidth){
       row.forEach((square,j)=>{
         if (square){
           let clone = Object.assign( Object.create(Object.getPrototypeOf(square)), square);
-//           let cloneProps = JSON.parse(JSON.stringify(clone));
-//           Object.keys(clone).forEach(key=>{
-//             clone[key] x= cloneProps[key]
-//           })
           clone.rowCol = [...clone.rowCol]
           clone.action = JSON.parse(JSON.stringify(clone.action))
           nextBoard[i][j] = clone;
@@ -1261,8 +1344,8 @@ function computerMove(boardIndex,depth,maxWidth){
     let toBeSimulatedMoves = collectCurrentMoves(piecesOnBoard);
     let checkmateFound = false;
 //     clearAllLegalMoves(piecesOnBoard)
-    
     for (let i=0;i<toBeSimulatedMoves.length;i++){
+//       if (f8count === 52 && i === 8) {debugger}
       let move = toBeSimulatedMoves[i];
       simulateMove(move.from,move.to,boards[boardIndex]);
       checkmateFound = oldMovesOutNewMovesIn(boardIndex);
@@ -1355,26 +1438,6 @@ function computerMove(boardIndex,depth,maxWidth){
       piece.boardID = boardIndex;
     })
   }
-
-  function combineCheckedMoves(simulatedMoves,bestMove,orderedMoves){
-    simulatedMoves.forEach((move,i)=>{
-      ratedMoveLog[i].move = [move.from,move.to];
-      ratedMoveLog[i].rating = move.rating;
-      ratedMoveLog[i].capture = move.capture;
-      ratedMoveLog[i].castle = move.castle;
-    })
-    ratedMoveLog = reorderRatedMoves(orderedMoves);
-    ratedMoveLog.push(bestMove)
-
-    function reorderRatedMoves(orderedMoves){
-      let indexChanges = orderedMoves.map(x=>x[1]);
-      let reorderedRatedMoveLog = [];
-      for (let i=0; i<ratedMoveLog.length;i++){
-       reorderedRatedMoveLog.push(ratedMoveLog[indexChanges[i]])
-      }
-      return reorderedRatedMoveLog;
-    }
-  }
 }
 
 function checkWinOrDraw(){
@@ -1444,10 +1507,11 @@ function dragElement(elmnt) {
     let rowBounds,leftBoundRow;
     
     let clickedSqaure = document.elementsFromPoint(e.clientX, e.clientY).find(item=>item.classList.contains('square'))
-    if (!clickedSqaure.children[0].classList.contains('hidden')){
-      completeMove(activePiece.parentElement,activePiece,clickedSqaure)
-    } 
-
+    if (clickedSqaure){
+      if (!clickedSqaure.children[0].classList.contains('hidden')){
+        completeMove(activePiece.parentElement,activePiece,clickedSqaure)
+      } 
+    }
     hideAvailableMoveIcons(); 
     prevHeldPiece = [elmnt,elmnt.parentElement,pieceArea.childElementCount];
     let pieceInGraveyard = (elmnt.parentElement.id == 'p1graveyard' || elmnt.parentElement.id == 'p2graveyard')
@@ -1915,6 +1979,29 @@ function showNextMove(){
 }
 
 //functional tools
+
+function arrayIntersection(arr){
+  //takes an array of arrays
+  let intersections = []
+  for (let i=0;i<arr.length-1;i++){ //for each array except the last 
+    for (let j=0;j<arr[i].length;j++){ //for each item in that array 
+      let inAllArr = false;
+      let item = arr[i][j]
+      for (let k=0;k<arr.length;k++){ //for each other arr
+        if (arr[k].indexOf(item) > -1){ // check if this item is in each following array
+          inAllArr = true;
+        } else {
+          inAllArr = false;
+          break
+        }
+      }
+      if (inAllArr && intersections.indexOf(item) === -1){ intersections.push(item)}
+    }
+  }
+  return intersections
+}
+
+
 function handToPieceArea(piece,left,top,animationFrame = true){
   let pieceParentLeft = piece.parentElement.offsetLeft
   let pieceParentTop = piece.parentElement.offsetTop
@@ -2011,7 +2098,6 @@ function draw(){
   clearWinner();
   drawNode.style.visibility = 'visible';
   drawNode.style.color = 'black';
-//   newGame.innerText = 'Play Again'
   winnerBool = true
 }
 
