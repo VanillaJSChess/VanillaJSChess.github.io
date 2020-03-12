@@ -99,7 +99,8 @@ class ChessPiece{
         let square =  boardNode.children[move[0]].children[move[1]];
         square.children[0].classList.remove('hidden'); 
         square.children[0].style.zIndex = '1';
-        try{ square.children[1].style.zIndex = '0'; } catch {}
+        try{ square.children[1].style.zIndex = '0'; } catch { console.log('square child z index failed ') }
+        console.log('moves shown')
       });
     });
   }
@@ -1529,6 +1530,7 @@ function dragElement(elmnt) {
     // get the mouse cursor position at startup:
     pos1 = e.clientX;
     pos2 = e.clientY;
+    console.log(pos1,pos2)
     //in case of a bad drag
     startParent = elmnt.parentElement;
     handleSquareHighlightsClick(elmnt);
@@ -1602,6 +1604,7 @@ function dragElement(elmnt) {
 
     if (keepIcons) {return}
     hideAvailableMoveIcons();
+    console.log('drag ended')
   }
 }
 
@@ -2024,6 +2027,7 @@ function handToPieceArea(piece,left,top,animationFrame = true){
     pieceArea.appendChild(piece);
     piece.style.left = left + - 20 + 'px';
     piece.style.top = top + window.scrollY - 20 + 'px';
+    console.log('piece in piece area')
   }
   return [pieceParentLeft, pieceParentTop];
 }
