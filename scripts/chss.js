@@ -1,5 +1,3 @@
-try{
-
 let //collection of p1 and p2 nodes
 p1pieces = document.querySelectorAll('.p1piece'), 
 p2pieces = document.querySelectorAll('.p2piece'), 
@@ -2495,7 +2493,3 @@ function addCoords() {
 init();
 // addCoords();
 // freeMove();
-
-} catch (e) {
-  console.log(e)
-}
