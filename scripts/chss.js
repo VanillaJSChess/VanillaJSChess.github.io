@@ -60,7 +60,7 @@ function takeOverAndRefindMoves(){
 //performance 
 let t0,t1;
 let performanceTrack = {true:[],false:[]};
-console.log(4)
+console.log(5)
 // classes
 let pieceMap = new Map();//connects the piece nodes to the classes
 
@@ -932,7 +932,7 @@ function getPiecesOnBoard(board){
 function swapTurn(boardIndex) {
   thinking.classList.remove('visible')
   thinkingInProg = false;
-  document.getElementById("game-area").focus();
+  document.activeElement.blur();
   if (winnerBool || drawBool || midPromotion){ return }
   prevShownRatedMove = undefined;
   turn = !turn;
@@ -1527,7 +1527,6 @@ function dragElement(elmnt) {
       return
     }
     activePiece = elmnt;
-    console.log(activePiece)
     e = e || window.event;
     e.preventDefault();
     // get the mouse cursor position at startup:
@@ -1895,14 +1894,12 @@ function movePiece(piece,loc,speedFactor=10){
     let count = 0;
 //     step();
     window.requestAnimationFrame(step);
-    console.log('move started') 
     function step(){
       if (count === speedFactor) {
         window.requestAnimationFrame(()=>{
           loc.appendChild(piece);
           piece.style.top = pieceTop;
           piece.style.left = 'auto';
-          console.log('move completed')
           resolve();
         });
       } else {
@@ -2236,11 +2233,6 @@ function init() {
     })
   })
 
-document.addEventListener('focusin', function() {
-  console.log('focused: ', document.activeElement)
-}, true);
-
-  
   document.addEventListener('click', handleSquareHighlightsClick);
   document.addEventListener('click', hideAvailableMoveIcons);
   reset.addEventListener('click', callFuncIfNotThinking.bind(null,resetAll));
