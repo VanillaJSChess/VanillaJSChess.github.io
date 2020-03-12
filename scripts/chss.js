@@ -1551,10 +1551,11 @@ function dragElement(elmnt) {
     let newX = pos1 - leftBoundElmnt + leftBoundSquare - leftBoundRow;
     let newY = pos2- window.scrollY - topBoundElmnt + elmntBounds.height*rowCol[0];
 
-    handToPieceArea(elmnt,newX,newY,false);
-
     document.onmouseup = closeDragElement;
-    if (!onMobile) { document.onmousemove = elementDrag }
+    if (!onMobile) {
+      handToPieceArea(elmnt,newX,newY,false);
+      document.onmousemove = elementDrag
+    }
     pieceMap.get(elmnt).displayMoves();
     function elementDrag(e) {
       e = e || window.event;
