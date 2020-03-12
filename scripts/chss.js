@@ -933,6 +933,9 @@ function swapTurn(boardIndex) {
   thinking.classList.remove('visible')
   thinkingInProg = false;
   document.activeElement.blur();
+
+  document.getElementById('game-area').click()
+
   if (winnerBool || drawBool || midPromotion){ return }
   prevShownRatedMove = undefined;
   turn = !turn;
