@@ -2234,6 +2234,11 @@ function init() {
       promotionSelected(piece);
     })
   })
+
+document.addEventListener('focusin', function() {
+  console.log('focused: ', document.activeElement)
+}, true);
+
   
   document.addEventListener('click', handleSquareHighlightsClick);
   document.addEventListener('click', hideAvailableMoveIcons);
