@@ -60,7 +60,7 @@ function takeOverAndRefindMoves(){
 //performance 
 let t0,t1;
 let performanceTrack = {true:[],false:[]};
-console.log(2)
+console.log(3)
 // classes
 let pieceMap = new Map();//connects the piece nodes to the classes
 
@@ -1837,6 +1837,7 @@ function updateDisplayedBoardState(startParent,piece,square,move=undefined){
 }
 
 function stackPiece(piece) {
+  console.log('try to capture piece')
   return new Promise((resolve,reject)=>{
     let graveyard;
     if (isp1(piece)) {
@@ -1844,7 +1845,10 @@ function stackPiece(piece) {
     } else {
       graveyard = p2graveyard;
     }
-    movePiece(piece, graveyard).then(()=>{resolve()});
+    movePiece(piece, graveyard).then(()=>{
+      console.log('piece captured')
+      resolve()
+    });
   })
 }
 
