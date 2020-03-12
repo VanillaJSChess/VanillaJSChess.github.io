@@ -45,6 +45,7 @@ playingComputer, //should the computer try to move
 computerPlayer = false;
 
 const onMobile = mobileCheck();
+console.log(onMobile)
 
 let boards = [{state:[],rating:[]}] //hols displayed and all simulated moves 
 let moveHistory = []; //lists all prev moves with some details 
