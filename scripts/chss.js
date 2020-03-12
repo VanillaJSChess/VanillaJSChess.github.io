@@ -1510,6 +1510,7 @@ function dragElement(elmnt) {
     if (clickedSqaure){
       console.log('square found in drag function')
       if (!clickedSqaure.children[0].classList.contains('hidden')){
+        console.log('click was for legal move in drag')
         completeMove(activePiece.parentElement,activePiece,clickedSqaure)
       } 
     }
@@ -1522,6 +1523,7 @@ function dragElement(elmnt) {
       return
     }
     activePiece = elmnt;
+    console.log(activePiece)
     e = e || window.event;
     e.preventDefault();
     // get the mouse cursor position at startup:
@@ -1554,7 +1556,7 @@ function dragElement(elmnt) {
       e = e || window.event;
       e.preventDefault();
       // calculate the new cursor position:
-
+      console.log('dragging element')
       pos1 = pos3 - e.clientX;
       pos2 = pos4 - e.clientY;
       pos3 = e.clientX;
@@ -1580,10 +1582,12 @@ function dragElement(elmnt) {
           endDrag(elmnt);
           completeMove(startParent,elmnt,square)
         } else {
+          console.log('same square')
           startParent.appendChild(elmnt);
           endDrag(elmnt,startParent === square);
         }
       } catch (error) {
+        console.log(error)
         startParent.appendChild(elmnt);
         endDrag(elmnt);
       }
