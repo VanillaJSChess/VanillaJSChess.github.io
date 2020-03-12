@@ -1894,12 +1894,14 @@ function movePiece(piece,loc,speedFactor=10){
     let count = 0;
 //     step();
     window.requestAnimationFrame(step);
+    console.log('move started') 
     function step(){
       if (count === speedFactor) {
         window.requestAnimationFrame(()=>{
           loc.appendChild(piece);
           piece.style.top = pieceTop;
           piece.style.left = 'auto';
+          console.log('move completed')
           resolve();
         });
       } else {
