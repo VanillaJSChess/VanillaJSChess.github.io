@@ -101,7 +101,7 @@ class ChessPiece{
         square.children[0].style.zIndex = '1';
       });
     });
-    console.log('moves shown')
+    console.log('moves shown');
   }
 
   getLegalMoves(piecesOnBoard, enemyPiecesWithCaptures){
