@@ -1551,7 +1551,7 @@ function dragElement(elmnt) {
     handToPieceArea(elmnt,newX,newY,false);
 
     document.onmouseup = closeDragElement;
-    document.onmousemove = elementDrag;
+    //document.onmousemove = elementDrag;
     pieceMap.get(elmnt).displayMoves();
     function elementDrag(e) {
       e = e || window.event;
