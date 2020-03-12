@@ -99,10 +99,9 @@ class ChessPiece{
         let square =  boardNode.children[move[0]].children[move[1]];
         square.children[0].classList.remove('hidden'); 
         square.children[0].style.zIndex = '1';
-        try{ square.children[1].style.zIndex = '0'; } catch { console.log('square child z index failed ') }
-        console.log('moves shown')
       });
     });
+    console.log('moves shown')
   }
 
   getLegalMoves(piecesOnBoard, enemyPiecesWithCaptures){
