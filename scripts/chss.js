@@ -1508,6 +1508,7 @@ function dragElement(elmnt) {
     
     let clickedSqaure = document.elementsFromPoint(e.clientX, e.clientY).find(item=>item.classList.contains('square'))
     if (clickedSqaure){
+      console.log('square found in drag function')
       if (!clickedSqaure.children[0].classList.contains('hidden')){
         completeMove(activePiece.parentElement,activePiece,clickedSqaure)
       } 
@@ -2266,8 +2267,10 @@ function init() {
   resetAll();
   createPieceLists();
   board.addEventListener('click',(e)=>{
+    console.log('board clicked')
     let clickedSqaure = document.elementsFromPoint(e.clientX, e.clientY).find(item=>item.classList.contains('square'))
     if (!clickedSqaure.children[0].classList.contains('hidden')){
+      console.log('click was a legal move')
       completeMove(activePiece.parentElement,activePiece,clickedSqaure)
       availMoveIcons.forEach(icon=>{
         icon.style.zIndex = '0';
