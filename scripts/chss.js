@@ -45,7 +45,7 @@ playingComputer, //should the computer try to move
 computerPlayer = false;
 
 const onMobile = mobileCheck();
-console.log(onMobile)
+//console.log(onMobile)
 
 let boards = [{state:[],rating:[]}] //hols displayed and all simulated moves 
 let moveHistory = []; //lists all prev moves with some details 
@@ -60,7 +60,7 @@ function takeOverAndRefindMoves(){
 //performance 
 let t0,t1;
 let performanceTrack = {true:[],false:[]};
-console.log(3)
+console.log(4)
 // classes
 let pieceMap = new Map();//connects the piece nodes to the classes
 
@@ -932,6 +932,7 @@ function getPiecesOnBoard(board){
 function swapTurn(boardIndex) {
   thinking.classList.remove('visible')
   thinkingInProg = false;
+  document.getElementById("game-area").focus();
   if (winnerBool || drawBool || midPromotion){ return }
   prevShownRatedMove = undefined;
   turn = !turn;
@@ -1522,7 +1523,7 @@ function dragElement(elmnt) {
     let pieceInGraveyard = (elmnt.parentElement.id == 'p1graveyard' || elmnt.parentElement.id == 'p2graveyard')
     if (trblesht) {} else if (isp1(elmnt) !== turn || midPromotion || displaySimulateIndex !== 0
     || pieceInGraveyard || winnerBool || undoneMoves.length>0 || pieceArea.childElementCount > 0
-    ||  (playingComputer && !isp1(elmnt))) {
+    ||  (playingComputer && !isp1(elmnt)) || thinkingInProg) {
       return
     }
     activePiece = elmnt;
