@@ -57,7 +57,7 @@ function takeOverAndRefindMoves(){
 //performance 
 let t0,t1;
 let performanceTrack = {true:[],false:[]};
-
+console.log(2)
 // classes
 let pieceMap = new Map();//connects the piece nodes to the classes
 
