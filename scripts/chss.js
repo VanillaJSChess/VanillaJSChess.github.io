@@ -1502,6 +1502,10 @@ function dragElement(elmnt) {
   var startParent;
   elmnt.onmousedown = dragMouseDown;
   function dragMouseDown(e) {
+    e = e || window.event;
+    e.stopPropagation();
+    e.preventDefault();
+
     if (delOnClick){
       stackPiece(elmnt)
       return
@@ -1527,8 +1531,6 @@ function dragElement(elmnt) {
       return
     }
     activePiece = elmnt;
-    e = e || window.event;
-    e.preventDefault();
     // get the mouse cursor position at startup:
     pos1 = e.clientX;
     pos2 = e.clientY;
