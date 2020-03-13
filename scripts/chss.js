@@ -104,7 +104,6 @@ class ChessPiece{
         square.children[0].style.zIndex = '1';
       });
     });
-    console.log('moves shown');
   }
 
   getLegalMoves(piecesOnBoard, enemyPiecesWithCaptures){
@@ -261,9 +260,9 @@ class Pawn extends ChessPiece {
       let potentialSquare = boards[this.boardID].state[row][col];
       //checking for en passant 
       if (potentialSquare === null){ 
-        try { 
+        if (moveHistory.length > 0) {
           prevMovePiece = (moveHistory[moveHistory.length-1].move[2]) //see what piece moved last 
-        } catch(e) {
+        } else {
           prevMovePiece = undefined;
         }
         if (prevMovePiece === 'Pawn'){
@@ -1496,7 +1495,7 @@ function populateBoard(){
 }
 
 //physically moving pieces
-let prevHeldPiece = [];
+// let prevHeldPiece = [];
 function dragElement(elmnt) {
   var pos1 = 0,
       pos2 = 0,
@@ -1517,23 +1516,26 @@ function dragElement(elmnt) {
     let squareBounds, leftBoundSquare;
     let rowBounds,leftBoundRow;
     
-    let clickedSqaure = document.elementsFromPoint(e.clientX, e.clientY).find(item=>item.classList.contains('square'))
-    if (clickedSqaure){
-      console.log('square found in drag function')
-      if (!clickedSqaure.children[0].classList.contains('hidden')){
-        console.log('click was for legal move in drag')
-        completeMove(activePiece.parentElement,activePiece,clickedSqaure)
-      } 
-    }
-    hideAvailableMoveIcons(); 
-    prevHeldPiece = [elmnt,elmnt.parentElement,pieceArea.childElementCount];
+//     prevHeldPiece = [elmnt,elmnt.parentElement,pieceArea.childElementCount];
     let pieceInGraveyard = (elmnt.parentElement.id == 'p1graveyard' || elmnt.parentElement.id == 'p2graveyard')
     if (trblesht) {} else if (isp1(elmnt) !== turn || midPromotion || displaySimulateIndex !== 0
     || pieceInGraveyard || winnerBool || undoneMoves.length>0 || pieceArea.childElementCount > 0
     ||  (playingComputer && !isp1(elmnt)) || thinkingInProg) {
       return
     }
+    let clickedSqaure = document.elementsFromPoint(e.clientX, e.clientY).find(item=>item.classList.contains('square'))
+    if (clickedSqaure){
+      if (!clickedSqaure.children[0].classList.contains('hidden')){
+        completeMove(activePiece.parentElement,activePiece,clickedSqaure)
+        endDrag(elmnt);
+      } 
+    }
+
+    if (activePiece !== elmnt){ //if it is a new piece, hide old shown moves 
+      hideAvailableMoveIcons(); 
+    }
     activePiece = elmnt;
+    pieceMap.get(elmnt).displayMoves(); //then display the moves 
     // get the mouse cursor position at startup:
     pos1 = e.clientX;
     pos2 = e.clientY;
@@ -1556,17 +1558,16 @@ function dragElement(elmnt) {
     let newX = pos1 - leftBoundElmnt + leftBoundSquare - leftBoundRow;
     let newY = pos2- window.scrollY - topBoundElmnt + elmntBounds.height*rowCol[0];
 
-    document.onmouseup = closeDragElement;
     if (!onMobile) {
+      document.onmouseup = closeDragElement;
       handToPieceArea(elmnt,newX,newY,false);
       document.onmousemove = elementDrag
     }
-    pieceMap.get(elmnt).displayMoves();
     function elementDrag(e) {
       e = e || window.event;
       e.preventDefault();
       // calculate the new cursor position:
-      console.log('dragging element')
+//       console.log('dragging element')
       pos1 = pos3 - e.clientX;
       pos2 = pos4 - e.clientY;
       pos3 = e.clientX;
@@ -2239,7 +2240,12 @@ function init() {
   })
 
   document.addEventListener('click', handleSquareHighlightsClick);
-  document.addEventListener('click', hideAvailableMoveIcons);
+  document.addEventListener('click', (e)=>{
+    let clickedSqaure = document.elementsFromPoint(e.clientX, e.clientY).find(item=>item.classList.contains('square'))
+    if (clickedSqaure === undefined || clickedSqaure.children[1] === undefined){
+      hideAvailableMoveIcons()
+    }
+  });
   reset.addEventListener('click', callFuncIfNotThinking.bind(null,resetAll));
   newGameButton.addEventListener('click', callFuncIfNotThinking.bind(null,newMatch));
   toggleComputer.addEventListener('click', callFuncIfNotThinking.bind(null,toggleComputerPlayer));
