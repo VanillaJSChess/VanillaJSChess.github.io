@@ -1528,7 +1528,7 @@ function dragElement(elmnt) {
     let clickedSqaure = document.elementsFromPoint(e.clientX, e.clientY).find(item=>item.classList.contains('square'))
     //console.log(clickedSquare);
     if (clickedSqaure){
-      console.log(clickedSquare.children[0].classList)
+      //console.log(clickedSquare.children[0].classList)
       if (!clickedSqaure.children[0].classList.contains('hidden')){
         completeMove(activePiece.parentElement,activePiece,clickedSqaure)
         endDrag(elmnt);
