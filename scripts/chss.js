@@ -939,8 +939,8 @@ function swapTurn(boardIndex) {
   prevShownRatedMove = undefined;
   //turn = !turn;
   colorPlayerIcons()
-  oldMovesOutNewMovesIn(boardIndex);
-  checkRepetition()
+  //oldMovesOutNewMovesIn(boardIndex);
+  //checkRepetition()
   if (playingComputer && !turn) {
     thinking.classList.add('visible')
     thinkingInProg = true;
@@ -958,7 +958,7 @@ function swapTurn(boardIndex) {
       }
     });
   }
-  checkWinOrDraw();
+  //checkWinOrDraw();
 }
 
 let repetitionCount = 0;
@@ -1502,7 +1502,8 @@ function dragElement(elmnt) {
       pos3 = 0,
       pos4 = 0;
   var startParent;
-  elmnt.onmousedown = dragMouseDown;
+  //elmnt.onmousedown = dragMouseDown;
+  elmnt.addEventListener('click',dragMouseDown)
   function dragMouseDown(e) {
     e = e || window.event;
     e.stopPropagation();
