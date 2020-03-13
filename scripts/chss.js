@@ -933,11 +933,11 @@ function swapTurn(boardIndex) {
   thinkingInProg = false;
   document.activeElement.blur();
 
-  document.getElementById('game-area').click()
+  document.getElementById('main-container').click()
 
   if (winnerBool || drawBool || midPromotion){ return }
   prevShownRatedMove = undefined;
-  turn = !turn;
+  //turn = !turn;
   colorPlayerIcons()
   oldMovesOutNewMovesIn(boardIndex);
   checkRepetition()
