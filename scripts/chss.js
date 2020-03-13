@@ -44,7 +44,7 @@ thinkingInProg, //blocks button clicks while waiting on computer move
 playingComputer, //should the computer try to move 
 computerPlayer = false;
 
-const onMobile = mobileCheck();
+const onMobile = true//mobileCheck();
 //console.log(onMobile)
 
 let boards = [{state:[],rating:[]}] //hols displayed and all simulated moves 
@@ -282,7 +282,7 @@ class Pawn extends ChessPiece {
 
   checkEnPassant(row,col){
     let move = moveHistory[moveHistory.length-1].move;
-    if (move[0][1] === move[1][1] && move[0][1] === col){ //if the pawn is directly to the right or left 
+    if (move[0][1] === move[1][1] && move[0][1] === col){ //if the pawn is directly to the right or left
       if (Math.abs(move[0][0]-move[1][0])>1){ //if the pawn moved 2 squares 
         if (row === move[0][0] - this.direction){ //if it moved past the row where the pawn can take
           return true
@@ -931,9 +931,9 @@ function getPiecesOnBoard(board){
 function swapTurn(boardIndex) {
   thinking.classList.remove('visible')
   thinkingInProg = false;
-  //document.activeElement.blur();
+  document.activeElement.blur();
 
-  //document.getElementById('main-container').click()
+  document.getElementById('game-area').click()
 
   if (winnerBool || drawBool || midPromotion){ return }
   prevShownRatedMove = undefined;
@@ -1101,9 +1101,11 @@ function computerMove(boardIndex,depth,maxWidth){
                      'losingMate':false,
                      'futureMoves':undefined})
     } else {
+//       if (f8count === 51) {debugger}
       for (let i=0;i<orderedMoves.length && i<width && i<maxWidth;i++){
         let testMove = ratedSimulatedMoves[orderedMoves[i][1]];
         simulateMove(testMove.from,testMove.to,boards[boardIndex+1]);
+//         if (boards.length === 2) { debugger }
         oldMovesOutNewMovesIn(boardIndex+1);      
         testTree.push({
          'move':testMove,
@@ -1287,7 +1289,7 @@ function computerMove(boardIndex,depth,maxWidth){
 //       }
     }
 
-    //creates ratingrtree
+    //creates ratingrtree` 
     function rateMoveTree(tree,i=0){
       let tempArray = {'moveRating':[],'nextMovesRatings':[],'level':i};
       if (tree) {
@@ -1500,10 +1502,10 @@ function dragElement(elmnt) {
       pos3 = 0,
       pos4 = 0;
   var startParent;
-  if (!onMobile){
-    elmnt.onmousedown = dragMouseDown;
+  if (onMobile){
+    elmnt.addEventListener('click',dragMouseDown);
   } else {
-    elmnt.addEventListener('click',dragMouseDown)
+    elmnt.onmousedown = dragMouseDown; 
   }
   function dragMouseDown(e) {
     e = e || window.event;
@@ -1517,6 +1519,7 @@ function dragElement(elmnt) {
     let elmntBounds, leftBoundElmnt,topBoundElmnt;
     let squareBounds, leftBoundSquare;
     let rowBounds,leftBoundRow;
+    let rowCol,newX,newY;
     
 //     prevHeldPiece = [elmnt,elmnt.parentElement,pieceArea.childElementCount];
     let pieceInGraveyard = (elmnt.parentElement.id == 'p1graveyard' || elmnt.parentElement.id == 'p2graveyard')
@@ -1525,11 +1528,8 @@ function dragElement(elmnt) {
     ||  (playingComputer && !isp1(elmnt)) || thinkingInProg) {
       return
     }
-    console.log('piece clicked');
     let clickedSqaure = document.elementsFromPoint(e.clientX, e.clientY).find(item=>item.classList.contains('square'))
-    console.log(clickedSquare);
     if (clickedSqaure){
-      //console.log(clickedSquare.children[0].classList)
       if (!clickedSqaure.children[0].classList.contains('hidden')){
         completeMove(activePiece.parentElement,activePiece,clickedSqaure)
         endDrag(elmnt);
@@ -1539,30 +1539,31 @@ function dragElement(elmnt) {
     if (activePiece !== elmnt){ //if it is a new piece, hide old shown moves 
       hideAvailableMoveIcons(); 
     }
+
     activePiece = elmnt;
     pieceMap.get(elmnt).displayMoves(); //then display the moves 
-    // get the mouse cursor position at startup:
-
-    startParent = elmnt.parentElement;
     handleSquareHighlightsClick(elmnt);
-
+    // get the mouse cursor position at startup:
     if (!onMobile) {
+      pos1 = e.clientX;
+      pos2 = e.clientY;
+      //in case of a bad drag
+      startParent = elmnt.parentElement;
 
-    pos1 = e.clientX;
-    pos2 = e.clientY;
-    elmntBounds = elmnt.getBoundingClientRect();
-    leftBoundElmnt = elmntBounds.x;
-    topBoundElmnt = elmntBounds.y;
-    squareBounds = elmnt.parentElement.getBoundingClientRect();
-    leftBoundSquare = squareBounds.x;
+      elmntBounds = elmnt.getBoundingClientRect();
+      leftBoundElmnt = elmntBounds.x;
+      topBoundElmnt = elmntBounds.y;
+
+      squareBounds = elmnt.parentElement.getBoundingClientRect();
+      leftBoundSquare = squareBounds.x;
+
+      rowBounds = elmnt.parentElement.parentElement.getBoundingClientRect();
+      leftBoundRow = rowBounds.x;
+
+      rowCol = getRowCol(elmnt.parentElement);
+      newX = pos1 - leftBoundElmnt + leftBoundSquare - leftBoundRow;
+      newY = pos2- window.scrollY - topBoundElmnt + elmntBounds.height*rowCol[0];
     
-    rowBounds = elmnt.parentElement.parentElement.getBoundingClientRect();
-    leftBoundRow = rowBounds.x;
-
-    let rowCol = getRowCol(elmnt.parentElement);
-    let newX = pos1 - leftBoundElmnt + leftBoundSquare - leftBoundRow;
-    let newY = pos2- window.scrollY - topBoundElmnt + elmntBounds.height*rowCol[0];
-
       document.onmouseup = closeDragElement;
       handToPieceArea(elmnt,newX,newY,false);
       document.onmousemove = elementDrag
@@ -1571,7 +1572,6 @@ function dragElement(elmnt) {
       e = e || window.event;
       e.preventDefault();
       // calculate the new cursor position:
-//       console.log('dragging element')
       pos1 = pos3 - e.clientX;
       pos2 = pos4 - e.clientY;
       pos3 = e.clientX;
@@ -2243,13 +2243,14 @@ function init() {
     })
   })
 
-  //document.addEventListener('click', (e)=>{
-  //  let clickedSqaure = document.elementsFromPoint(e.clientX, e.clientY).find(item=>item.classList.contains('square'))
-  //  if (clickedSqaure === undefined || clickedSqaure.children[1] === undefined){
-  //    hideAvailableMoveIcons()
-  //    handleSquareHighlightsClick(clickedSqaure.children[1]);
-  //  }
-  //});
+//   document.addEventListener('click', );
+  document.addEventListener('click', (e)=>{
+    let clickedSqaure = document.elementsFromPoint(e.clientX, e.clientY).find(item=>item.classList.contains('square'))
+    if (clickedSqaure === undefined || clickedSqaure.children[1] === undefined){
+      hideAvailableMoveIcons()
+//       handleSquareHighlightsClick(clickedSqaure.children[1]);
+    }
+  });
   reset.addEventListener('click', callFuncIfNotThinking.bind(null,resetAll));
   newGameButton.addEventListener('click', callFuncIfNotThinking.bind(null,newMatch));
   toggleComputer.addEventListener('click', callFuncIfNotThinking.bind(null,toggleComputerPlayer));
@@ -2296,11 +2297,10 @@ function init() {
   }));
   resetAll();
   createPieceLists();
-  document.addEventListener('click',(e)=>{
-    //console.log('board clicked')
+  board.addEventListener('click',(e)=>{
+    console.log('board clicked')
     let clickedSqaure = document.elementsFromPoint(e.clientX, e.clientY).find(item=>item.classList.contains('square'))
-    //console.log(clickedSquare,'init')
-    if (clickedSquare && !clickedSqaure.children[0].classList.contains('hidden')){
+    if (!clickedSqaure.children[0].classList.contains('hidden')){
       console.log('click was a legal move')
       completeMove(activePiece.parentElement,activePiece,clickedSqaure)
       availMoveIcons.forEach(icon=>{
