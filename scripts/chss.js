@@ -958,7 +958,7 @@ function swapTurn(boardIndex) {
       }
     });
   }
-  //checkWinOrDraw();
+  checkWinOrDraw();
 }
 
 let repetitionCount = 0;
@@ -1526,6 +1526,7 @@ function dragElement(elmnt) {
     }
     let clickedSqaure = document.elementsFromPoint(e.clientX, e.clientY).find(item=>item.classList.contains('square'))
     if (clickedSqaure){
+      console.log(clickedSquare.children[0].classList)
       if (!clickedSqaure.children[0].classList.contains('hidden')){
         completeMove(activePiece.parentElement,activePiece,clickedSqaure)
         endDrag(elmnt);
