@@ -14,6 +14,8 @@
 #board{
   display:inline-block;
   font-size: 0;
+  padding: 10px;
+  padding-top: 0;
 }
 
 .square{
@@ -224,6 +226,7 @@
 
 #board-with-promotion{
   position:relative;
+  padding-bottom: 20px;
 }
 
 #choose-promotion {
