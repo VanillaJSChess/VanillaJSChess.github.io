@@ -2221,12 +2221,12 @@ function callFuncIfNotThinking(func){
   }
 }
 function init() {
-  for (i = 0; i < 8; i++) {
-    getSquare(i,0).style.borderLeft = '1px solid black';
-    getSquare(i,7).style.borderRight = '3px solid black';
-  }
-  document.querySelectorAll('.gameRow')[7].style.borderBottom = '3px solid black';
-  document.querySelectorAll('.gameRow')[0].style.borderTop = '1px solid black';
+  //for (i = 0; i < 8; i++) {
+  //  getSquare(i,0).style.borderLeft = '1px solid black';
+  //  getSquare(i,7).style.borderRight = '3px solid black';
+  //}
+  //document.querySelectorAll('.gameRow')[7].style.borderBottom = '3px solid black';
+  //document.querySelectorAll('.gameRow')[0].style.borderTop = '1px solid black';
 
   for (i = 0; i < p1pieces.length; i++) {
     dragElement(p1pieces[i]);
