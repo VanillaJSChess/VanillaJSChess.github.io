@@ -1101,11 +1101,9 @@ function computerMove(boardIndex,depth,maxWidth){
                      'losingMate':false,
                      'futureMoves':undefined})
     } else {
-//       if (f8count === 51) {debugger}
       for (let i=0;i<orderedMoves.length && i<width && i<maxWidth;i++){
         let testMove = ratedSimulatedMoves[orderedMoves[i][1]];
         simulateMove(testMove.from,testMove.to,boards[boardIndex+1]);
-//         if (boards.length === 2) { debugger }
         oldMovesOutNewMovesIn(boardIndex+1);      
         testTree.push({
          'move':testMove,
@@ -2242,13 +2240,13 @@ function init() {
     })
   })
 
-  document.addEventListener('click', (e)=>{
-    let clickedSqaure = document.elementsFromPoint(e.clientX, e.clientY).find(item=>item.classList.contains('square'))
-    if (clickedSqaure === undefined || clickedSqaure.children[1] === undefined){
-      hideAvailableMoveIcons()
-      handleSquareHighlightsClick(clickedSqaure.children[1]);
-    }
-  });
+  //document.addEventListener('click', (e)=>{
+  //  let clickedSqaure = document.elementsFromPoint(e.clientX, e.clientY).find(item=>item.classList.contains('square'))
+  //  if (clickedSqaure === undefined || clickedSqaure.children[1] === undefined){
+  //    hideAvailableMoveIcons()
+  //    handleSquareHighlightsClick(clickedSqaure.children[1]);
+  //  }
+  //});
   reset.addEventListener('click', callFuncIfNotThinking.bind(null,resetAll));
   newGameButton.addEventListener('click', callFuncIfNotThinking.bind(null,newMatch));
   toggleComputer.addEventListener('click', callFuncIfNotThinking.bind(null,toggleComputerPlayer));
