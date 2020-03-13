@@ -1500,8 +1500,11 @@ function dragElement(elmnt) {
       pos3 = 0,
       pos4 = 0;
   var startParent;
-  //elmnt.onmousedown = dragMouseDown;
-  elmnt.addEventListener('click',dragMouseDown)
+  if (!onMobile){
+    elmnt.onmousedown = dragMouseDown;
+  } else {
+    elmnt.addEventListener('click',dragMouseDown)
+  }
   function dragMouseDown(e) {
     e = e || window.event;
     //e.stopPropagation();
@@ -1524,7 +1527,7 @@ function dragElement(elmnt) {
     }
     console.log('piece clicked');
     let clickedSqaure = document.elementsFromPoint(e.clientX, e.clientY).find(item=>item.classList.contains('square'))
-    //console.log(clickedSquare);
+    console.log(clickedSquare);
     if (clickedSqaure){
       //console.log(clickedSquare.children[0].classList)
       if (!clickedSqaure.children[0].classList.contains('hidden')){
@@ -2297,7 +2300,7 @@ function init() {
     //console.log('board clicked')
     let clickedSqaure = document.elementsFromPoint(e.clientX, e.clientY).find(item=>item.classList.contains('square'))
     //console.log(clickedSquare,'init')
-    if (!clickedSqaure.children[0].classList.contains('hidden')){
+    if (clickedSquare && !clickedSqaure.children[0].classList.contains('hidden')){
       console.log('click was a legal move')
       completeMove(activePiece.parentElement,activePiece,clickedSqaure)
       availMoveIcons.forEach(icon=>{
