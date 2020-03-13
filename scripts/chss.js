@@ -2238,15 +2238,14 @@ function init() {
     })
   })
 
-//   document.addEventListener('click', );
-  document.addEventListener('click', (e)=>{
-    let clickedSqaure = document.elementsFromPoint(e.clientX, e.clientY).find(item=>item.classList.contains('square'))
-    if (clickedSqaure === undefined || clickedSqaure.children[1] === undefined){
-      hideAvailableMoveIcons()
-      console.log('icons hidden')
+//  document.addEventListener('click', (e)=>{
+//    let clickedSqaure = document.elementsFromPoint(e.clientX, e.clientY).find(item=>item.classList.contains('square'))
+//    if (clickedSqaure === undefined || clickedSqaure.children[1] === undefined){
+//      hideAvailableMoveIcons()
+//      console.log('icons hidden')
 //       handleSquareHighlightsClick(clickedSqaure.children[1]);
-    }
-  });
+//    }
+//  });
   reset.addEventListener('click', callFuncIfNotThinking.bind(null,resetAll));
   newGameButton.addEventListener('click', callFuncIfNotThinking.bind(null,newMatch));
   toggleComputer.addEventListener('click', callFuncIfNotThinking.bind(null,toggleComputerPlayer));
