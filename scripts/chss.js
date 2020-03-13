@@ -44,7 +44,7 @@ thinkingInProg, //blocks button clicks while waiting on computer move
 playingComputer, //should the computer try to move 
 computerPlayer = false;
 
-const onMobile = mobileCheck();
+const onMobile = true//mobileCheck();
 //console.log(onMobile)
 
 let boards = [{state:[],rating:[]}] //hols displayed and all simulated moves 
@@ -2239,11 +2239,12 @@ function init() {
     })
   })
 
-  document.addEventListener('click', handleSquareHighlightsClick);
+//   document.addEventListener('click', );
   document.addEventListener('click', (e)=>{
     let clickedSqaure = document.elementsFromPoint(e.clientX, e.clientY).find(item=>item.classList.contains('square'))
     if (clickedSqaure === undefined || clickedSqaure.children[1] === undefined){
       hideAvailableMoveIcons()
+//       handleSquareHighlightsClick(clickedSqaure.children[1]);
     }
   });
   reset.addEventListener('click', callFuncIfNotThinking.bind(null,resetAll));
