@@ -937,9 +937,9 @@ function swapTurn(boardIndex) {
 
   if (winnerBool || drawBool || midPromotion){ return }
   prevShownRatedMove = undefined;
-  //turn = !turn;
+  turn = !turn;
   colorPlayerIcons()
-  //oldMovesOutNewMovesIn(boardIndex);
+  oldMovesOutNewMovesIn(boardIndex);
   checkRepetition()
   if (playingComputer && !turn) {
     thinking.classList.add('visible')
