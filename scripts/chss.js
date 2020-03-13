@@ -931,16 +931,16 @@ function getPiecesOnBoard(board){
 function swapTurn(boardIndex) {
   thinking.classList.remove('visible')
   thinkingInProg = false;
-  document.activeElement.blur();
+  //document.activeElement.blur();
 
-  document.getElementById('main-container').click()
+  //document.getElementById('main-container').click()
 
   if (winnerBool || drawBool || midPromotion){ return }
   prevShownRatedMove = undefined;
   //turn = !turn;
   colorPlayerIcons()
   //oldMovesOutNewMovesIn(boardIndex);
-  //checkRepetition()
+  checkRepetition()
   if (playingComputer && !turn) {
     thinking.classList.add('visible')
     thinkingInProg = true;
@@ -2221,12 +2221,12 @@ function callFuncIfNotThinking(func){
   }
 }
 function init() {
-  //for (i = 0; i < 8; i++) {
-  //  getSquare(i,0).style.borderLeft = '1px solid black';
-  //  getSquare(i,7).style.borderRight = '3px solid black';
-  //}
-  //document.querySelectorAll('.gameRow')[7].style.borderBottom = '3px solid black';
-  //document.querySelectorAll('.gameRow')[0].style.borderTop = '1px solid black';
+  for (i = 0; i < 8; i++) {
+    getSquare(i,0).style.borderLeft = '1px solid black';
+    getSquare(i,7).style.borderRight = '3px solid black';
+  }
+  document.querySelectorAll('.gameRow')[7].style.borderBottom = '3px solid black';
+  document.querySelectorAll('.gameRow')[0].style.borderTop = '1px solid black';
 
   for (i = 0; i < p1pieces.length; i++) {
     dragElement(p1pieces[i]);
@@ -2239,14 +2239,13 @@ function init() {
     })
   })
 
-//  document.addEventListener('click', (e)=>{
-//    let clickedSqaure = document.elementsFromPoint(e.clientX, e.clientY).find(item=>item.classList.contains('square'))
-//    if (clickedSqaure === undefined || clickedSqaure.children[1] === undefined){
-//      hideAvailableMoveIcons()
-//      console.log('icons hidden')
-//       handleSquareHighlightsClick(clickedSqaure.children[1]);
-//    }
-//  });
+  document.addEventListener('click', (e)=>{
+    let clickedSqaure = document.elementsFromPoint(e.clientX, e.clientY).find(item=>item.classList.contains('square'))
+    if (clickedSqaure === undefined || clickedSqaure.children[1] === undefined){
+      hideAvailableMoveIcons()
+      handleSquareHighlightsClick(clickedSqaure.children[1]);
+    }
+  });
   reset.addEventListener('click', callFuncIfNotThinking.bind(null,resetAll));
   newGameButton.addEventListener('click', callFuncIfNotThinking.bind(null,newMatch));
   toggleComputer.addEventListener('click', callFuncIfNotThinking.bind(null,toggleComputerPlayer));
