@@ -1289,7 +1289,7 @@ function computerMove(boardIndex,depth,maxWidth){
 //       }
     }
 
-    //creates ratingrtree` 
+    //creates ratingrtree
     function rateMoveTree(tree,i=0){
       let tempArray = {'moveRating':[],'nextMovesRatings':[],'level':i};
       if (tree) {
@@ -1537,17 +1537,17 @@ function dragElement(elmnt) {
     activePiece = elmnt;
     pieceMap.get(elmnt).displayMoves(); //then display the moves 
     // get the mouse cursor position at startup:
-    pos1 = e.clientX;
-    pos2 = e.clientY;
-    console.log(pos1,pos2)
-    //in case of a bad drag
+
     startParent = elmnt.parentElement;
     handleSquareHighlightsClick(elmnt);
 
+    if (!onMobile) {
+
+    pos1 = e.clientX;
+    pos2 = e.clientY;
     elmntBounds = elmnt.getBoundingClientRect();
     leftBoundElmnt = elmntBounds.x;
     topBoundElmnt = elmntBounds.y;
-    
     squareBounds = elmnt.parentElement.getBoundingClientRect();
     leftBoundSquare = squareBounds.x;
     
@@ -1558,7 +1558,6 @@ function dragElement(elmnt) {
     let newX = pos1 - leftBoundElmnt + leftBoundSquare - leftBoundRow;
     let newY = pos2- window.scrollY - topBoundElmnt + elmntBounds.height*rowCol[0];
 
-    if (!onMobile) {
       document.onmouseup = closeDragElement;
       handToPieceArea(elmnt,newX,newY,false);
       document.onmousemove = elementDrag
@@ -2244,6 +2243,7 @@ function init() {
     let clickedSqaure = document.elementsFromPoint(e.clientX, e.clientY).find(item=>item.classList.contains('square'))
     if (clickedSqaure === undefined || clickedSqaure.children[1] === undefined){
       hideAvailableMoveIcons()
+      console.log('icons hidden')
 //       handleSquareHighlightsClick(clickedSqaure.children[1]);
     }
   });
