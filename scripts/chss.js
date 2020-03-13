@@ -1506,7 +1506,7 @@ function dragElement(elmnt) {
   elmnt.addEventListener('click',dragMouseDown)
   function dragMouseDown(e) {
     e = e || window.event;
-    e.stopPropagation();
+    //e.stopPropagation();
     e.preventDefault();
 
     if (delOnClick){
@@ -1524,9 +1524,9 @@ function dragElement(elmnt) {
     ||  (playingComputer && !isp1(elmnt)) || thinkingInProg) {
       return
     }
-    console.log('piece clicked')
+    console.log('piece clicked');
     let clickedSqaure = document.elementsFromPoint(e.clientX, e.clientY).find(item=>item.classList.contains('square'))
-    console.log(clickedSquare)
+    //console.log(clickedSquare);
     if (clickedSqaure){
       console.log(clickedSquare.children[0].classList)
       if (!clickedSqaure.children[0].classList.contains('hidden')){
@@ -2295,10 +2295,10 @@ function init() {
   }));
   resetAll();
   createPieceLists();
-  board.addEventListener('click',(e)=>{
-    console.log('board clicked')
+  document.addEventListener('click',(e)=>{
+    //console.log('board clicked')
     let clickedSqaure = document.elementsFromPoint(e.clientX, e.clientY).find(item=>item.classList.contains('square'))
-    console.log(clickedSquare,'init')
+    //console.log(clickedSquare,'init')
     if (!clickedSqaure.children[0].classList.contains('hidden')){
       console.log('click was a legal move')
       completeMove(activePiece.parentElement,activePiece,clickedSqaure)
