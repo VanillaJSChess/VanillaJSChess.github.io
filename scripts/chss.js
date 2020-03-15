@@ -1865,6 +1865,7 @@ function stackPiece(piece) {
 graveyardOffsets = {true:{},false:{}}
 function movePiece(piece,loc,speedFactor=10){
   return new Promise((resolve,reject)=>{
+    console.log('movepiece started', piece.classList)
     if (piece.parentElement.id === "piece-area"){
       changePieceParent(piece,loc);
       window.requestAnimationFrame(resolve);
