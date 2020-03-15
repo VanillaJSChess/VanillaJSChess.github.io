@@ -44,7 +44,7 @@ thinkingInProg, //blocks button clicks while waiting on computer move
 playingComputer, //should the computer try to move 
 computerPlayer = false;
 
-const onMobile = true//mobileCheck();
+const onMobile = mobileCheck();
 //console.log(onMobile)
 
 let boards = [{state:[],rating:[]}] //hols displayed and all simulated moves 
@@ -452,7 +452,6 @@ function switchSides(reset = false){
 }
 
 function newMatch() {
-
   addOrRemoveThinking();
   emptyHistoryCollections();
   resetFFbutton()
@@ -463,6 +462,7 @@ function newMatch() {
   movePromises = populateBoard(); //grab all the pieces that need to move to their homeSqures 
   resetPieces();
   Promise.all(movePromises).then(()=>{
+    console.log('all pieces moved')
     //move all pieces then save their new squares as home squares
     if (!pieceMap.get(p1pieces[0]).homeSquare){
       getHomeSquares(); 
@@ -473,7 +473,7 @@ function newMatch() {
       doNormalComputerMove();
     }
   })
-
+  console.log('newMatch completed')
   function emptyHistoryCollections(){
     //empty tracking done from last game
     undoneMoves = [];
@@ -2271,17 +2271,17 @@ function init() {
       });
     }
   }
-  ffyes.addEventListener('mousedown', (event)=>{
+  ffyes.addEventListener('click', (event)=>{
     winner();
 //     forfeit.style.backgroundColor = newGameButton.style.backgroundColor;
     forfeit.classList.remove('forfeit-color')
     forfeit.classList.add('new-game-color')
     forfeit.innerText = 'Play Again';
   });
-  forfeitBanner.addEventListener('mousedown', function(event){
+  forfeitBanner.addEventListener('click', function(event){
     this.classList.add('hidden');
   });
-  forfeit.addEventListener('mousedown', function(event){
+  forfeit.addEventListener('click', function(event){
     if (winnerBool || drawBool){
       newMatch();
     } else {
