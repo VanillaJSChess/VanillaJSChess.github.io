@@ -282,7 +282,7 @@ class Pawn extends ChessPiece {
 
   checkEnPassant(row,col){
     let move = moveHistory[moveHistory.length-1].move;
-    if (move[0][1] === move[1][1] && move[0][1] === col){ //if the pawn is directly to the right or left
+    if (move[0][1] === move[1][1] && move[0][1] === col){ //if the pawn is directly to the right or left 
       if (Math.abs(move[0][0]-move[1][0])>1){ //if the pawn moved 2 squares 
         if (row === move[0][0] - this.direction){ //if it moved past the row where the pawn can take
           return true
