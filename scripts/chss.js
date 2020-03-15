@@ -60,7 +60,7 @@ function takeOverAndRefindMoves(){
 //performance 
 let t0,t1;
 let performanceTrack = {true:[],false:[]};
-console.log(5)
+console.log(6)
 // classes
 let pieceMap = new Map();//connects the piece nodes to the classes
 
@@ -86,6 +86,7 @@ class ChessPiece{
     }
     this.boardID = 0; //which board does this piece's moves correspond to
     this.promoted = false; //for pawns only 
+    this.homeSquare = undefined;
   }
 
   getHomeSquare(){ //needs to run after start animation. Maybe just remove start animation or hardcaode homeSquare
@@ -1468,27 +1469,31 @@ function populateBoard(){
   movePromises = [];
   let[strayP1,strayP2] = [Array.from(p1pieces),Array.from(p2pieces)];
   for (let i = 0; i < 2; i++) {
-    assignPiece(i, 'player2');
+    assignPiece(i, false);
   }
   for (let i = 6; i < 8; i++) {
-    assignPiece(i, 'player1');
+    assignPiece(i, true);
   }
   return movePromises
   function assignPiece(count, player) {
-    var piece;
-
+    let  pieceNode;
+    
     for (var j = 0; j < 8; j++) {
       var square = getSquare(count,j);
       
-      if (player === 'player1') {
-        piece = strayP1.pop();
+      if (player) {
+        pieceNode = strayP1.pop();
       } else {
-        piece = strayP2.pop();
+        pieceNode = strayP2.pop();
       }
-      if(pieceMap.get(piece)){
-        movePromises.push(movePiece(piece, pieceMap.get(piece).homeSquare, speedFactor = 30));
-      } else {
-        movePromises.push(movePiece(piece, square, speedFactor = 30)) 
+      let piece = pieceMap.get(pieceNode);
+      if(piece && piece.homeSquare){
+        let currSquare = boardNode.children[piece.rowCol[0]].children[piece.rowCol[1]]
+        if (piece.homeSquare !== currSquare){
+          movePromises.push(movePiece(pieceNode, piece.homeSquare, speedFactor = 30));
+        }
+      } else { 
+        movePromises.push(movePiece(pieceNode, square, speedFactor = 30)) 
       }
     }
   }
@@ -1923,7 +1928,7 @@ function movePiece(piece,loc,speedFactor=10){
         window.requestAnimationFrame(step);
       }
     }
-  });
+  });   
   
   function changePieceParent(piece,square){
     square.appendChild(piece);
