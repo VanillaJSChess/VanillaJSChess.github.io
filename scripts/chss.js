@@ -1906,6 +1906,7 @@ function movePiece(piece,loc,speedFactor=10){
 //     step();
     window.requestAnimationFrame(step);
     function step(){
+      console.log('step', piece.classList, count)
       if (count === speedFactor) {
         window.requestAnimationFrame(()=>{
           loc.appendChild(piece);
