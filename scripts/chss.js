@@ -1526,9 +1526,8 @@ function dragElement(elmnt) {
     let rowCol,newX,newY;
 
     let pieceInGraveyard = (elmnt.parentElement.id == 'p1graveyard' || elmnt.parentElement.id == 'p2graveyard')
-    if (trblesht) {} else if (isp1(elmnt) !== turn || midPromotion || displaySimulateIndex !== 0
-    || pieceInGraveyard || winnerBool || undoneMoves.length>0 || pieceArea.childElementCount > 0
-    ||  (playingComputer && !isp1(elmnt)) || thinkingInProg) {
+    if (trblesht) {} else if (isp1(elmnt) !== turn || midPromotion || pieceInGraveyard || winnerBool 
+    || undoneMoves.length>0 || pieceArea.childElementCount > 0 ||  (playingComputer && !isp1(elmnt)) || thinkingInProg) {
       return
     }
 
@@ -2240,8 +2239,10 @@ function init() {
   document.querySelectorAll('.gameRow')[0].style.borderTop = '1px solid black';
 
   for (i = 0; i < p1pieces.length; i++) {
-    dragElement(p1pieces[i]);
-    dragElement(p2pieces[i]);
+    if (!onMobile){
+      dragElement(p1pieces[i]);
+      dragElement(p2pieces[i]);
+    }
   }
 
   promotionPieces.forEach(piece=>{
@@ -2296,29 +2297,33 @@ function init() {
   createPieceLists();
 
 
-  document.addEventListener('click',(e)=>{
-    setTimeout(registerClicks,1000,e);
-  })
+  document.addEventListener('click',registerClicks);
 }
 
 function registerClicks(e){
+    e.stopPropagation();
+    e.preventDefault();
     let clickedSqaure = document.elementsFromPoint(e.clientX, e.clientY).find(item=>item.classList.contains('square'));
-    if (clickedSqaure === undefined) {
-      console.log('clicked not square');
+    if (clickedSqaure === undefined) { //not a square 
       hideAvailableMoveIcons();
-    } else {
-      console.log('board clicked');
-      try {
-        if (!clickedSqaure.children[0].classList.contains('hidden')){
+    } else { //a square was clicked 
+      let elmnt = clickedSqaure.children[1];
+      if (elmnt === undefined) { //if there is no piece there 
+        if (!clickedSqaure.children[0].classList.contains('hidden')){ //check for a legal move 
           console.log('click was a legal move');
           completeMove(activePiece.parentElement,activePiece,clickedSqaure);
           hideAvailableMoveIcons();
-        } else {
-          console.log('click was not legal move');
-          return 
         } 
-      } catch (err) {
-        console.log(err);
+      } else { //if there was a piece there 
+        let pieceInGraveyard = (elmnt.parentElement.id == 'p1graveyard' || elmnt.parentElement.id == 'p2graveyard')
+        if (isp1(elmnt) !== turn || midPromotion || pieceInGraveyard || winnerBool || undoneMoves.length>0 || pieceArea.childElementCount > 0
+        ||  (playingComputer && !isp1(elmnt)) || thinkingInProg) { return }
+        if (activePiece !== elmnt){ //if it is a new piece, hide old shown moves 
+          hideAvailableMoveIcons(); 
+        }
+        activePiece = elmnt;
+        pieceMap.get(elmnt).displayMoves(); //then display the moves 
+        handleSquareHighlightsClick(elmnt);
       }
     }
   }
