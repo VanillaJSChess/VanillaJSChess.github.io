@@ -44,7 +44,7 @@ thinkingInProg, //blocks button clicks while waiting on computer move
 playingComputer, //should the computer try to move 
 computerPlayer = false;
 
-const onMobile = mobileCheck();
+const onMobile = true//mobileCheck();
 //console.log(onMobile)
 
 let boards = [{state:[],rating:[]}] //hols displayed and all simulated moves 
@@ -2298,6 +2298,7 @@ function init() {
 
   document.addEventListener('click',(e)=>{
     let clickedSqaure = document.elementsFromPoint(e.clientX, e.clientY).find(item=>item.classList.contains('square'))
+    console.log(clickedSqaure);
     if (clickedSqaure === undefined) {
       console.log('clicked not square');
       hideAvailableMoveIcons()
@@ -2308,7 +2309,10 @@ function init() {
           console.log('click was a legal move');
           completeMove(activePiece.parentElement,activePiece,clickedSqaure)
           hideAvailableMoveIcons()
-        }  
+        } else {
+          console.log('click was not legal move')
+          return 
+        } 
       } catch (err) {
         console.log(e)
       }
