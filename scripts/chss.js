@@ -2308,13 +2308,13 @@ function registerClicks(e){
     if (clickedSqaure === undefined) { //not a square 
       hideAvailableMoveIcons();
     } else { //a square was clicked 
-      let elmnt = clickedSqaure.children[1];
-      if (elmnt === undefined) { //if there is no piece there 
+      //let elmnt = clickedSqaure.children[1];
+      //if (elmnt === undefined) { //if there is no piece there 
         if (!clickedSqaure.children[0].classList.contains('hidden')){ //check for a legal move 
           completeMove(activePiece.parentElement,activePiece,clickedSqaure);
           hideAvailableMoveIcons();
         } 
-      }
+      //}
     }
   }
 
