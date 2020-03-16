@@ -2297,7 +2297,7 @@ function init() {
   createPieceLists();
 
 
-  document.addEventListener('click',registerClicks);
+  document.addEventListener('mouseup',registerClicks);
 }
 
 function registerClicks(e){
