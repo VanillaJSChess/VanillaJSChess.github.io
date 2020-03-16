@@ -2310,11 +2310,14 @@ function registerClicks(e){
       let elmnt = clickedSqaure.children[1];
       if (elmnt === undefined) { //if there is no piece there 
         if (!clickedSqaure.children[0].classList.contains('hidden')){ //check for a legal move 
-          console.log('click was a legal move');
           completeMove(activePiece.parentElement,activePiece,clickedSqaure);
           hideAvailableMoveIcons();
         } 
       } else { //if there was a piece there 
+        console.log(elmnt.classList)
+        console.log(elmnt.parentElement.classList)
+        console.log(activePiece.classList)
+        console.log(activePiece.parentElement.classList)
         let pieceInGraveyard = (elmnt.parentElement.id == 'p1graveyard' || elmnt.parentElement.id == 'p2graveyard')
         if (isp1(elmnt) !== turn || midPromotion || pieceInGraveyard || winnerBool || undoneMoves.length>0 || pieceArea.childElementCount > 0
         ||  (playingComputer && !isp1(elmnt)) || thinkingInProg) { return }
