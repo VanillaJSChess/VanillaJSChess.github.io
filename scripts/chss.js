@@ -1489,7 +1489,7 @@ function populateBoard(){
       let piece = pieceMap.get(pieceNode);
       if(piece && piece.homeSquare){
         let currSquare = boardNode.children[piece.rowCol[0]].children[piece.rowCol[1]]
-        if (piece.homeSquare !== currSquare){
+        if (piece.homeSquare !== currSquare || piece.isCaptured){
           movePromises.push(movePiece(pieceNode, piece.homeSquare, speedFactor = 30));
         }
       } else { 
@@ -1502,11 +1502,11 @@ function populateBoard(){
 //physically moving pieces
 // let prevHeldPiece = [];
 function dragElement(elmnt) {
-  var pos1 = 0,
+  let pos1 = 0,
       pos2 = 0,
       pos3 = 0,
       pos4 = 0;
-  var startParent;
+  let startParent;
   if (onMobile){
     elmnt.addEventListener('click',dragMouseDown);
   } else {
@@ -1514,7 +1514,7 @@ function dragElement(elmnt) {
   }
   function dragMouseDown(e) {
     e = e || window.event;
-    e.preventDefault();
+//     e.preventDefault();
 
     if (delOnClick){
       stackPiece(elmnt)
@@ -1532,13 +1532,20 @@ function dragElement(elmnt) {
       return
     }
 
+    console.log('piece clickable');
+
     if (activePiece !== elmnt){ //if it is a new piece, hide old shown moves 
       hideAvailableMoveIcons(); 
     }
 
     activePiece = elmnt;
     pieceMap.get(elmnt).displayMoves(); //then display the moves 
+    console.log('moves displayed');
+
     handleSquareHighlightsClick(elmnt);
+    console.log('squares highlighted');
+
+    
     // get the mouse cursor position at startup:
     if (!onMobile) {
       pos1 = e.clientX;
@@ -2286,13 +2293,11 @@ function init() {
   resetAll();
   createPieceLists();
 
-  document.addEventListener('click', (e)=>{
-
-  });
 
   document.addEventListener('click',(e)=>{
     let clickedSqaure = document.elementsFromPoint(e.clientX, e.clientY).find(item=>item.classList.contains('square'))
     if (clickedSqaure === undefined) {
+      console.log('clicked not square');
       hideAvailableMoveIcons()
     } else {
       console.log('board clicked');
