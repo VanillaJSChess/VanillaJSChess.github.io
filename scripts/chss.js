@@ -60,7 +60,7 @@ function takeOverAndRefindMoves(){
 //performance 
 let t0,t1;
 let performanceTrack = {true:[],false:[]};
-console.log(7)
+console.log(8)
 // classes
 let pieceMap = new Map();//connects the piece nodes to the classes
 
@@ -2239,10 +2239,8 @@ function init() {
   document.querySelectorAll('.gameRow')[0].style.borderTop = '1px solid black';
 
   for (i = 0; i < p1pieces.length; i++) {
-    if (!onMobile){
-      dragElement(p1pieces[i]);
-      dragElement(p2pieces[i]);
-    }
+    dragElement(p1pieces[i]);
+    dragElement(p2pieces[i]);
   }
 
   promotionPieces.forEach(piece=>{
@@ -2313,22 +2311,6 @@ function registerClicks(e){
           completeMove(activePiece.parentElement,activePiece,clickedSqaure);
           hideAvailableMoveIcons();
         } 
-      } else { //if there was a piece there 
-        console.log(elmnt.classList)
-        console.log(elmnt.parentElement.classList)
-        if (activePiece) {
-          console.log(activePiece.classList)
-          console.log(activePiece.parentElement.classList) 
-        }
-        let pieceInGraveyard = (elmnt.parentElement.id == 'p1graveyard' || elmnt.parentElement.id == 'p2graveyard')
-        if (isp1(elmnt) !== turn || midPromotion || pieceInGraveyard || winnerBool || undoneMoves.length>0 || pieceArea.childElementCount > 0
-        ||  (playingComputer && !isp1(elmnt)) || thinkingInProg) { return }
-        if (activePiece !== elmnt){ //if it is a new piece, hide old shown moves 
-          hideAvailableMoveIcons(); 
-        }
-        activePiece = elmnt;
-        pieceMap.get(elmnt).displayMoves(); //then display the moves 
-        handleSquareHighlightsClick(elmnt);
       }
     }
   }
