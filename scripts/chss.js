@@ -1533,7 +1533,7 @@ function dragElement(elmnt) {
     }
 
     console.log('piece clickable');
-
+    try {
     if (activePiece !== elmnt){ //if it is a new piece, hide old shown moves 
       hideAvailableMoveIcons(); 
     }
@@ -1545,7 +1545,9 @@ function dragElement(elmnt) {
     handleSquareHighlightsClick(elmnt);
     console.log('squares highlighted');
 
-    
+    } catch (err) {
+      console.log(e)
+    }
     // get the mouse cursor position at startup:
     if (!onMobile) {
       pos1 = e.clientX;
@@ -2301,11 +2303,15 @@ function init() {
       hideAvailableMoveIcons()
     } else {
       console.log('board clicked');
-      if (!clickedSqaure.children[0].classList.contains('hidden')){
-        console.log('click was a legal move');
-        completeMove(activePiece.parentElement,activePiece,clickedSqaure)
-        hideAvailableMoveIcons()
-      }  
+      try {
+        if (!clickedSqaure.children[0].classList.contains('hidden')){
+          console.log('click was a legal move');
+          completeMove(activePiece.parentElement,activePiece,clickedSqaure)
+          hideAvailableMoveIcons()
+        }  
+      } catch (err) {
+        console.log(e)
+      }
     }
   })
 }
