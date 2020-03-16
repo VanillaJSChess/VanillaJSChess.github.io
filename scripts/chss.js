@@ -1486,6 +1486,7 @@ function populateBoard(){
       } else {
         pieceNode = strayP2.pop();
       }
+      if (pieceNode === undefined) { return }
       let piece = pieceMap.get(pieceNode);
       if(piece && piece.homeSquare){
         let currSquare = boardNode.children[piece.rowCol[0]].children[piece.rowCol[1]]
