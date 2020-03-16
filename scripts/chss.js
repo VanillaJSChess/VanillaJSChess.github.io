@@ -1531,8 +1531,14 @@ function dragElement(elmnt) {
       return
     }
 
-    console.log('piece clickable');
-    try {
+    let clickedSqaure = document.elementsFromPoint(e.clientX, e.clientY).find(item=>item.classList.contains('square'))
+    if (clickedSqaure){
+      if (!clickedSqaure.children[0].classList.contains('hidden')){
+        completeMove(activePiece.parentElement,activePiece,clickedSqaure)
+        endDrag(elmnt);
+      } 
+    }
+
     if (activePiece !== elmnt){ //if it is a new piece, hide old shown moves 
       hideAvailableMoveIcons(); 
     }
@@ -1542,11 +1548,7 @@ function dragElement(elmnt) {
     console.log('moves displayed');
 
     handleSquareHighlightsClick(elmnt);
-    console.log('squares highlighted');
-
-    } catch (err) {
-      console.log(e)
-    }
+    
     // get the mouse cursor position at startup:
     if (!onMobile) {
       pos1 = e.clientX;
