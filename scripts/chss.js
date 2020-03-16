@@ -1533,6 +1533,7 @@ function dragElement(elmnt) {
 
     let clickedSqaure = document.elementsFromPoint(e.clientX, e.clientY).find(item=>item.classList.contains('square'))
     if (clickedSqaure){
+      console.log('square under piece clicked')   
       if (!clickedSqaure.children[0].classList.contains('hidden')){
         completeMove(activePiece.parentElement,activePiece,clickedSqaure)
         endDrag(elmnt);
@@ -1545,7 +1546,7 @@ function dragElement(elmnt) {
 
     activePiece = elmnt;
     pieceMap.get(elmnt).displayMoves(); //then display the moves 
-    console.log('moves displayed');
+    //console.log('moves displayed');
 
     handleSquareHighlightsClick(elmnt);
     
@@ -1910,14 +1911,14 @@ function movePiece(piece,loc,speedFactor=10){
     let[posx,posy] = handToPieceArea(piece,piece.parentElement.offsetLeft,piece.parentElement.offsetTop);
     let count = 0;
     window.requestAnimationFrame(step);
-    console.log('step started', piece.classList)
+    //console.log('step started', piece.classList)
     function step(){
       if (count === speedFactor) {
         window.requestAnimationFrame(()=>{
           loc.appendChild(piece);
           piece.style.top = pieceTop;
           piece.style.left = 'auto';
-          console.log('step finished', piece.classList)
+          //console.log('step finished', piece.classList)
           resolve();
         });
       } else {
@@ -2301,7 +2302,7 @@ function init() {
 }
 
 function registerClicks(e){
-    e.stopPropagation();
+    //e.stopPropagation();
     e.preventDefault();
     let clickedSqaure = document.elementsFromPoint(e.clientX, e.clientY).find(item=>item.classList.contains('square'));
     if (clickedSqaure === undefined) { //not a square 
