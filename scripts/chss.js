@@ -592,7 +592,6 @@ function getAllLegalMoves(piecesOnBoard){
   
   function loopThroughMoves(pieces){
     pieces.forEach(piece=>{
-//       if (f8count === 52) {debugger}
       piece.getLegalMoves(piecesOnBoard,piecesWithCaptures[!piece.color]);
       classifyMoves(piece);
     }); 
@@ -1471,7 +1470,7 @@ function populateBoard(){
   for (let i = 0; i < 2; i++) {
     assignPiece(i, false);
   }
-  for (let i = 6; i < 8; i++) {
+  for (let i = 5; i < 8; i++) {
     assignPiece(i, true);
   }
   return movePromises
