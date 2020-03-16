@@ -2297,28 +2297,31 @@ function init() {
 
 
   document.addEventListener('click',(e)=>{
-    let clickedSqaure = document.elementsFromPoint(e.clientX, e.clientY).find(item=>item.classList.contains('square'))
-    console.log(clickedSqaure);
+    setTimeout(registerClicks,1000,e);
+  })
+}
+
+function registerClicks(e){
+    let clickedSqaure = document.elementsFromPoint(e.clientX, e.clientY).find(item=>item.classList.contains('square'));
     if (clickedSqaure === undefined) {
       console.log('clicked not square');
-      hideAvailableMoveIcons()
+      hideAvailableMoveIcons();
     } else {
       console.log('board clicked');
       try {
         if (!clickedSqaure.children[0].classList.contains('hidden')){
           console.log('click was a legal move');
-          completeMove(activePiece.parentElement,activePiece,clickedSqaure)
-          hideAvailableMoveIcons()
+          completeMove(activePiece.parentElement,activePiece,clickedSqaure);
+          hideAvailableMoveIcons();
         } else {
-          console.log('click was not legal move')
+          console.log('click was not legal move');
           return 
         } 
       } catch (err) {
-        console.log(e)
+        console.log(err);
       }
     }
-  })
-}
+  }
 
 function changeToggleText(){
   return new Promise((resolve,reject)=>{
