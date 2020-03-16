@@ -60,7 +60,7 @@ function takeOverAndRefindMoves(){
 //performance 
 let t0,t1;
 let performanceTrack = {true:[],false:[]};
-console.log(6)
+console.log(7)
 // classes
 let pieceMap = new Map();//connects the piece nodes to the classes
 
@@ -1514,7 +1514,6 @@ function dragElement(elmnt) {
   }
   function dragMouseDown(e) {
     e = e || window.event;
-    //e.stopPropagation();
     e.preventDefault();
 
     if (delOnClick){
@@ -1525,20 +1524,12 @@ function dragElement(elmnt) {
     let squareBounds, leftBoundSquare;
     let rowBounds,leftBoundRow;
     let rowCol,newX,newY;
-    
-//     prevHeldPiece = [elmnt,elmnt.parentElement,pieceArea.childElementCount];
+
     let pieceInGraveyard = (elmnt.parentElement.id == 'p1graveyard' || elmnt.parentElement.id == 'p2graveyard')
     if (trblesht) {} else if (isp1(elmnt) !== turn || midPromotion || displaySimulateIndex !== 0
     || pieceInGraveyard || winnerBool || undoneMoves.length>0 || pieceArea.childElementCount > 0
     ||  (playingComputer && !isp1(elmnt)) || thinkingInProg) {
       return
-    }
-    let clickedSqaure = document.elementsFromPoint(e.clientX, e.clientY).find(item=>item.classList.contains('square'))
-    if (clickedSqaure){
-      if (!clickedSqaure.children[0].classList.contains('hidden')){
-        completeMove(activePiece.parentElement,activePiece,clickedSqaure)
-        endDrag(elmnt);
-      } 
     }
 
     if (activePiece !== elmnt){ //if it is a new piece, hide old shown moves 
@@ -1870,7 +1861,7 @@ function stackPiece(piece) {
 graveyardOffsets = {true:{},false:{}}
 function movePiece(piece,loc,speedFactor=10){
   return new Promise((resolve,reject)=>{
-    console.log('movepiece started', piece.classList)
+//     console.log('movepiece started', piece.classList)
     if (piece.parentElement.id === "piece-area"){
       changePieceParent(piece,loc);
       window.requestAnimationFrame(resolve);
@@ -1908,15 +1899,15 @@ function movePiece(piece,loc,speedFactor=10){
     //is visually in the same position it was inside the square.
     let[posx,posy] = handToPieceArea(piece,piece.parentElement.offsetLeft,piece.parentElement.offsetTop);
     let count = 0;
-//     step();
     window.requestAnimationFrame(step);
+    console.log('step started', piece.classList)
     function step(){
-      console.log('step', piece.classList, count)
       if (count === speedFactor) {
         window.requestAnimationFrame(()=>{
           loc.appendChild(piece);
           piece.style.top = pieceTop;
           piece.style.left = 'auto';
+          console.log('step finished', piece.classList)
           resolve();
         });
       } else {
@@ -2249,15 +2240,6 @@ function init() {
       promotionSelected(piece);
     })
   })
-
-//   document.addEventListener('click', );
-  document.addEventListener('click', (e)=>{
-    let clickedSqaure = document.elementsFromPoint(e.clientX, e.clientY).find(item=>item.classList.contains('square'))
-    if (clickedSqaure === undefined || clickedSqaure.children[1] === undefined){
-      hideAvailableMoveIcons()
-//       handleSquareHighlightsClick(clickedSqaure.children[1]);
-    }
-  });
   reset.addEventListener('click', callFuncIfNotThinking.bind(null,resetAll));
   newGameButton.addEventListener('click', callFuncIfNotThinking.bind(null,newMatch));
   toggleComputer.addEventListener('click', callFuncIfNotThinking.bind(null,toggleComputerPlayer));
@@ -2280,7 +2262,6 @@ function init() {
   }
   ffyes.addEventListener('click', (event)=>{
     winner();
-//     forfeit.style.backgroundColor = newGameButton.style.backgroundColor;
     forfeit.classList.remove('forfeit-color')
     forfeit.classList.add('new-game-color')
     forfeit.innerText = 'Play Again';
@@ -2304,17 +2285,23 @@ function init() {
   }));
   resetAll();
   createPieceLists();
-  board.addEventListener('click',(e)=>{
-    console.log('board clicked')
+
+  document.addEventListener('click', (e)=>{
+
+  });
+
+  document.addEventListener('click',(e)=>{
     let clickedSqaure = document.elementsFromPoint(e.clientX, e.clientY).find(item=>item.classList.contains('square'))
-    if (!clickedSqaure.children[0].classList.contains('hidden')){
-      console.log('click was a legal move')
-      completeMove(activePiece.parentElement,activePiece,clickedSqaure)
-      availMoveIcons.forEach(icon=>{
-        icon.style.zIndex = '0';
-        icon.classList.add('hidden');
-      });
-    }  
+    if (clickedSqaure === undefined) {
+      hideAvailableMoveIcons()
+    } else {
+      console.log('board clicked');
+      if (!clickedSqaure.children[0].classList.contains('hidden')){
+        console.log('click was a legal move');
+        completeMove(activePiece.parentElement,activePiece,clickedSqaure)
+        hideAvailableMoveIcons()
+      }  
+    }
   })
 }
 
