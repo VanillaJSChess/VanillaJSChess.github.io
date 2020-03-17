@@ -1,3 +1,105 @@
+html, body{
+ height:100%;
+ font-family:sans-serif;
+ padding-top:0;
+ margin-top:0;
+}
+
+#main-container{
+ padding: 0 10px;
+ min-height:100%;
+ background-color:white;
+ width: 70%;
+ margin: auto;
+}
+
+body{
+ text-align:center;
+ background-color:#1d1d1de0;
+}
+
+#title{
+ margin-top: 40px;
+}
+
+#scbd{
+ font-size: 25px;
+ justify-content: center;
+ position: relative;
+ display:flex;
+}
+
+#colorPicker{
+ text-align:center;
+}
+
+#colorPicker input{
+ border: none;
+ background-color:white;
+}
+
+#draw{
+ position: absolute;
+ bottom: 0;
+}
+
+#p1{
+ margin: 0 10%;
+}
+
+#p2{
+ margin: 0 10%;
+}
+
+#p1icon, #p2icon{
+ display: inline-block;
+ width: 19px;
+ height: 19px;
+ border-radius: 50%;
+ margin-right: 5px;
+}
+
+#winner1, #winner2 {
+ border-radius:5px;
+ color:black;
+ padding: 0px 5px;
+ margin: 5px;
+}
+
+#draw{
+ visibility:hidden;
+}
+
+#buttons{
+ padding: 20px;
+ padding-bottom: 0;
+ text-align:center;
+ justify-content:center;
+ align-items:center;
+ display:flex;
+ flex-direction:column;
+}
+
+button{
+ border:none;
+ color:white;
+ padding: 5px 15px;
+ text-align:center;
+ text-decoration:none;
+ display:inline-block;
+ font-size:18px;
+ background-color:pink;
+ width: auto;
+ margin: 5px 20%;
+ border-radius: 15px;
+ width: fit-content;
+}
+
+
+.bottom-area{
+ padding-bottom:50px;
+}
+
 #game-area{
   font-size: 0;
   padding-bottom:20px;
@@ -25,19 +127,48 @@
   text-align: right;
   position: relative;
   z-index:0;
-  /* font-size: 0; */
   display: flex;
-  /* justify-content:center; */
-  /* align-items:center; */
   box-sizing: content-box;
-  /*some set in js*/
 }
+
 .square{
   background-color: #dbb7b7;
 }
 
 .square.dark{
   background-color: #824100;
+}
+
+.avail-move{
+  margin:auto; 
+  background-color: #a4ff3f;
+  opacity:80%;
+  display:block;
+  border-radius:50%;
+  border: 1px solid black;
+  width:15px;
+  height:15px;
+  //transition: all .2s;
+  z-index:0;
+}
+
+.avail-move.hidden{
+  border:none; 
+  width:0;
+  height:0;
+  margin:20px;
+  //transition: all .2s;
+}
+
+.p1piece, .p2piece, .promotion-piece{
+  background:transparent;
+  background-color:none;
+  position: absolute;
+  background:transparent;
+  background-position: 50% 50%;
+  width:40px;
+  height:40px;
+  background-size:40px;
 }
 
 .p1piece, .p2piece{
@@ -60,7 +191,6 @@
   display: flex;
   justify-content:center;
   align-items:center;
-  /* margin:0 30px; */
   position:absolute;
 }
 
@@ -71,26 +201,6 @@
 #p2graveyard{
   left: 325px;
   top: 285px;
-}
-.avail-move{
-  margin:auto; 
-  background-color: #a4ff3f;
-  opacity:80%;
-  display:block;
-  border-radius:50%;
-  border: 1px solid black;
-  width:15px;
-  height:15px;
-  //transition: all .2s;
-  z-index:0;
-}
-
-.avail-move.hidden{
-  border:none; 
-  width:0;
-  height:0;
-  margin:20px;
-  //transition: all .2s;
 }
 
 #p1icon, #p2icon{
@@ -115,10 +225,6 @@
   flex-direction:column;
 }
 
-
-
-
-/* #forfeit:focus ~ .forfeit-banner, .forfeit-banner:hover{ */
 .forfeit-banner, .forfeit-banner:hover{
   transition:1s;
   padding: 4px;
@@ -192,17 +298,6 @@
 
 .black.king{
   background-image:url("../images/black-king.png");
-}
-
-.p1piece, .p2piece, .promotion-piece{
-  background:transparent;
-  background-color:none;
-  position: absolute;
-  background:transparent;
-  background-position: 50% 50%;
-  width:40px;
-  height:40px;
-  background-size:40px;
 }
 
 #choose-promotion > .promotion-piece {
@@ -391,7 +486,18 @@ button:focus{
 }
 
 #placeholder{
-
   font-size: 15px;
   visibility:hidden;
+}
+
+
+
+@media screen and (max-width:768px){
+ #main-container{
+  width: 90%;
+ }
+ .square{
+  width:60px;
+  height:60px;
+ }
 }
