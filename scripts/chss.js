@@ -44,7 +44,7 @@ thinkingInProg, //blocks button clicks while waiting on computer move
 playingComputer, //should the computer try to move 
 computerPlayer = false;
 
-const onMobile = true//mobileCheck();
+const onMobile = mobileCheck();
 //console.log(onMobile)
 
 let boards = [{state:[],rating:[]}] //hols displayed and all simulated moves 
@@ -2308,13 +2308,12 @@ function registerClicks(e){
     if (clickedSqaure === undefined) { //not a square 
       hideAvailableMoveIcons();
     } else { //a square was clicked 
-      //let elmnt = clickedSqaure.children[1];
-      //if (elmnt === undefined) { //if there is no piece there 
+      if (onMobile){
         if (!clickedSqaure.children[0].classList.contains('hidden')){ //check for a legal move 
           completeMove(activePiece.parentElement,activePiece,clickedSqaure);
           hideAvailableMoveIcons();
-        } 
-      //}
+        }
+      }
     }
   }
 
@@ -2512,5 +2511,4 @@ function addCoords() {
 }
 
 init();
-// addCoords();
-// freeMove();
+
