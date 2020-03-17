@@ -387,7 +387,7 @@ function kingSafe(piecesToCheck,board){ //runs for every available move
   //called with a simulated board state
   //probably a weak point of the code
   let safe = true;
-  let orinialMoves;
+  let originalMoves;
   piecesToCheck.forEach(piece=>{
     if (!piece.isCaptured){
       originalMoves = piece.action;//hold the pieces original moves
