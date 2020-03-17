@@ -1249,7 +1249,7 @@ function computerMove(boardIndex,depth,maxWidth){
       viable_moves = []
       moveSets = moveSets.filter(set=>set)
       moveSets.forEach(set=>{
-        set = set.filter(rating=> if (rating) { return (rating[0] - set[0][0]) < 1)}});
+        set = set.filter(rating=> {if (rating) { return (rating[0] - set[0][0]) < 1)}});
         set = set.map(x=>x[1]);
         viable_moves.push(set);
       })
