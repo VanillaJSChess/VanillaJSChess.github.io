@@ -21,6 +21,8 @@ winner1 = document.querySelector('#winner1'),
 winner2 = document.querySelector('#winner2'),
 drawNode =  document.querySelector('#draw'),
 //buttons
+saveButton = document.querySelector('#save'),
+loadButton = document.querySelector('#load'),
 newGameButton = document.querySelector('#new'),
 forfeit = document.querySelector('#forfeit'),
 reset = document.querySelector('#reset'),
@@ -521,7 +523,26 @@ function newMatch() {
 }
 }
 
+function saveGame() {
+  localStorage.clear();
+  var board = boards[0];
+  localStorage.board = JSON.stringify(board);
+  localStorage.pieceMap = JSON.stringify([...pieceMap]);
+  localStorage.undoneMoves = JSON.stringify(undoneMoves);
+  localStorage.moveHistory = JSON.stringify(moveHistory);
+  window.alert("Saved.");
+}
 
+function loadGame() {
+  if (!localStorage.board) {
+    window.alert("No saved game!");
+    return;
+  }
+  boards[0] = JSON.parse(localStorage.getItem('board'));
+  pieceMap = new Map(JSON.parse(localStorage.getItem('pieceMap')));
+  undoneMoves = JSON.parse(localStorage.getItem('undoneMoves'));
+  moveHistory = JSON.parse(localStorage.getItem('moveHistory'));
+}
 
 function buildDisplayedBoardArray(){
   //resets the boards[0].state so that it is the opening position
@@ -1249,7 +1270,7 @@ function computerMove(boardIndex,depth,maxWidth){
       viable_moves = []
       moveSets = moveSets.filter(set=>set)
       moveSets.forEach(set=>{
-        set = set.filter(rating=> {if (rating) { return (rating[0] - set[0][0]) < 1)}});
+        set = set.filter(rating=>rating[0] - set[0][0] < 1)
         set = set.map(x=>x[1]);
         viable_moves.push(set);
       })
@@ -2265,6 +2286,8 @@ function init() {
   })
   reset.addEventListener('click', callFuncIfNotThinking.bind(null,resetAll));
   newGameButton.addEventListener('click', callFuncIfNotThinking.bind(null,newMatch));
+  saveButton.addEventListener('click', callFuncIfNotThinking.bind(null,saveGame));
+  loadButton.addEventListener('click', callFuncIfNotThinking.bind(null,loadGame));
   toggleComputer.addEventListener('click', callFuncIfNotThinking.bind(null,toggleComputerPlayer));
   toPrevMove.addEventListener('click',showPrevMove);
   toNextMove.addEventListener('click',showNextMove);

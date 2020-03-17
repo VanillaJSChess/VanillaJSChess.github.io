@@ -379,6 +379,30 @@ button{
   transition:200ms ease;
 }
 
+#save,.save-game-color{
+  background-color:#ff00ff;
+}
+#save:hover, .save-game-color:hover{
+  background-color:#b200b2;
+  transition:200ms ease;
+}
+#save:active, .save-game-color:active{
+  background-color:#880088;
+  transition:200ms ease;
+}
+
+#load,.load-game-color{
+  background-color:#ffb947;
+}
+#load:hover, .load-game-color:hover{
+  background-color:#cc9438;
+  transition:200ms ease;
+}
+#load:active, .load-game-color:active{
+  background-color:#33250e;
+  transition:200ms ease;
+}
+
 #reset{
   background-color:#cc3b31e8;
 }
