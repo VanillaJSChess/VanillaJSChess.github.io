@@ -60,7 +60,7 @@ function takeOverAndRefindMoves(){
 //performance 
 let t0,t1;
 let performanceTrack = {true:[],false:[]};
-console.log(8)
+//console.log(8)
 // classes
 let pieceMap = new Map();//connects the piece nodes to the classes
 
@@ -463,7 +463,7 @@ function newMatch() {
   movePromises = populateBoard(); //grab all the pieces that need to move to their homeSqures 
   resetPieces();
   Promise.all(movePromises).then(()=>{
-    console.log('all pieces moved')
+    //console.log('all pieces moved')
     //move all pieces then save their new squares as home squares
     if (!pieceMap.get(p1pieces[0]).homeSquare){
       getHomeSquares(); 
@@ -474,7 +474,7 @@ function newMatch() {
       doNormalComputerMove();
     }
   })
-  console.log('newMatch completed')
+  //console.log('newMatch completed')
   function emptyHistoryCollections(){
     //empty tracking done from last game
     undoneMoves = [];
@@ -1197,31 +1197,31 @@ function computerMove(boardIndex,depth,maxWidth){
       if (viable_moves.length>1){
         enemyFutureWorstOutcomeIndex = viable_moves[Math.floor(Math.random()*viable_moves.length)]
       } else if (bestEnemyOutcomes[0][1] === lastMoveAverages[0][1]){
-        console.log('strong move')
+        //console.log('strong move')
         enemyFutureWorstOutcomeIndex = bestEnemyOutcomes[0][1];
       } else if (bestEnemyOutcomes_difference > 5) {
         if (bestEnemyOutcomes_difference > lastMoveAverages_difference){
-          console.log('beo better')
+          //console.log('beo better')
           enemyFutureWorstOutcomeIndex = bestEnemyOutcomes[0][1];
         }
       } else if (lastMoveAverages_difference > 5) {
-        console.log('lma better')
+        //console.log('lma better')
         enemyFutureWorstOutcomeIndex = lastMoveAverages[0][1];
       } else if (bestEnemyOutcomes[0][1] === lastMoveAverages[1][1]) {
-        console.log('probably good')
+        //console.log('probably good')
         enemyFutureWorstOutcomeIndex = bestEnemyOutcomes[0][1];        
       } else if (bestEnemyOutcomes[1][1] === lastMoveAverages[0][1]){
-        console.log('probably good')
+        //console.log('probably good')
         enemyFutureWorstOutcomeIndex = bestEnemyOutcomes[1][1]; 
       } else if (bestEnemyOutcomes[1][1] === lastMoveAverages[1][1]) {
-        console.log('second agree')
+        //console.log('second agree')
         enemyFutureWorstOutcomeIndex = lastMoveAverages[1][1];  
       } else {
         if (bestEnemyOutcomes[0][1] === 0 || lastMoveAverages[0][1] == 0) { 
-          console.log('best move this turn still holds')
+          //console.log('best move this turn still holds')
           enemyFutureWorstOutcomeIndex = 0;
         } else {
-          console.log('go with enemys worst outcome next move')
+          //console.log('go with enemys worst outcome next move')
           let nextBestEnemyMoves = [];
           ratingTree.nextMovesRatings.forEach((move,i)=>{
             nextBestEnemyMoves.push([move.moveRating[0],i]);
@@ -1236,6 +1236,7 @@ function computerMove(boardIndex,depth,maxWidth){
     
     function getViableMoves(...moveSets){
       viable_moves = []
+      moveSets = moveSets.filter(set=>set)
       moveSets.forEach(set=>{
         set = set.filter(rating=>rating[0] - set[0][0] < 1)
         set = set.map(x=>x[1]);
@@ -1413,7 +1414,7 @@ function computerMove(boardIndex,depth,maxWidth){
 
   function undoMove (from,to,board){
     let piece = board.state[to[0]][to[1]];
-    if (piece === null) { console.log('problem in "undoMove", the square that a piece is moving from is empty') }
+    //if (piece === null) { console.log('problem in "undoMove", the square that a piece is moving from is empty') }
     board.state[to[0]][to[1]] = previousOccupant; // undo move 
     board.state[from[0]][from[1]] = piece; 
     piece.rowCol = from;
@@ -1459,7 +1460,7 @@ function checkWinOrDraw(){
     winnerBool = false;
   }
   if (drawBool) {
-    console.log("draw")
+    //console.log("draw")
   }
 }
 
@@ -1533,7 +1534,7 @@ function dragElement(elmnt) {
 
     let clickedSqaure = document.elementsFromPoint(e.clientX, e.clientY).find(item=>item.classList.contains('square'))
     if (clickedSqaure){
-      console.log('square under piece clicked')   
+      //console.log('square under piece clicked')   
       if (!clickedSqaure.children[0].classList.contains('hidden')){
         completeMove(activePiece.parentElement,activePiece,clickedSqaure)
         endDrag(elmnt);
@@ -1604,12 +1605,12 @@ function dragElement(elmnt) {
           endDrag(elmnt);
           completeMove(startParent,elmnt,square)
         } else {
-          console.log('same square')
+          //console.log('same square')
           startParent.appendChild(elmnt);
           endDrag(elmnt,startParent === square);
         }
       } catch (error) {
-        console.log(error)
+        //console.log(error)
         startParent.appendChild(elmnt);
         endDrag(elmnt);
       }
@@ -1624,7 +1625,7 @@ function dragElement(elmnt) {
 
     if (keepIcons) {return}
     hideAvailableMoveIcons();
-    console.log('drag ended')
+    //console.log('drag ended')
   }
 }
 
@@ -1854,7 +1855,7 @@ function updateDisplayedBoardState(startParent,piece,square,move=undefined){
 }
 
 function stackPiece(piece) {
-  console.log('try to capture piece')
+  //console.log('try to capture piece')
   return new Promise((resolve,reject)=>{
     let graveyard;
     if (isp1(piece)) {
@@ -1863,7 +1864,7 @@ function stackPiece(piece) {
       graveyard = p2graveyard;
     }
     movePiece(piece, graveyard).then(()=>{
-      console.log('piece captured')
+      //console.log('piece captured')
       resolve()
     });
   })
@@ -1973,7 +1974,7 @@ function showPrevMove(){
       });
     }
     undoneMoves.push(prevMove);
-    console.log (moveHistory,undoneMoves);
+    //console.log (moveHistory,undoneMoves);
   }
 }
 
@@ -2008,7 +2009,7 @@ function showNextMove(){
     }
     moveHistory.push(nextMove);
     undoneMoves.pop();
-    console.log (moveHistory,undoneMoves);
+    //console.log (moveHistory,undoneMoves);
   }
 }
 
@@ -2053,7 +2054,7 @@ function handToPieceArea(piece,left,top,animationFrame = true){
     pieceArea.appendChild(piece);
     piece.style.left = left + - 20 + 'px';
     piece.style.top = top + window.scrollY - 20 + 'px';
-    console.log('piece in piece area')
+    //console.log('piece in piece area')
   }
   return [pieceParentLeft, pieceParentTop];
 }
@@ -2298,7 +2299,7 @@ function init() {
   createPieceLists();
 
 
-  document.addEventListener('mouseup',registerClicks);
+  document.addEventListener('click',registerClicks);
 }
 
 function registerClicks(e){
@@ -2308,12 +2309,12 @@ function registerClicks(e){
     if (clickedSqaure === undefined) { //not a square 
       hideAvailableMoveIcons();
     } else { //a square was clicked 
-      if (onMobile){
+//       if (onMobile){
         if (!clickedSqaure.children[0].classList.contains('hidden')){ //check for a legal move 
           completeMove(activePiece.parentElement,activePiece,clickedSqaure);
           hideAvailableMoveIcons();
         }
-      }
+//       }
     }
   }
 
@@ -2333,7 +2334,7 @@ function averagePerformanceTrack(){
     })
     averages[side] = sum/performanceTrack[side].length
   });
-  console.log(averages);
+  //console.log(averages);
 }
 
 function flipKingAndQueen(){
