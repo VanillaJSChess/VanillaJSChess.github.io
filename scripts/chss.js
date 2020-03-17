@@ -2073,7 +2073,7 @@ function handToPieceArea(piece,left,top,animationFrame = true){
 function isp1(element){
   try{
     return element.classList.contains('p1piece')  
-  } catch {
+  } catch(err) {
     return undefined
   }
 }
