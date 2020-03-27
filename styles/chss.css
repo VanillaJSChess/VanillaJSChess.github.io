@@ -59,11 +59,17 @@ body{
  margin-right: 5px;
 }
 
+#p2icon {
+  background-color: black;
+  visibility:hidden;
+}
+
 #winner1, #winner2 {
  border-radius:5px;
  color:black;
  padding: 0px 5px;
  margin: 5px;
+ visibility:hidden;
 }
 
 #draw{
@@ -123,20 +129,39 @@ button{
 .square{
   width:40px;
   height:40px;
-  font-size: 5px;
-  text-align: right;
+  font-size: 9px;
+  /* text-align: right; */
   position: relative;
   z-index:0;
   display: flex;
   box-sizing: content-box;
+  font-weight: bolder;
 }
+
+
+.br-text, .tr-text{
+  position: absolute;
+  user-select:none;
+}
+
+.br-text{
+  right:1px;
+  bottom:1px;
+}
+.tr-text{
+  left:1px;
+  top:1px;
+}
+
 
 .square{
   background-color: #dbb7b7;
+  color: rgb(130, 65, 0);
 }
 
 .square.dark{
   background-color: #824100;
+  color: rgb(219, 183, 183);
 }
 
 .avail-move{
@@ -203,8 +228,8 @@ button{
   top: 285px;
 }
 
-#p1icon, #p2icon{
-  border: 1px solid black;
+#p1icon,#p2icon{
+  border: 1px solid black; 
 }
 
 .forfeit-banner{
@@ -497,7 +522,7 @@ button:focus{
   width: 90%;
  }
  .square{
-  width:60px;
-  height:60px;
+  /* width: 36px; */
+  /* height: 36px; */
  }
 }
