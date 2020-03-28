@@ -139,8 +139,7 @@ function promotionSelected(piece = null, computerPromotion = false){
   promotedPiece.homeSquare = originalPawn.homeSquare;
   promotedPiece.promoted = true;
   boards[0].state[rowCol[0]][rowCol[1]] = promotedPiece;
-  
-  swapTurn(0)
+  window.requestAnimationFrame(swapTurn(0));
 }
 
 
