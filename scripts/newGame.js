@@ -104,7 +104,7 @@ function newMatch() {
     function undoPromotion(piece){
       let pieceNode = piece.piece;
       let originalHomeSquare = piece.homeSquare
-      pieceNode.classList.remove(pieceNode.classList[2]);
+      pieceNode.classList.remove(pieceNode.classList[pieceNode.classList.length-1]);
       pieceNode.classList.add("pawn");
       boards[0].state[piece.rowCol[0]][piece.rowCol[1]] = new Pawn(pieceNode);
       boards[0].state[piece.rowCol[0]][piece.rowCol[1]].homeSquare = originalHomeSquare;
