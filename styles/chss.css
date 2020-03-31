@@ -428,6 +428,18 @@ button{
   transition:200ms ease;
 }
 
+#png{
+  background-color:#FF9800;
+}
+#png:hover{
+  background-color:#bc7000;
+  transition:200ms ease;
+}
+#png:active{
+  background-color:#734400;
+  transition:200ms ease;
+}
+
 
 .forfeit-color, #traverse-moves button{
   background-color:#383838;
