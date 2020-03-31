@@ -8,6 +8,7 @@ function swapTurn(boardIndex) {
   turn = !turn;
   colorPlayerIcons()
   oldMovesOutNewMovesIn(boardIndex);
+  addInfoForAlgebraicNotation();
   if (checkRepetition()) { 
     draw(); 
     return   
@@ -30,4 +31,23 @@ function swapTurn(boardIndex) {
     });
   }
   checkWinOrDraw();
+}
+
+function addInfoForAlgebraicNotation() {
+
+  //if the king is in check 
+  if (Array.from(pieceMap.values()).find(x=>x.constructor.name === "King" && x.color === turn).attackedBy.length > 0) {
+    moveHistory[moveHistory.length -1].check = true;
+  }
+  
+  //if the piece could come from different columns 
+  let prevMoveTo = moveHistory[moveHistory.length -1].move[1];
+  let prevMovePiece = boards[0].state[prevMoveTo[0]][prevMoveTo[1]];
+  if (prevMovePiece.constructor.name === "Pawn") { return }
+  prevMovePiece.action.legal.defends.forEach(defend=>{
+    if (prevMovePiece.constructor.name === boards[0].state[defend[0]][defend[1]].constructor.name){
+      moveHistory[moveHistory.length -1].double = true;
+    }
+  })
+
 }
