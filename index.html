@@ -1,540 +1,230 @@
-html, body{
- height:100%;
- font-family:sans-serif;
- padding-top:0;
- margin-top:0;
-}
+<!DOCTYPE html>
+<html>
+
+<head>
+<!-- <link rel="stylesheet" type="text/css" href="styles/base.css"> -->
+<link rel="stylesheet" type="text/css" href="styles/chss.css">
+</head>
+
+<body>
+  <div id="main-container">
+    <div id="buttons">
+        <button id="png">Alert PNG</button>
+        <button id="reset">Reset All</button>
+        <button id="toggleFirst">Toggle First Move</button>
+        <button id="toggleComputer">Turn Computer Off</button>
+        <button id="new">New Game</button>
+    </div>
+    <div id="scbd">
+      <div id="p1">
+        <div id="placeholder"> 
+        placeholder
+      </div>
+      <span id="p1icon"></span>P1: <span id="p1s">0</span>
+      <div id="winner1">winner</div>
+      </div>
+      <div id="draw">draw</div>
+      <div id= "p2">
+      <div id="thinking"> 
+          Thinking
+          <div id="rotate-anim"> 
+              <div class="rotate1"></div>
+              <div class="rotate2"></div>
+          </div>
+        </div>
+        <span id="p2icon"></span>P2: <span id="p2s">0</span>
+        <div id="winner2">winner</div>
+      </div>
+    </div>
+    <div id="game-area">
+        <div id="board-with-promotion">
+        <div id="p1graveyard">
+            <div class="piece p1piece white rook"></div>
+            <div class="piece p1piece white knight"></div>
+            <div class="piece p1piece white bishop"></div>
+            <div class="piece p1piece white king"></div>
+            <div class="piece p1piece white queen"></div>
+            <div class="piece p1piece white bishop"></div>
+            <div class="piece p1piece white knight"></div>
+            <div class="piece p1piece white rook"></div>
+            <div class="piece p1piece white pawn"></div>
+            <div class="piece p1piece white pawn"></div>
+            <div class="piece p1piece white pawn"></div>
+            <div class="piece p1piece white pawn"></div>
+            <div class="piece p1piece white pawn"></div>
+            <div class="piece p1piece white pawn"></div>
+            <div class="piece p1piece white pawn"></div>
+            <div class="piece p1piece white pawn"></div>
+          </div>
+          <span id = "choose-promotion"> 
+            <div class = "promotion-piece"></div>
+            <div class = "promotion-piece"></div>
+            <div class = "promotion-piece"></div>
+            <div class = "promotion-piece"></div>
+          </span>
+          <div id="board">
+            <div class="gameRow">
+               <span class="square">
+                 <span class="avail-move hidden"></span>
+                 <span class="tr-text">8</span>
+               </span>
+               <span class="dark square"><span class="avail-move hidden"></span></span><span class="square"><span class="avail-move hidden"></span></span><span class="dark square"><span class="avail-move hidden"></span></span>
+               <span class="square"><span class="avail-move hidden"></span></span><span class="dark square"><span class="avail-move hidden"></span></span><span class="square"><span class="avail-move hidden"></span></span><span class="dark square"><span class="avail-move hidden"></span></span>
+            </div>
+            <div class="gameRow">
+               <span class="dark square">
+                  <span class="avail-move hidden"></span>
+                  <span class="tr-text">7</span>
+               </span>
+               <span class="square"><span class="avail-move hidden"></span></span><span class="dark square"><span class="avail-move hidden"></span></span><span class="square"><span class="avail-move hidden"></span></span>
+               <span class="dark square"><span class="avail-move hidden"></span></span><span class="square"><span class="avail-move hidden"></span></span><span class="dark square"><span class="avail-move hidden"></span></span><span class="square"><span class="avail-move hidden"></span></span>
+            </div>
+            <div class="gameRow">
+               <span class="square">
+                 <span class="avail-move hidden"></span>
+                 <span class="tr-text">6</span>
+               </span>
+               <span class="dark square"><span class="avail-move hidden"></span></span><span class="square"><span class="avail-move hidden"></span></span><span class="dark square"><span class="avail-move hidden"></span></span>
+               <span class="square"><span class="avail-move hidden"></span></span><span class="dark square"><span class="avail-move hidden"></span></span><span class="square"><span class="avail-move hidden"></span></span><span class="dark square"><span class="avail-move hidden"></span></span>
+            </div>
+            <div class="gameRow">
+               <span class="dark square">
+                 <span class="avail-move hidden"></span>
+                 <span class="tr-text">5</span>
+               </span>
+               <span class="square"><span class="avail-move hidden"></span></span><span class="dark square"><span class="avail-move hidden"></span></span><span class="square"><span class="avail-move hidden"></span></span>
+               <span class="dark square"><span class="avail-move hidden"></span></span><span class="square"><span class="avail-move hidden"></span></span><span class="dark square"><span class="avail-move hidden"></span></span><span class="square"><span class="avail-move hidden"></span></span>
+            </div>
+            <div class="gameRow">
+               <span class="square">
+                 <span class="avail-move hidden"></span>
+                 <span class="tr-text">4</span>
+               </span>
+               <span class="dark square"><span class="avail-move hidden"></span></span><span class="square"><span class="avail-move hidden"></span></span><span class="dark square"><span class="avail-move hidden"></span></span>
+               <span class="square"><span class="avail-move hidden"></span></span><span class="dark square"><span class="avail-move hidden"></span></span><span class="square"><span class="avail-move hidden"></span></span><span class="dark square"><span class="avail-move hidden"></span></span>
+            </div>
+            <div class="gameRow">
+               <span class="dark square">
+                 <span class="avail-move hidden"></span>
+                 <span class="tr-text">3</span>
+               </span>
+               <span class="square"><span class="avail-move hidden"></span></span><span class="dark square"><span class="avail-move hidden"></span></span><span class="square"><span class="avail-move hidden"></span></span>
+               <span class="dark square"><span class="avail-move hidden"></span></span><span class="square"><span class="avail-move hidden"></span></span><span class="dark square"><span class="avail-move hidden"></span></span><span class="square"><span class="avail-move hidden"></span></span>
+            </div>
+            <div class="gameRow">
+               <span class="square">
+                 <span class="avail-move hidden"></span>
+                 <span class="tr-text">2</span>
+               </span>
+               <span class="dark square"><span class="avail-move hidden"></span></span><span class="square"><span class="avail-move hidden"></span></span><span class="dark square"><span class="avail-move hidden"></span></span>
+               <span class="square"><span class="avail-move hidden"></span></span><span class="dark square"><span class="avail-move hidden"></span></span><span class="square"><span class="avail-move hidden"></span></span><span class="dark square"><span class="avail-move hidden"></span></span>
+            </div>
+            <div class="gameRow">
+               <span class="dark square">
+                 <span class="avail-move hidden"></span>
+                 <span class="br-text">a</span>
+                 <span class="tr-text">1</span>
+               </span>
+               <span class="square">
+                 <span class="avail-move hidden"></span>
+                 <span class="br-text">b</span>
+               </span>
+               <span class="dark square">
+                 <span class="avail-move hidden"></span>
+                 <span class="br-text">c</span>
+               </span>
+               <span class="square">
+                 <span class="avail-move hidden"></span>
+                 <span class="br-text">d</span>
+               </span>
+               <span class="dark square">
+                 <span class="avail-move hidden"></span>
+                 <span class="br-text">e</span>
+               </span>
+               <span class="square
+                 "><span class="avail-move hidden"></span>
+                 <span class="br-text">f</span>
+               </span>
+               <span class="dark square">
+                 <span class="avail-move hidden"></span>
+                 <span class="br-text">g</span>
+               </span>
+               <span class="square">
+               <span class="avail-move hidden"></span>
+                 <span class="br-text">h</span>
+               </span>
+            </div>
+          </div>
+          <div id="piece-area"></div>
+          <div id="p2graveyard">
+            <div class="piece p2piece black pawn"></div>
+            <div class="piece p2piece black pawn"></div>
+            <div class="piece p2piece black pawn"></div>
+            <div class="piece p2piece black pawn"></div>
+            <div class="piece p2piece black pawn"></div>
+            <div class="piece p2piece black pawn"></div>
+            <div class="piece p2piece black pawn"></div>
+            <div class="piece p2piece black pawn"></div>
+            <div class="piece p2piece black rook"></div>
+            <div class="piece p2piece black knight"></div>
+            <div class="piece p2piece black bishop"></div>
+            <div class="piece p2piece black king"></div>
+            <div class="piece p2piece black queen"></div>
+            <div class="piece p2piece black bishop"></div>
+            <div class="piece p2piece black knight"></div>
+            <div class="piece p2piece black rook"></div>
+          </div>
+      </div>
+      
+    </div>
+    <div class="bottom-area">
+      <div id="traverse-moves">
+        <button id = "prev-move"><</button>
+        <button id = "next-move">></button>
+      </div>
+      <button class = "forfeit-color" id="forfeit">Forfeit</button>
+      <div class="forfeit-banner hidden">
+          <div>
+            <span id="ff-name">Player 1</span> Forfeit?
+          </div>
+          <div>
+            <div id="ff-yes">Yes</div> | <div id="ff-no">No</div>
+          </div>
+      </div>
+
+
+    </div>
+
+  <script type="text/javascript" src="scripts/globalVars.js"></script>
+  <script type="text/javascript" src="scripts/tools.js"></script>
+  <script type="text/javascript" src="scripts/newGame.js"></script>
+  <script type="text/javascript" src="scripts/pieceClasses.js"></script>
+  <script type="text/javascript" src="scripts/handDrag.js"></script>
+  <script type="text/javascript" src="scripts/handleMoves.js"></script>
+  <script type="text/javascript" src="scripts/rateBoardstate.js"></script>
+  <script type="text/javascript" src="scripts/computerMove.js"></script>
+  <script type="text/javascript" src="scripts/swapTurn.js"></script>
+  <script type="text/javascript" src="scripts/postMove.js"></script>
+  <script type="text/javascript" src="scripts/checkRepetition.js"></script>
+<!--   <script type="text/javascript" src="scripts/chss.js"></script> -->
+  <script type="text/javascript" src="scripts/colorStyle.js"></script>
+  <script type="text/javascript" src="scripts/winnerLogic.js"></script>
+  <script type="text/javascript" src="scripts/autoMove.js"></script>
+  <script type="text/javascript" src="scripts/troubleshooting.js"></script>
+  <script type="text/javascript" src="scripts/gameTracking.js"></script>
+  <script type="text/javascript" src="scripts/init.js"></script>
+
+</body>
+
+</html>
 
-#main-container{
- padding: 0 10px;
- min-height:100%;
- background-color:white;
- width: 70%;
- margin: auto;
-}
 
-body{
- text-align:center;
- background-color:#1d1d1de0;
-}
 
-#title{
- margin-top: 40px;
-}
 
-#scbd{
- font-size: 25px;
- justify-content: center;
- position: relative;
- display:flex;
-}
 
-#colorPicker{
- text-align:center;
-}
 
-#colorPicker input{
- border: none;
- background-color:white;
-}
 
-#draw{
- position: absolute;
- bottom: 0;
-}
 
-#p1{
- margin: 0 10%;
-}
 
-#p2{
- margin: 0 10%;
-}
 
-#p1icon, #p2icon{
- display: inline-block;
- width: 19px;
- height: 19px;
- border-radius: 50%;
- margin-right: 5px;
-}
 
-#p2icon {
-  background-color: black;
-  visibility:hidden;
-}
-
-#winner1, #winner2 {
- border-radius:5px;
- color:black;
- padding: 0px 5px;
- margin: 5px;
- visibility:hidden;
-}
-
-#draw{
- visibility:hidden;
-}
-
-#buttons{
- padding: 20px;
- padding-bottom: 0;
- text-align:center;
- justify-content:center;
- align-items:center;
- display:flex;
- flex-direction:column;
-}
-
-button{
- border:none;
- color:white;
- padding: 5px 15px;
- text-align:center;
- text-decoration:none;
- display:inline-block;
- font-size:18px;
- background-color:pink;
- width: auto;
- margin: 5px 20%;
- border-radius: 15px;
- width: fit-content;
-}
-
-
-.bottom-area{
- padding-bottom:50px;
-}
-
-#game-area{
-  font-size: 0;
-  padding-bottom:20px;
-  display: flex;
-  justify-content: center;
-  align-items: flex-end;
-  position:relative;
-}
-
-.gameRow{
-  display:flex;
-}
-
-#board{
-  display:inline-block;
-  font-size: 0;
-  //padding: 10px;
-  //padding-top: 0;
-}
-
-.square{
-  width:40px;
-  height:40px;
-  font-size: 9px;
-  /* text-align: right; */
-  position: relative;
-  z-index:0;
-  display: flex;
-  box-sizing: content-box;
-  font-weight: bolder;
-}
-
-
-.br-text, .tr-text{
-  position: absolute;
-  user-select:none;
-}
-
-.br-text{
-  right:1px;
-  bottom:1px;
-}
-.tr-text{
-  left:1px;
-  top:1px;
-}
-
-
-.square{
-  background-color: #dbb7b7;
-  color: rgb(130, 65, 0);
-}
-
-.square.dark{
-  background-color: #824100;
-  color: rgb(219, 183, 183);
-}
-
-.avail-move{
-  margin:auto; 
-  background-color: #a4ff3f;
-  opacity:80%;
-  display:block;
-  border-radius:50%;
-  border: 1px solid black;
-  width:15px;
-  height:15px;
-  //transition: all .2s;
-  z-index:0;
-}
-
-.avail-move.hidden{
-  border:none; 
-  width:0;
-  height:0;
-  margin:20px;
-  //transition: all .2s;
-}
-
-.p1piece, .p2piece, .promotion-piece{
-  background:transparent;
-  background-color:none;
-  position: absolute;
-  background:transparent;
-  background-position: 50% 50%;
-  width:40px;
-  height:40px;
-  background-size:40px;
-}
-
-.p1piece, .p2piece{
-  font-size:12px;
-  color:black;
-  text-align:center;
-}
-
-.p2piece{
-  color:white;
-}
-
-.piece:hover {
-  cursor: pointer;
-}
-
-#p1graveyard, #p2graveyard{
-  width: 40px;
-  height: 20px;
-  display: flex;
-  justify-content:center;
-  align-items:center;
-  position:absolute;
-}
-
-#p1graveyard{
-  left: -40px;
-} 
-
-#p2graveyard{
-  left: 325px;
-  top: 285px;
-}
-
-#p1icon,#p2icon{
-  border: 1px solid black; 
-}
-
-.forfeit-banner{
-  background-color: #white;
-/*   width: 45px;  */
-/*   height: 25px; */
-  font-size:0;
-  position:relative;
-  top:-40px;
-  left:0px;
-  margin:auto;
-  color: whitesmoke;
-  white-space:nowrap;
-  border-radius:4px;
-  font-family:  sans-serif;
-  display:flex;
-  justify-content:center;
-  flex-direction:column;
-}
-
-.forfeit-banner, .forfeit-banner:hover{
-  transition:1s;
-  padding: 4px;
-  left:85px;
-  width:100px;
-  height:45px;
-  font-size:12px;
-  background-color:#383838;
-}
-
-#ff-yes:hover, #ff-no:hover{
-  cursor:pointer;
-}
-
-#ff-yes, #ff-no{
-  display:inline-block;
-}
-
-.forfeit-banner.hidden{
-  top:-40px;
-  left:0px;
-  width: 0; 
-  height: 0;
-  font-size:0;
-  background-color: white;
-}
-
-.white.pawn{
-  background-image:url("../images/white-pawn.png");
-}
-
-.black.pawn{
-  background-image:url("../images/black-pawn.png");
-}
-
-.white.knight, .promotion-piece.p1knight{
-  background-image:url("../images/white-knight.png");
-}
-
-.black.knight, .promotion-piece.p2knight{
-  background-image:url("../images/black-knight.png");
-}
-
-.white.bishop, .promotion-piece.p1bishop{
-  background-image:url("../images/white-bishop.png");
-}
-
-.black.bishop, .promotion-piece.p2bishop{
-  background-image:url("../images/black-bishop.png");
-}
-
-.white.rook, .promotion-piece.p1rook{
-  background-image:url("../images/white-rook.png");
-}
-
-.black.rook, .promotion-piece.p2rook{
-  background-image:url("../images/black-rook.png");
-}
-
-.white.queen, .promotion-piece.p1queen {
-  background-image:url("../images/white-queen.png");
-}
-
-.black.queen, .promotion-piece.p2queen{
-  background-image:url("../images/black-queen.png");
-}
-
-.white.king{
-  background-image:url("../images/white-king.png");
-}
-
-.black.king{
-  background-image:url("../images/black-king.png");
-}
-
-#choose-promotion > .promotion-piece {
-  margin: 8px;
-  position: relative;
-}
-
-#piece-area{
-  position:absolute;
-  height: 0;
-  width: 0;
-  top: 0;
-  left: 0;
-}
-
-#choose-promotion > .promotion-piece:hover {
-  cursor:pointer;
-  border: 2px solid green;
-  border-radius: 5px; 
-}
-
-#board-with-promotion{
-  position:relative;
-  //padding-bottom: 20px;
-}
-
-#choose-promotion {
-  position:absolute;
-  margin:auto;
-  top:100px;
-  left:100px;
-  width: 120px;
-  height: 120px;
-  background-color: grey;
-  opacity: 90%;
-  border-radius: 15px;
-  z-index: 2;
-  box-shadow: 2px 2px 3px 1px #ccc;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  padding: 4px;
-  visibility: hidden;
-}
-
-#jump-to-sim {
-  width:30px;
-  text-align: center;
-}
-
-.coords {
-  position: absolute;
-  color: #009688;
-  font-size: 12px;
-  font-weight:bold;
-}
-
-#toggleComputer{
-  background-color:#3F51B5;
-}
-#toggleComputer:hover{
-  background-color:#2d3b87;
-  transition:200ms ease;
-}
-#toggleComputer:active{
-  background-color:#181f48;
-  transition:200ms ease;
-}
-
-#new,.new-game-color{
-  background-color:#4CAF50;
-}
-#new:hover, .new-game-color:hover{
-  background-color:#37823a;
-  transition:200ms ease;
-}
-#new:active, .new-game-color:active{
-  background-color:#255326;
-  transition:200ms ease;
-}
-
-#reset{
-  background-color:#cc3b31e8;
-}
-#reset:hover{
-  background-color:#a1312ae8;
-  transition:200ms ease;
-}
-#reset:active{
-  background-color:#671f1ae8;
-  transition:200ms ease;
-}
-
-#toggleFirst{
-  background-color:#7a7a7a;
-}
-#toggleFirst:hover{
-  background-color:#5a5a5a;
-  transition:200ms ease;
-}
-#toggleFirst:active{
-  background-color:#282828;
-  transition:200ms ease;
-}
-
-#png{
-  background-color:#FF9800;
-}
-#png:hover{
-  background-color:#bc7000;
-  transition:200ms ease;
-}
-#png:active{
-  background-color:#734400;
-  transition:200ms ease;
-}
-
-
-.forfeit-color, #traverse-moves button{
-  background-color:#383838;
-}
-.forfeit-color:hover, #traverse-moves button:hover{
-  background-color:#262932;
-  transition:200ms ease;
-}
-.forfeit-color:active. #traverse-moves button:active{
-  background-color:#000000;
-  transition:200ms ease;
-}
-
-#forfeit{
-  z-index: 1;
-  position: relative;
-}
-
-
-#traverse-moves{
-  display:flex;
-  justify-content:center;
-}
-
-#traverse-moves button {
-  margin:3px;
-  padding:3px 10px;
-}
-
-button:focus{
-  outline-color:#757575;
-}
-
-#thinking{
-  display:flex;
-  justify-content:center;
-  font-size: 15px;
-  margin-left:28px;
-  visibility:hidden;
-}
-
-
-#thinking.visible{
-  visibility:visible;
-}
-
-#thinking *{
-  margin: 0 2px;
-
-}
-
-.rotate-anim{
-  position:relative;
-}
-
-.rotate1{
-  position:absolute;
-/*   border: 1pt solid black; */
-  border-top: 1pt solid black;
-  border-right: 1pt solid black;  
-  border-radius:50%;
-  padding: 5px;
-  animation: rotation 2s infinite linear;  
-}
-
-.rotate2{
-  position:absolute;
-  border-bottom: 1pt solid black;
-  border-radius:50%;
-  padding: 5px;
-  animation: rotation 1s infinite linear;  
-}
-
-@keyframes rotation {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(359deg);
-  }
-}
-
-#placeholder{
-  font-size: 15px;
-  visibility:hidden;
-}
-
-
-
-@media screen and (max-width:768px){
- #main-container{
-  width: 90%;
- }
- .square{
-  /* width: 36px; */
-  /* height: 36px; */
- }
-}
