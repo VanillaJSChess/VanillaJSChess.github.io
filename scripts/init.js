@@ -52,6 +52,7 @@ function init() {
       forfeitBanner.classList.remove('hidden'); 
     }
   });
+  png.addEventListener('click', (event)=>{alert(algebraicNotation())});
 
   toggleFirst.addEventListener('click', callFuncIfNotThinking.bind(null,()=>{
     flipKingAndQueen();
@@ -98,9 +99,7 @@ function createPieceLists(){
 }
 
 function algebraicNotation(){
-  // add + for check ++ for mate, and named cols when 2 peices can move 
-
-  
+  // add + for check# for mate, and named cols when 2 peices can move, and = foir promotion  
   let colNotation = 'abcdefgh'.split('');
   let pieceShorthand, move, moveNotation;
   let notationLog = []
@@ -115,17 +114,32 @@ function algebraicNotation(){
       } else {
         pieceShorthand = move[2][0];  
       }
+      if (moveHistory[i+j].double){
+        pieceShorthand +=  colNotation[move[0][1]];
+      } 
       if (moveHistory[i+j].castle){
-        moveNotation += '0-0';
+        if (Math.abs(moveHistory[i+j].castle[1][1] - moveHistory[i+j].castle[1][0]) === 2){
+             moveNotation += '0-0';
+        } else { 
+             moveNotation += '0-0-0';
+        }
       } else if (moveHistory[i+j].capture) {
         if (pieceShorthand === '') {
-          pieceShorthand = colNotation[move[0][1]]
-//           debugger
+          pieceShorthand = colNotation[move[0][1]];
         }
         moveNotation += pieceShorthand + 'x' + colNotation[move[1][1]] +String(8-move[1][0]);
       } else {
         moveNotation += pieceShorthand+colNotation[move[1][1]]+String(8-move[1][0]);
       }
+
+      if (moveHistory[i+j].check){ 
+        if (moveHistory[i+j].checkmate) {
+          moveNotation += '#' 
+        } else {
+          moveNotation += '+' 
+        } 
+      }
+
       if (i+1 >= moveHistory.length){
         break
       }
@@ -135,16 +149,6 @@ function algebraicNotation(){
   }
   return notationLog;
 }
-
-
-
-
-
-
-
-
-
-
 
 init();
 
