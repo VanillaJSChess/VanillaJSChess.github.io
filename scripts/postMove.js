@@ -25,6 +25,7 @@ function completeMove(startParent,piece,square, shouldUpdate = true, move = unde
     moveHistory.push({move:[]});
     if (piece.classList.contains('king')){
       let castleMove = checkForCastle(getRowCol(startParent),getRowCol(piece.parentElement));
+
       if (castleMove) {
         pieceMap.get(piece).hasCastled = true;
         updateDisplayedBoardState(startParent,pieceMap.get(piece),square,move);
@@ -42,7 +43,7 @@ function completeMove(startParent,piece,square, shouldUpdate = true, move = unde
         updateDisplayedBoardState(startParent,pieceMap.get(piece),square,move);
         isPieceCaptured(square); 
         if (playingComputer && !turn){
-          promotionSelected(undefined,computerPromotion = true);
+          promotionSelected(undefined,computerPromotion = true, forcePromote ='Q');
         }
         return 
       }
@@ -90,58 +91,6 @@ function completeMove(startParent,piece,square, shouldUpdate = true, move = unde
     });
   }
 }
-
-
-let midPromotion = false;
-function promotion(side){
-  midPromotion = true;
-  if (playingComputer && !turn) { //asuming black is computer 
-    return
-  }
-  let px = side ? 'p1':'p2';
-  let promotionPieces = ['queen','rook','bishop','knight']
-  let showPieces = promotionPieces.map(x=>px+x)
-  
-  for (i=0;i<promotionBox.childElementCount;i++){
-    promotionBox.children[i].classList.add(showPieces[i]);
-  }
-  promotionBox.style.visibility = 'visible';
-}
-
-function promotionSelected(piece = null, computerPromotion = false){
-  midPromotion = false
-  let newPieceType, promotedPiece;
-  
-  if (computerPromotion){
-    newPieceType = "queen"
-  } else {
-    promotionBox.style.visibility = 'hidden';
-    newPieceType = piece.classList[1].substring(2);
-  }
-
-  let rowCol = moveHistory[moveHistory.length-1].move[1];
-  let originalPawn = boards[0].state[rowCol[0]][rowCol[1]];
-  let pieceNode = originalPawn.piece
-  
-  pieceNode.classList.remove('pawn');
-  pieceNode.classList.add(newPieceType);
-
-  if (newPieceType === "queen") {
-    promotedPiece = new Queen(pieceNode); 
-  } else if (newPieceType === "knight") {
-    promotedPiece = new Knight(pieceNode);     
-  } else if (newPieceType === "rook") {
-    promotedPiece = new Rook(pieceNode);   
-  } else if (newPieceType === "bishop") {
-    promotedPiece = new Bishop(pieceNode); 
-  }
-  promotedPiece.rowCol = rowCol;
-  promotedPiece.homeSquare = originalPawn.homeSquare;
-  promotedPiece.promoted = true;
-  boards[0].state[rowCol[0]][rowCol[1]] = promotedPiece;
-  window.requestAnimationFrame(()=>{swapTurn(0)});
-}
-
 
 function checkForCastle(from, to){
   let moveDist = to[1]-from[1];

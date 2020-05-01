@@ -65,10 +65,10 @@ function colorPlayerIcons(){
   }
   if (turn) {
     p1icon.style.visibility = 'visible';
-    document.querySelector('#ff-name').innerText = 'Player 1'
+    ffName.innerText = 'Player 1 Forfeit?'
   } else {
     p2icon.style.visibility = 'visible';
-    document.querySelector('#ff-name').innerText = 'Player 2'
+    ffName.innerText = 'Player 2 Forfeit?'
     }
 }
 

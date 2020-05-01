@@ -2,6 +2,7 @@
 //new game/reset/start 
 function resetAll() {
   firstMove = true; //p1 goes first 
+  turn = firstMove;
   if (!p1pieces[0].classList.contains('white')){ //if this results in a side swap, flip the king and queen
    flipKingAndQueen();
   }
@@ -11,7 +12,7 @@ function resetAll() {
   newMatch(); 
   switchSides(true); //ensures p1 is white and p2 is black
   setMoveIcons();
-
+  
 }
 
 function switchSides(reset = false){
@@ -46,40 +47,44 @@ function switchSides(reset = false){
 }
 
 function newMatch() {
-  addOrRemoveThinking();
-  emptyHistoryCollections();
-  resetFFbutton()
-  unhighlightAllSquares();
-  clearWinner();
-  turn = firstMove;  
-  colorPlayerIcons();
-  movePromises = populateBoard(); //grab all the pieces that need to move to their homeSqures 
-  resetPieces();
-  Promise.all(movePromises).then(()=>{
-    //console.log('all pieces moved')
-    //move all pieces then save their new squares as home squares
-    if (!pieceMap.get(p1pieces[0]).homeSquare){
-      getHomeSquares(); 
-    }
-    boards[0].state = buildDisplayedBoardArray();
-    pickUpFromCurrentPosition() //gets all legal moves for current visible boardstate 
-    if (!turn && playingComputer){ //if the computer moves first 
-      doNormalComputerMove();
-    }
-  })
-  //console.log('newMatch completed')
+  return new Promise((resolve,reject)=>{
+    resetDisplayedToShown(); 
+    addOrRemoveThinking();
+    emptyHistoryCollections();
+    resetFFbutton()
+    unhighlightAllSquares();
+    clearWinner();
+    turn = firstMove;  
+    colorPlayerIcons();
+    movePromises = populateBoard(); //grab all the pieces that need to move to their homeSqures 
+    resetPieces();
+    Promise.all(movePromises).then(()=>{
+      //console.log('all pieces moved')
+      //move all pieces then save their new squares as home squares
+      if (!pieceMap.get(p1pieces[0]).homeSquare){
+        getHomeSquares(); 
+      }
+      boards[0].state = buildDisplayedBoardArray();
+      pickUpFromCurrentPosition() //gets all legal moves for current visible boardstate 
+      if (!turn && playingComputer){ //if the computer moves first 
+        doNormalComputerMove();
+      }
+      resolve();
+    });
+  });
   function emptyHistoryCollections(){
     //empty tracking done from last game
+    prevStates = [];
     undoneMoves = [];
     moveHistory = [];
     graveyardOffsets = {true:{},false:{}}
   }
 
   function addOrRemoveThinking() {
-    if (firstMove){
+    if (turn){
       thinking.classList.remove('visible');
       thinkingInProg = false;
-    } else {
+    } else if (playingComputer) {
       thinking.classList.add('visible');
       thinkingInProg = true; 
     }
@@ -88,6 +93,7 @@ function newMatch() {
     forfeit.innerText = 'Forfeit';
     forfeit.classList.add('forfeit-color')
     forfeit.classList.remove('new-game-color')
+    forfeit.style.width = '90px';
   }
   function resetPieces(){
   //remove the moves and statuses of each piece 
@@ -99,17 +105,17 @@ function newMatch() {
       if (piece.promoted) {
         undoPromotion(piece)
       }
-    })
-
-    function undoPromotion(piece){
-      let pieceNode = piece.piece;
-      let originalHomeSquare = piece.homeSquare
-      pieceNode.classList.remove(pieceNode.classList[pieceNode.classList.length-1]);
-      pieceNode.classList.add("pawn");
-      boards[0].state[piece.rowCol[0]][piece.rowCol[1]] = new Pawn(pieceNode);
-      boards[0].state[piece.rowCol[0]][piece.rowCol[1]].homeSquare = originalHomeSquare;
-    }  
+    })  
   }
+}
+
+function undoPromotion(piece){
+  let pieceNode = piece.piece;
+  let originalHomeSquare = piece.homeSquare
+  pieceNode.classList.remove(pieceNode.classList[pieceNode.classList.length-1]);
+  pieceNode.classList.add("pawn");
+  boards[0].state[piece.rowCol[0]][piece.rowCol[1]] = new Pawn(pieceNode);
+  boards[0].state[piece.rowCol[0]][piece.rowCol[1]].homeSquare = originalHomeSquare;
 }
 
 

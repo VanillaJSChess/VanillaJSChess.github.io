@@ -116,6 +116,7 @@ let displaySimulateIndex = 0;
 // }
 
 function resetDisplayedToShown(){
+  if (boards[0].state.length === 0){ return }
   Array.from(boardNode.children).forEach((row,i)=>{
     Array.from(row.children).forEach((square,j)=>{
       let piece = Array.from(square.children).find(child=>child.classList.contains('piece'));

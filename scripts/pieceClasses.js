@@ -1,8 +1,13 @@
 class ChessPiece{
   constructor(piece){
-    this.piece = piece,
-    this.color = isp1(this.piece),
-    pieceMap.set(this.piece,this),
+    if (piece === null){
+      this.piece = null
+      this.color = null
+    } else {
+      this.piece = piece
+      this.color = isp1(this.piece)
+      pieceMap.set(this.piece,this)
+    }
     this.hasMoved = false;
     this.maxSquareTravel = 7; //should the piece continue looking for open squares
     this.isCaptured = false;

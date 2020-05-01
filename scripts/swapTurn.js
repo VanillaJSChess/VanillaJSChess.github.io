@@ -46,7 +46,11 @@ function addInfoForAlgebraicNotation() {
   if (prevMovePiece.constructor.name === "Pawn") { return }
   prevMovePiece.action.legal.defends.forEach(defend=>{
     if (prevMovePiece.constructor.name === boards[0].state[defend[0]][defend[1]].constructor.name){
-      moveHistory[moveHistory.length -1].double = true;
+      if (defend[1] === moveHistory[moveHistory.length -1].move[0][1]){
+        moveHistory[moveHistory.length -1].double = 'row';
+      } else {
+        moveHistory[moveHistory.length -1].double = 'column';
+      }
     }
   })
 

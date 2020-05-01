@@ -30,6 +30,7 @@ function draw(){
 function winner(player = turn) {
     clearWinner();
     winnerBool = true;
+    if (undoneMoves.length < 1 && moveHistory.length > 0){ moveHistory[moveHistory.length -1].checkmate = true} 
     if (!player === computerPlayer) {
         p2s.innerText = Number(p2s.innerText) + 1;
         winner2.style.visibility = 'visible';
@@ -40,8 +41,6 @@ function winner(player = turn) {
     thinking.classList.remove('visible');
     thinkingInProg = false;
 }
-
-
 
 function checkWinOrDraw(){
   let piecesOnBoard = getPiecesOnBoard(boards[0])

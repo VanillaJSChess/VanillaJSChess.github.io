@@ -101,6 +101,7 @@ function dragElement(elmnt) {
         } else {
           startParent.appendChild(elmnt);
           endDrag(elmnt,startParent === square);
+          handleSquareHighlightsDrag();
         }
       } catch (error) {
         startParent.appendChild(elmnt);
@@ -120,3 +121,92 @@ function dragElement(elmnt) {
   }
 }
 
+//physically moving pieces
+function dragBox(elmnt) {
+  let pos1 = 0,
+      pos2 = 0,
+      pos3 = 0,
+      pos4 = 0;
+  let initGrab;
+  elmnt.onmousedown = dragMouseDown; 
+  function dragMouseDown(e) {
+    e = e || window.event;
+    initGrab = true;
+    document.onmouseup = closeDragElement;
+    document.onmousemove = elementDrag
+  }
+  function elementDrag(e) {
+    e = e || window.event;
+    e.preventDefault();
+    pos1 = pos3 - e.clientX;
+    pos2 = pos4 - e.clientY;
+    pos3 = e.clientX;
+    pos4 = e.clientY;
+    if (!initGrab) {
+      pgnMenu.style.left = pgnMenu.offsetLeft +150- pos1 + 'px';
+      pgnMenu.style.top = pgnMenu.offsetTop + 150 - pos2 + 'px';
+    }
+    initGrab = false;
+  }
+
+  function closeDragElement(e) {
+    if (pgnMenu.offsetLeft < 0){
+      pgnMenu.style.left = "150px"
+    }
+
+    if (pgnMenu.offsetTop < 0){
+      pgnMenu.style.top = "150px"
+    }
+
+    document.onmouseup = null;
+    document.onmousemove = null;
+  }
+}
+
+
+//physically moving pieces
+function resizeBox(elmnt) {
+  let pos1 = 0,
+      pos2 = 0,
+      pos3 = 0,
+      pos4 = 0;
+      let initGrab;
+  elmnt.onmousedown = dragMouseDown; 
+  function dragMouseDown(e) {
+    document.body.style.cursor = 'nwse-resize';
+    e = e || window.event;
+    initGrab = true;
+    document.onmouseup = closeDragElement;
+    document.onmousemove = elementDrag
+  }
+  function elementDrag(e) {
+    e = e || window.event;
+    e.preventDefault();
+    // calculate the new cursor position:
+    pos1 = pos3 - e.clientX;
+    pos2 = pos4 - e.clientY;
+    pos3 = e.clientX;
+    pos4 = e.clientY;
+
+    if (!initGrab) {
+      if (pos3> pgnMenu.offsetLeft + pgnText.offsetLeft + pgnText.offsetWidth ||
+      pgnText.offsetWidth-6 >= 91 ){
+        pgnMenu.style.width = 8 + pos3 - pgnMenu.offsetLeft +'px'
+        pgnText.style.width = pgnMenu.offsetWidth-30 + 'px'
+      }
+      
+      if (pos4> pgnMenu.offsetTop + pgnText.offsetTop + pgnText.offsetHeight ||
+      pgnText.offsetHeight-6 >= 73 ){
+        pgnMenu.style.height = 5 + pos4 - pgnMenu.offsetTop +'px'
+        pgnText.style.height = pgnMenu.offsetHeight-96 + 'px'
+      }
+    }
+    initGrab = false;
+  }
+
+  function closeDragElement(e) {
+    document.onmouseup = null;
+    document.onmousemove = null;
+    document.body.style.cursor = 'auto';
+  }
+}

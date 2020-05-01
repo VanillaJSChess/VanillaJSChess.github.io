@@ -5,12 +5,18 @@ function showPrevMove(){
   if (!canAnimate || displaySimulateIndex !== 0 ){ return }
   let prevMove = moveHistory.pop();
   if (prevMove) {
-    canAnimate = false;  
+    canAnimate = false;
+    if (prevMove.promotion){ 
+      //want to undo promotion by the piece not the square because the state isnt updated during movehistory naviagation 
+//       undoPromotion(boards[0].state[prevMove.move[1][0]][prevMove.move[1][1]])
+      undoPromotion(pieceMap.get(Array.from(boardNode.children[prevMove.move[1][0]].children[prevMove.move[1][1]].children).find(piece=>piece.classList.contains("piece"))))
+    }
     if (prevMove.capture){
       completeMoveFromState([prevMove.move[1],prevMove.move[0]],false).then(()=>{
         let startParent = prevMove.capture.piece.parentElement;
         let p = prevMove.capture.piece;
         let sq = boardNode.children[prevMove.move[1][0]].children[prevMove.move[1][1]];
+        pieceMap.get(p).isCaptured = false;
         prevMove.capture = startParent;
         if (prevMove.enPassant){
           sq = boardNode.children[prevMove.enPassant[0]].children[[prevMove.enPassant[1]]];
@@ -40,6 +46,9 @@ function showNextMove(){
   let nextMove = undoneMoves[undoneMoves.length-1];
   if (nextMove) { 
     canAnimate = false;
+    if (nextMove.promotion){ 
+      promotePiece(nextMove.move[0],nextMove.promotion)
+    }
     if (nextMove.capture){
       completeMoveFromState(nextMove.move,false).then(()=>{
         let graveyard = nextMove.capture;
@@ -47,7 +56,8 @@ function showNextMove(){
         if (nextMove.enPassant){
           startParent = boardNode.children[nextMove.enPassant[0]].children[nextMove.enPassant[1]];
         }
-        let piece = startParent.children[1];
+        let piece = Array.from(startParent.children).find(piece=>piece.classList.contains("piece"));
+        pieceMap.get(piece).isCaptured = true;
         nextMove.capture = pieceMap.get(piece);
         completeMove(startParent,piece,graveyard,false).then(()=>{
           canAnimate = true;
