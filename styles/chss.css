@@ -1,16 +1,19 @@
 html, body{
  height:100%;
- font-family:sans-serif;
+ font-family: sans-serif;
  padding-top:0;
  margin-top:0;
+ z-index:-200;
+ user-select:none;
 }
 
 #main-container{
  padding: 0 10px;
  min-height:100%;
- background-color:white;
+ background-color:#e2e2e2;
  width: 70%;
  margin: auto;
+ z-index:-100;
 }
 
 body{
@@ -76,7 +79,7 @@ body{
  visibility:hidden;
 }
 
-#buttons{
+#buttons, .forfeit-area{
  padding: 20px;
  padding-bottom: 0;
  text-align:center;
@@ -87,18 +90,44 @@ body{
 }
 
 button{
+ /* font-family: sans-serif; */
  border:none;
- color:white;
- padding: 5px 15px;
+ color:#f7f8f9;
  text-align:center;
  text-decoration:none;
  display:inline-block;
- font-size:18px;
+ font-size: 16px;
  background-color:pink;
- width: auto;
- margin: 5px 20%;
+ padding: 5px 15px;
+ margin: 5px;
  border-radius: 15px;
- width: fit-content;
+ box-shadow:0 2px lightgrey;
+ position:relative;
+ top:0;
+ transition: top 100ms, box-shadow 100ms, background-color 100ms ease;
+ overflow: hidden;
+}
+
+button:hover, button.clicked,
+#toggleComputer.right:hover, #toggleFirst.left:hover{
+ box-shadow:0 1px lightgrey;
+ top:1px;
+ transition: top 100ms, 
+ box-shadow 100ms,
+ background-color 100ms ease,
+ left 600ms ease,
+ height 600ms;
+ cursor:pointer;
+
+}
+
+button:active,
+
+#pgn-save.left:active, #pgn-load.right:active,
+#toggleComputer.right:active, #toggleFirst.left:active{
+ box-shadow:0 0px lightgrey;
+ top:2px;
+ transition: top 100ms, box-shadow 100ms, background-color 100ms ease;
 }
 
 
@@ -113,6 +142,7 @@ button{
   justify-content: center;
   align-items: flex-end;
   position:relative;
+  z-index:10;
 }
 
 .gameRow{
@@ -232,33 +262,59 @@ button{
   border: 1px solid black; 
 }
 
-.forfeit-banner{
-  background-color: #white;
-/*   width: 45px;  */
-/*   height: 25px; */
-  font-size:0;
-  position:relative;
-  top:-40px;
-  left:0px;
-  margin:auto;
-  color: whitesmoke;
-  white-space:nowrap;
-  border-radius:4px;
-  font-family:  sans-serif;
-  display:flex;
-  justify-content:center;
-  flex-direction:column;
+#forfeit{
+  z-index: 3;
+  height:32px;  
+  width:90px;
+  margin:5px auto;
+  
 }
 
-.forfeit-banner, .forfeit-banner:hover{
-  transition:1s;
-  padding: 4px;
-  left:85px;
-  width:100px;
-  height:45px;
-  font-size:12px;
-  background-color:#383838;
+.forfeit-area{
+  padding:0;
 }
+
+.forfeit-options{
+  position:relative;
+  /* background-color: white; */
+  /* padding-right: 10px; */
+}
+
+.forfeit-banner{
+  background-color:#383838;
+  position:absolute;
+  color: whitesmoke;
+  white-space:nowrap;
+  border-radius:15px;
+  width:80px;
+  height:30px;
+  font-size:12px;
+  top: 6px;
+  left:0px;
+  transition: left 600ms ease,
+              visibility 600ms,
+              width 600ms, 
+              height 600ms;
+}
+
+.forfeit-banner.visible{
+  transition: left 600ms ease,
+              visibility 600ms,
+              width 600ms, 
+              height 600ms 600ms;
+  left:90px;
+  height:45px;
+  width:110px;
+  visibility:visible;
+  text-align: right;
+}
+
+
+.forfeit-banner.hidden{
+/*   transition: left 600ms ease, visibility 600ms; */
+  visibility:hidden;
+}
+
 
 #ff-yes:hover, #ff-no:hover{
   cursor:pointer;
@@ -268,13 +324,37 @@ button{
   display:inline-block;
 }
 
-.forfeit-banner.hidden{
-  top:-40px;
-  left:0px;
-  width: 0; 
-  height: 0;
-  font-size:0;
-  background-color: white;
+#ff-name{
+  position:absolute;
+  left:12px;
+  top:9px;
+  background-color:#383838;
+  display:block;
+  z-index:1;
+  visibility:visible;
+  transition: left 600ms, visibility 300ms 100ms;
+}
+
+#ff-name.hidden {
+ visibility:hidden;
+ left:-12px; 
+ transition: left 500ms, visibility 300ms;
+}
+
+
+
+
+
+.ff-yes-no {
+  position:absolute;
+  left:30px;
+  top:25px;
+  transition: top 600ms 600ms;
+}
+
+.ff-yes-no.hidden {
+  top:9px;
+  transition: top 600ms;
 }
 
 .white.pawn{
@@ -380,82 +460,176 @@ button{
   font-weight:bold;
 }
 
-#toggleComputer{
-  background-color:#3F51B5;
+#options, #toggleComputer,#toggleFirst{
+  background-color:#f5b906;
 }
-#toggleComputer:hover{
-  background-color:#2d3b87;
-  transition:200ms ease;
+#options:hover, #options.clicked, #toggleComputer:hover, #toggleComputer.clicked, #toggleFirst:hover{
+  background-color:#E8AC00;
 }
-#toggleComputer:active{
-  background-color:#181f48;
-  transition:200ms ease;
+#options:active,#toggleComputer:active,#toggleFirst:active{
+  background-color:#DCA000;
+}
+
+#toggleComputer,#toggleFirst{
+  white-space: nowrap;
 }
 
 #new,.new-game-color{
+  width:125px;
+  height:32px;
+  margin:5px auto;
   background-color:#4CAF50;
 }
 #new:hover, .new-game-color:hover{
-  background-color:#37823a;
-  transition:200ms ease;
-}
+  background-color:#3FA243;
+} 
 #new:active, .new-game-color:active{
-  background-color:#255326;
-  transition:200ms ease;
+  background-color:#339637;
 }
 
-#reset{
-  background-color:#cc3b31e8;
+#pgn, #pgn-save, #pgn-load{
+  background-color:#99A3E3;
+  
 }
-#reset:hover{
-  background-color:#a1312ae8;
-  transition:200ms ease;
+#pgn:hover, #pgn.clicked,#pgn-save:hover,#pgn-load:hover{
+ background-color:#8c96d6; 
 }
-#reset:active{
-  background-color:#671f1ae8;
-  transition:200ms ease;
-}
-
-#toggleFirst{
-  background-color:#7a7a7a;
-}
-#toggleFirst:hover{
-  background-color:#5a5a5a;
-  transition:200ms ease;
-}
-#toggleFirst:active{
-  background-color:#282828;
-  transition:200ms ease;
+#pgn:active,#pgn-save:active, #pgn-load:active{
+ background-color:#7F89C9;
 }
 
-#png{
-  background-color:#FF9800;
-}
-#png:hover{
-  background-color:#bc7000;
-  transition:200ms ease;
-}
-#png:active{
-  background-color:#734400;
-  transition:200ms ease;
-}
 
 
 .forfeit-color, #traverse-moves button{
   background-color:#383838;
 }
-.forfeit-color:hover, #traverse-moves button:hover{
-  background-color:#262932;
-  transition:200ms ease;
+.forfeit-color:hover, #traverse-moves button:hover, #forfeit.clicked{
+  background-color:#313131;
 }
 .forfeit-color:active. #traverse-moves button:active{
-  background-color:#000000;
-  transition:200ms ease;
+  background-color:#282828;
 }
 
-#forfeit{
+#pgn-menu{
+  font-size: 14px;
+  background-color:rgba(0, 56, 80, 0.95);
+  width:300px;
+  height:300px;
+  min-height: 160px;
+  min-width: 165px;
+  border-radius:6px;
+  position:absolute;
+  margin:auto;
+  left:50%;
+  margin-left:-150px;
+  top:50%;
+  margin-top:-150px;
+  z-index:20;
+  padding-top:6px;
+  color:#f7f8f9;
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+  box-shadow: 2px 2px 20px black;
+}
+#pgn-menu.hidden{
+  visibility:hidden;
+}
+
+#pgn-menu form{
+  margin-top:12px;
+}
+
+#save-load-container {
+  display:flex;
+  justify-content:space-around
+}
+
+#move-pgn-menu{
+  width: 100%;
+  margin:auto;
+  cursor:pointer;
+  position:absolute;
+  top:5px;
   z-index: 1;
-  position: relative;
+}
+
+#close-pgn{
+  position:absolute;
+  top: 0px;
+  right:0px;
+  cursor: pointer;
+  z-index: 2;
+  width: auto;
+  padding: 6px 8px;
+  font-weight: 600;
+}
+
+#close-pgn:hover{
+  color:#F44336;
+  transition:color 300ms;
+}
+
+#move-pgn-menu > hr{
+  margin: 1px auto;
+  border: 0;
+  width: 25%;
+  border-radius:1px;
+  height: 2px;
+  background-image: linear-gradient(180deg, rgb(0, 95, 136), #3c3c3c);
+}
+
+#resize-pgn-menu {
+  width: 20px;
+  margin-top: auto;
+  height: 10px;
+  margin-left:auto;
+  position:relative;
+  cursor:nwse-resize;
+}
+
+#resize-pgn-menu > hr{
+  cursor:nwse-resize;
+  border: 0;
+  /* border-radius:1px; */
+  height: 1px;
+  position:absolute;
+  background-color:#99a3e3ad;
+  transform: rotate(135deg);
+}
+
+#resize-pgn-menu:active{
+  cursor:nwse-resize;
+}
+
+
+#resize-pgn-menu > hr:nth-of-type(1){
+  top: -7px;
+  left: 2px;
+  width: 17px;
+}
+
+#resize-pgn-menu > hr:nth-of-type(2){
+  top: -5px;
+  left: 8px;
+  width: 10px;
+}
+
+#resize-pgn-menu > hr:nth-of-type(3){
+  top: -3px;
+  left: 13px;
+  width: 5px;
+}
+
+#pgn-menu textarea {
+  width: 270px;
+  height: 210px;
+  resize:none;
+  min-width: 135px;
+  min-height: 71.5px;
+  position: absolute;
+  left: 11px;
+  top: 37px;
 }
 
 
@@ -537,4 +711,71 @@ button:focus{
   /* width: 36px; */
   /* height: 36px; */
  }
+}
+
+
+.options{
+  position:relative;
+  z-index:1;
+}
+
+
+.options > .activator{
+  z-index: 1;
+}
+
+
+.options > button:not(:first-child) {
+  z-index: -1;
+  left:0px;
+  position:absolute;
+  visibility:hidden;
+  height: 29px;
+  margin-top:8px;
+    transition:
+     margin-top 600ms,
+     left 600ms ease, 
+     visibility 600ms, 
+     height 600ms,
+     width 600ms;
+}
+
+.options > .centered {
+  left:0px;
+  transition: left 400ms;
+}
+
+#pgn-save.left {
+  left:-125px;
+}
+
+#pgn-load.right {
+  left:125px;
+}
+
+#toggleComputer.right, #toggleFirst.left {
+  height: 32px;
+  top:0;
+  margin-top:5px;
+  visibility:visible;
+}
+
+#toggleComputer{
+  text-align: right;
+}
+
+#toggleFirst.left {
+  width: 125px;
+  left:-125px;
+}
+
+#toggleComputer.right {
+  width: 160px;
+  left:125px;
+}
+
+.options > button {
+  width:125px;
+  height:32px;
+  margin:5px auto;
 }
