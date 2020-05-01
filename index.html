@@ -4,16 +4,21 @@
 <head>
 <!-- <link rel="stylesheet" type="text/css" href="styles/base.css"> -->
 <link rel="stylesheet" type="text/css" href="styles/chss.css">
+<link rel="icon" href="/images/black-pawn.png">
 </head>
 
 <body>
   <div id="main-container">
     <div id="buttons">
-        <button id="png">Alert PNG</button>
-        <button id="reset">Reset All</button>
-        <button id="toggleFirst">Toggle First Move</button>
-        <button id="toggleComputer">Turn Computer Off</button>
-        <button id="new">New Game</button>
+        <div class="options pgn-options">
+          <button class="centered activator" id="pgn">Save/Load</button>
+        </div>
+        <div class="options moving-options">
+          <button class="centered activator" id="options">Options</button>
+          <button class="centered" id="toggleFirst">Toggle First</button>
+          <button class="centered" id="toggleComputer">Turn Computer Off</button>
+        </div>
+        <button class="centered" id="new">New Game</button>
     </div>
     <div id="scbd">
       <div id="p1">
@@ -34,6 +39,28 @@
         </div>
         <span id="p2icon"></span>P2: <span id="p2s">0</span>
         <div id="winner2">winner</div>
+      </div>
+    </div>
+<!--     <div id="pgn-menu"> -->
+    <div id="pgn-menu" class = "hidden">
+      <div>
+        <div id="close-pgn">X</div>
+        <div id="move-pgn-menu">
+          <hr><hr><hr>  
+        </div>
+        <form>
+          <label for="sometext">Algebraic Notation</label>
+          <textarea id="pgn-textarea" placeholder="Paste your PGN here"></textarea>
+        </form>
+      </div>
+      <div>
+        <div id="save-load-container">
+          <button id="pgn-save">Save</button>
+          <button id="pgn-load">Load</button>
+        </div>
+        <div id="resize-pgn-menu">
+          <hr><hr><hr>  
+        </div>
       </div>
     </div>
     <div id="game-area">
@@ -179,17 +206,19 @@
     </div>
     <div class="bottom-area">
       <div id="traverse-moves">
-        <button id = "prev-move"><</button>
-        <button id = "next-move">></button>
+        <button class="centered" id="prev-move"><</button>
+        <button class="centered" id="next-move">></button>
       </div>
-      <button class = "forfeit-color" id="forfeit">Forfeit</button>
-      <div class="forfeit-banner hidden">
-          <div>
-            <span id="ff-name">Player 1</span> Forfeit?
+      <div class="forfeit-area">
+        <div class="forfeit-options">
+          <button class = "centered forfeit-color" id="forfeit">Forfeit</button>
+          <div class="forfeit-banner hidden">
+              <div id="ff-name" class ="hidden">Player 1 Forfeit?</div>
+              <div class="ff-yes-no hidden">
+                <div id="ff-yes">Yes</div> | <div id="ff-no">No</div>
+              </div>
           </div>
-          <div>
-            <div id="ff-yes">Yes</div> | <div id="ff-no">No</div>
-          </div>
+        </div>
       </div>
 
 
@@ -198,10 +227,12 @@
   <script type="text/javascript" src="scripts/globalVars.js"></script>
   <script type="text/javascript" src="scripts/tools.js"></script>
   <script type="text/javascript" src="scripts/newGame.js"></script>
+  <script type="text/javascript" src="scripts/promotion.js"></script>
   <script type="text/javascript" src="scripts/pieceClasses.js"></script>
   <script type="text/javascript" src="scripts/handDrag.js"></script>
   <script type="text/javascript" src="scripts/handleMoves.js"></script>
   <script type="text/javascript" src="scripts/rateBoardstate.js"></script>
+  <script type="text/javascript" src="scripts/buttonAnim.js"></script>
   <script type="text/javascript" src="scripts/computerMove.js"></script>
   <script type="text/javascript" src="scripts/swapTurn.js"></script>
   <script type="text/javascript" src="scripts/postMove.js"></script>
@@ -213,6 +244,8 @@
   <script type="text/javascript" src="scripts/troubleshooting.js"></script>
   <script type="text/javascript" src="scripts/gameTracking.js"></script>
   <script type="text/javascript" src="scripts/init.js"></script>
+  
+  <script type="text/javascript" src="scripts/handlePGN.js"></script>
 
 </body>
 
