@@ -43,7 +43,7 @@ function showPrevMove(){
 
 function showNextMove(){
   if (!canAnimate || displaySimulateIndex !== 0 ){ return }
-  let nextMove = undoneMoves[undoneMoves.length-1];
+  let nextMove = undoneMoves.pop();
   if (nextMove) { 
     canAnimate = false;
     if (nextMove.promotion){ 
@@ -61,6 +61,7 @@ function showNextMove(){
         nextMove.capture = pieceMap.get(piece);
         completeMove(startParent,piece,graveyard,false).then(()=>{
           canAnimate = true;
+          if (undoneMoves.length === 0){ pickUpFromCurrentPosition()}
         });
       });
     } else if (nextMove.castle){
@@ -68,14 +69,15 @@ function showNextMove(){
       [completeMoveFromState(nextMove.move,false),
        completeMoveFromState(nextMove.castle,false)]).then(()=>{
         canAnimate = true;
+        if (undoneMoves.length === 0){ pickUpFromCurrentPosition()}
+
       });
     } else {
       completeMoveFromState(nextMove.move,false).then(()=>{
         canAnimate = true;
+        if (undoneMoves.length === 0){ pickUpFromCurrentPosition()}
       });
     }
     moveHistory.push(nextMove);
-    undoneMoves.pop();
-    //console.log (moveHistory,undoneMoves);
   }
 }

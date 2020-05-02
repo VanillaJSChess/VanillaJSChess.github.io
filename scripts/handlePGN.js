@@ -74,6 +74,7 @@ function readPGN(){
   //what if they want to jump to a spot, or animate the game and change speeds. 
   //all options could be done by building moveHistory or undone moves
   return new Promise((resolve,reject)=>{
+    let wasPlayingComputer = playingComputer;
     playingComputer = false;
   //   let pgnData = '1. Nf3 Nf6,2. Ne5 d6,3. Nxf7 Kxf7,4. e3 Nc6,5. Qh5+ Nxh5,6. f4 Nf6,7. h4 h6,8. h5 g5,9. hxg6+ Ke6,10. g7 Ng4,11. d3 Kf6,12. gxh8=Q+ Bg7,13. Qxd8 Nxd8'.split(',')
   //   let pgnData = '1. Nf3 Nc6,2. g3 d6,3. Bg2 Be6,4. O-O Qd7,5. Nc3 O-O-O,6. h4'.split(',');
@@ -96,7 +97,7 @@ function readPGN(){
         await findAndMakeMoves(twoMoves, PGNboard, p1Color);
       }
       boards.pop()
-      console.log('complete');
+      setPGN(wasPlayingComputer)
       resolve();
     }
   });
@@ -145,11 +146,9 @@ async function findAndMakeMoves(twoMoves, PGNboard, turn){
       checkEnPassant(breakdown);  
     }
 
-
     simulateMove(breakdown, PGNboard.state)
     
     addMoveHistory(breakdown);
-
 
     //change for next move
     turn = !turn;
@@ -365,8 +364,9 @@ function getPieceName(firstChar){
   }
 }
 
-function setPGN(){
+function setPGN(wasPlayingComputer){
   undoneMoves = moveHistory.reverse();
+  playingComputer = wasPlayingComputer;
   moveHistory = [];
 }
     

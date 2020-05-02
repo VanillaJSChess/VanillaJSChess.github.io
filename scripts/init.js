@@ -75,7 +75,6 @@ function init() {
     }
     newMatch().then(()=>{
       readPGN().then(()=>{
-        setPGN();
         pgnMenu.classList.add('hidden');
       })
     })
