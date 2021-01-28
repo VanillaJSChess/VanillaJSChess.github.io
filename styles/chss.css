@@ -1,3 +1,8 @@
+:root{
+  --square-dim-main:8vh;
+  --square-dim-limit:8vw; 
+}
+
 html, body{
  height:100%;
  font-family: sans-serif;
@@ -157,9 +162,11 @@ button:active,
 }
 
 .square{
-  width:40px;
-  height:40px;
-  font-size: 9px;
+  width: var(--square-dim-limit);
+  max-width: var(--square-dim-main);
+  height: var(--square-dim-limit);
+  max-height: var(--square-dim-main);
+  font-size: 1.5vh;
   /* text-align: right; */
   position: relative;
   z-index:0;
@@ -195,35 +202,37 @@ button:active,
 }
 
 .avail-move{
-  margin:auto; 
+  margin:auto;
   background-color: #a4ff3f;
   opacity:80%;
   display:block;
   border-radius:50%;
   border: 1px solid black;
-  width:15px;
-  height:15px;
-  //transition: all .2s;
+  width: 2vh;
+  max-width: 2vw;
+  height: 2vh;
+  max-height: 2vw;
   z-index:0;
 }
 
 .avail-move.hidden{
-  border:none; 
+  border:none;
   width:0;
   height:0;
   margin:20px;
-  //transition: all .2s;
 }
 
 .p1piece, .p2piece, .promotion-piece{
   background:transparent;
-  background-color:none;
   position: absolute;
   background:transparent;
-  background-position: 50% 50%;
-  width:40px;
-  height:40px;
-  background-size:40px;
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  width: var(--square-dim-main);
+  max-width: var(--square-dim-limit);
+  height: var(--square-dim-main);
+  max-height: var(--square-dim-limit);
 }
 
 .p1piece, .p2piece{
@@ -432,10 +441,15 @@ button:active,
 #choose-promotion {
   position:absolute;
   margin:auto;
-  top:100px;
-  left:100px;
-  width: 120px;
-  height: 120px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: calc( var(--square-dim-main) * 3);
+  max-width: calc( var(--square-dim-limit) * 3);
+  height: calc( var(--square-dim-main) * 3);
+  max-height: calc( var(--square-dim-limit) * 3);
+/*   min-width: calc( var(--square-dim-main) * 3);
+  min-height: calc( var(--square-dim-main) * 3); */
   background-color: grey;
   opacity: 90%;
   border-radius: 15px;
