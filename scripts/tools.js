@@ -25,23 +25,22 @@ function arrayIntersection(arr){
 function handToPieceArea(piece,left,top,animationFrame = true){
   let pieceParentLeft = piece.parentElement.offsetLeft
   let pieceParentTop = piece.parentElement.offsetTop
-
+  let squareWidth = document.querySelector('.square').offsetWidth;
   if (piece.parentElement.id.substring(2) === 'graveyard'){
     pieceParentTop -= 10;
   }
   if (animationFrame){
-    window.requestAnimationFrame(()=>{
-      pieceArea.appendChild(piece);
-      piece.style.left = left + - 20 + 'px';
-      piece.style.top = top + window.scrollY - 20 + 'px';
-    }); 
+    window.requestAnimationFrame(offsetPiece); 
   } else {
-    pieceArea.appendChild(piece);
-    piece.style.left = left + - 20 + 'px';
-    piece.style.top = top + window.scrollY - 20 + 'px';
-    //console.log('piece in piece area')
+    offsetPiece();
   }
   return [pieceParentLeft, pieceParentTop];
+
+  function offsetPiece(){
+      pieceArea.appendChild(piece);
+      piece.style.left = left + - squareWidth/2 + 'px';
+      piece.style.top = top + window.scrollY - squareWidth/2 + 'px';
+  }
 }
 
 function isp1(element){

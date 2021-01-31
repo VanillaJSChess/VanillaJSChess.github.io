@@ -4,8 +4,9 @@
 }
 
 html, body{
- height:100%;
+ height: 100%;
  font-family: sans-serif;
+
  padding-top:0;
  margin-top:0;
  z-index:-200;
@@ -16,7 +17,7 @@ html, body{
  padding: 0 10px;
  min-height:100%;
  background-color:#e2e2e2;
- width: 70%;
+ width: calc(10 * var(--square-dim-limit));
  margin: auto;
  z-index:-100;
 }
@@ -137,7 +138,7 @@ button:active,
 
 
 .bottom-area{
- padding-bottom:50px;
+ /* padding-bottom:50px; */
 }
 
 #game-area{
@@ -157,8 +158,6 @@ button:active,
 #board{
   display:inline-block;
   font-size: 0;
-  //padding: 10px;
-  //padding-top: 0;
 }
 
 .square{
@@ -250,22 +249,19 @@ button:active,
 }
 
 #p1graveyard, #p2graveyard{
-  width: 40px;
-  height: 20px;
+  width: var(--square-dim-main);
+  max-width: var(--square-dim-limit);
+  height: var(--square-dim-main);
+  max-height: var(--square-dim-limit);
   display: flex;
   justify-content:center;
   align-items:center;
   position:absolute;
 }
 
-#p1graveyard{
-  left: -40px;
-} 
+#p1graveyard{/* left: calc(-1 * var(--square-dim-limit) - .3rem); */} 
 
-#p2graveyard{
-  left: 325px;
-  top: 285px;
-}
+#p2graveyard{bottom: 0;right: 0;}
 
 #p1icon,#p2icon{
   border: 1px solid black; 
@@ -435,7 +431,6 @@ button:active,
 
 #board-with-promotion{
   position:relative;
-  //padding-bottom: 20px;
 }
 
 #choose-promotion {

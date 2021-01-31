@@ -5,6 +5,7 @@ function dragElement(elmnt) {
       pos3 = 0,
       pos4 = 0;
   let startParent;
+  let squareWidth = document.querySelector('.square').offsetWidth;
   if (onMobile){
     elmnt.addEventListener('click',dragMouseDown);
   } else {
@@ -79,8 +80,8 @@ function dragElement(elmnt) {
       pos2 = pos4 - e.clientY;
       pos3 = e.clientX;
       pos4 = e.clientY;    
-      elmnt.style.left = (pos3 - leftBoundElmnt + leftBoundSquare - leftBoundRow -20) + 'px';
-      elmnt.style.top = (pos4 - topBoundElmnt + elmntBounds.height*rowCol[0]- 20) + 'px';
+      elmnt.style.left = (pos3 - leftBoundElmnt + leftBoundSquare - leftBoundRow - squareWidth/2) + 'px';
+      elmnt.style.top = (pos4 - topBoundElmnt + elmntBounds.height*rowCol[0]- squareWidth/2) + 'px';
       handleSquareHighlightsDrag(document.elementsFromPoint(pos3,pos4).find(div=>div.classList.contains('square')));
     }
   }
