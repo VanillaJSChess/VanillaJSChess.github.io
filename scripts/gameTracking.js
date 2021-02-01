@@ -21,7 +21,7 @@ function showPrevMove(){
         if (prevMove.enPassant){
           sq = boardNode.children[prevMove.enPassant[0]].children[[prevMove.enPassant[1]]];
         }
-        completeMove(startParent,p,sq,false).then(()=>{
+        completeMove({startParent,piece:p,square:sq,shouldUpdate:false}).then(()=>{
           canAnimate = true;
         });
       });
@@ -59,7 +59,7 @@ function showNextMove(){
         let piece = Array.from(startParent.children).find(piece=>piece.classList.contains("piece"));
         pieceMap.get(piece).isCaptured = true;
         nextMove.capture = pieceMap.get(piece);
-        completeMove(startParent,piece,graveyard,false).then(()=>{
+        completeMove({startParent,piece,square:graveyard,shouldUpdate:false}).then(()=>{
           canAnimate = true;
           if (undoneMoves.length === 0){ pickUpFromCurrentPosition()}
         });

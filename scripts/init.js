@@ -1,8 +1,8 @@
 for (i = 0; i < 8; i++) {
   getSquare(i,0).style.borderLeft = '1px solid black';
-  getSquare(i,7).style.borderRight = '3px solid black';
+  getSquare(i,7).style.borderRight = '1px solid black';
 }
-document.querySelectorAll('.gameRow')[7].style.borderBottom = '3px solid black';
+document.querySelectorAll('.gameRow')[7].style.borderBottom = '1px solid black';
 document.querySelectorAll('.gameRow')[0].style.borderTop = '1px solid black';
 
 for (i = 0; i < p1pieces.length; i++) {
@@ -25,6 +25,13 @@ toNextMove.addEventListener('click',callFuncIfNotThinking.bind(null,showNextMove
 
 resizeGraveyard()
 window.addEventListener('resize',resizeGraveyard);
+
+window.addEventListener('keydown',event=>{
+  if (event.keyCode===27) {
+    unhighlightAllSquares();
+    hideAvailableMoveIcons();
+  }
+})
 
 function toggleComputerPlayer(){
   playingComputer = !playingComputer;
@@ -64,12 +71,13 @@ forfeit.addEventListener('click', function(event){
 });
 pgn.addEventListener('click',()=>{
   pgnMenu.classList.remove('hidden');
+  pgnText.focus()
 })
 document.querySelector('#close-pgn').addEventListener('click',()=>{
   pgnMenu.classList.add('hidden');
 })
 pgnSave.addEventListener('click', ()=>{
-  pgnText.value = algebraicNotation().join(', ')
+  pgnText.value = algebraicNotation(moveHistory).join(', ')
 });
 pgnLoad.addEventListener('click', ()=>{
   if (pgnText.value === "") {
@@ -135,7 +143,11 @@ function registerClicks(e){
         hideAvailableMoveIcons();
       } else { //a square was clicked 
         if (!clickedSqaure.children[0].classList.contains('hidden')){ //check for a legal move 
-          completeMove(activePiece.parentElement,activePiece,clickedSqaure);
+          completeMove({
+            startParent:activePiece.parentElement,
+            piece:activePiece,
+            square:clickedSqaure,
+            testingLine});
           hideAvailableMoveIcons();
         }
       }

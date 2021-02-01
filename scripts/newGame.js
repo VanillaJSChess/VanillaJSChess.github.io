@@ -6,7 +6,7 @@ function resetAll() {
   if (!p1pieces[0].classList.contains('white')){ //if this results in a side swap, flip the king and queen
    flipKingAndQueen();
   }
-  playingComputer = true;
+//   playingComputer = true;
   p1s.innerText = 0; //reset scores 
   p2s.innerText = 0;
   newMatch(); 

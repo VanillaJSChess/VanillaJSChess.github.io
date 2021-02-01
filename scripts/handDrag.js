@@ -98,7 +98,7 @@ function dragElement(elmnt) {
       try {
         if (!square.children[0].classList.contains('hidden')) {
           endDrag(elmnt);
-          completeMove(startParent,elmnt,square)
+          completeMove({startParent,piece:elmnt,square,testingLine})
         } else {
           startParent.appendChild(elmnt);
           endDrag(elmnt,startParent === square);

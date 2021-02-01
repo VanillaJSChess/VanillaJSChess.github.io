@@ -1,12 +1,13 @@
-function algebraicNotation(){
+function algebraicNotation(moveArr){
   let colNotation = 'abcdefgh'.split('');
   let pieceShorthand, move, moveNotation;
-  let notationLog = []
-
-  for (let i=0;i<moveHistory.length;i+=2){
+  let notationLog = [];
+  let moveNumber;
+  for (let i=0;i<moveArr.length;i+=2){
     moveNotation = ''
     for (let j=0;j<2;j++){
-      move = moveHistory[i+j].move;
+      moveNumber = (moveArr.length < moveHistory.length) ? 0 : i+j; 
+      move = moveArr[moveNumber].move;
       //get letter of piece 
       if(move[2] === "Pawn") {
         pieceShorthand = '';
@@ -16,23 +17,23 @@ function algebraicNotation(){
         pieceShorthand = move[2][0];  
       }
       //check if another piece can move there 
-      if (moveHistory[i+j].double === 'column'){
+      if (moveArr[moveNumber].double === 'column'){
         pieceShorthand += colNotation[move[0][1]];
-      } else if (moveHistory[i+j].double === 'row'){
+      } else if (moveArr[moveNumber].double === 'row'){
         pieceShorthand += String(8-move[0][0]);
       }
 
       //check if the move was a castle 
-      if (moveHistory[i+j].castle){
-        if (Math.abs(moveHistory[i+j].castle[1][1] - moveHistory[i+j].castle[0][1]) === 2){
+      if (moveArr[moveNumber].castle){
+        if (Math.abs(moveArr[moveNumber].castle[1][1] - moveArr[moveNumber].castle[0][1]) === 2){
              moveNotation += 'O-O';
         } else { 
              moveNotation += 'O-O-O';
         }
-      } else if (moveHistory[i+j].capture) { //check if the move was a capture  
+      } else if (moveArr[moveNumber].capture) { //check if the move was a capture  
         if (pieceShorthand === '') {
           pieceShorthand = colNotation[move[0][1]];
-          if (moveHistory[i+j].enPassant) {
+          if (moveArr[moveNumber].enPassant) {
             //debugger
           }
         }
@@ -41,20 +42,20 @@ function algebraicNotation(){
         moveNotation += pieceShorthand+colNotation[move[1][1]]+String(8-move[1][0]);
       }
 
-      if (moveHistory[i+j].promotion){
-        moveNotation += '=' +  moveHistory[i+j].promotion;
+      if (moveArr[moveNumber].promotion){
+        moveNotation += '=' +  moveArr[moveNumber].promotion;
       }
 
       // check if the move was a check or checkmate 
-      if (moveHistory[i+j].check){ 
-        if (moveHistory[i+j].checkmate) {
+      if (moveArr[moveNumber].check){ 
+        if (moveArr[moveNumber].checkmate) {
           moveNotation += '#' 
         } else {
           moveNotation += '+' 
         } 
       }
       //if white moved last 
-      if (i+1 >= moveHistory.length){
+      if (i+1 >= moveHistory.length || moveArr.length < moveHistory.length){
         break
       }
       if (j === 0){moveNotation+= ' '}
@@ -67,7 +68,11 @@ function algebraicNotation(){
 
 
 
-
+function splitMoveString(pgnText){
+    let cleanedPGN = pgnText.replace(/[\n\r]/g, '').replace(/,/g,'');
+    let pgnData = cleanedPGN.split(/(\d+\.)/).filter(x=>!/(^\d+\.)/.test(x) && x !== '').map(x=>x.trim())
+    return pgnData
+}
 
 function readPGN(){
   //idea was to move each move 1 at a time. but what if they want to import and click through
@@ -81,8 +86,7 @@ function readPGN(){
     if (pgnText.value === "") {
       return
     }
-    let cleanedPGN = pgnText.value.replace(/[\n\r]/g, '').replace(/,/g,'');
-    let pgnData = cleanedPGN.split(/(\d+\.)/).filter(x=>!/(^\d+\.)/.test(x) && x !== '').map(x=>x.trim())
+    let pgnData = splitMoveString(pgnText.value)
     let p1Color = whoWentFirst(pgnData[0].split(' ')[0]);
     if (p1Color !== firstMove){
       doToggleFirst().then(checkEachMove)
@@ -127,9 +131,10 @@ async function findAndMakeMoves(twoMoves, PGNboard, turn){
   let moves = twoMoves.split(' ');
   let p1Color = turn;
   for (let move of moves) { 
-    if (move === 'Rfe1'){
-      debugger
-    }
+    if (!checkNonMoves(move)){
+      turn = !turn;  
+      return 
+    } 
     let piecesOnBoard = getPiecesOnBoard(PGNboard);
     changePieceBoardID(piecesOnBoard,1)
     //breakdown
@@ -332,6 +337,9 @@ async function findAndMakeMoves(twoMoves, PGNboard, turn){
       }
     }
     return breakdown
+  }
+  function checkNonMoves(move){
+    return /[A-Za-z]/.test(move)
   }
 }
 function pgnToRowCol(move){

@@ -15,10 +15,7 @@ function stackPiece(piece) {
     } else {
       graveyard = p2graveyard;
     }
-    movePiece(piece, graveyard,15).then(()=>{
-      //console.log('piece captured')
-      resolve()
-    });
+    movePiece(piece, graveyard,15).then(resolve);
   })
 }
 

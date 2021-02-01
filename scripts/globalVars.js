@@ -51,8 +51,10 @@ activePiece, //previously clicked piece
 // posStrength, 
 turn, //is it p1 or p2 move
 thinkingInProg, //blocks button clicks while waiting on computer move 
-playingComputer, //should the computer try to move 
-computerPlayer = false;
+playingComputer=false, //should the computer try to move 
+computerPlayer = false, 
+testingLine = true, //should be inverse of playingComputer
+bookMoves=[];
 const onMobile = mobileCheck();
 let boards = [{state:[],rating:[]}] //hols displayed and all simulated moves 
 let moveHistory = []; //lists all prev moves with some details 
