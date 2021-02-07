@@ -7,11 +7,11 @@
 html, body{
  height: 100%;
  font-family: sans-serif;
-
  padding-top:0;
  margin-top:0;
  z-index:-200;
  user-select:none;
+ overflow-x: hidden;
 }
 
 #main-container{
