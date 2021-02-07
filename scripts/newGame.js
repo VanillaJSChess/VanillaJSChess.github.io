@@ -6,7 +6,7 @@ function resetAll() {
   if (!p1pieces[0].classList.contains('white')){ //if this results in a side swap, flip the king and queen
    flipKingAndQueen();
   }
-  playingComputer = true;
+//   playingComputer = true;
   p1s.innerText = 0; //reset scores 
   p2s.innerText = 0;
   newMatch(); 
@@ -59,7 +59,6 @@ function newMatch() {
     movePromises = populateBoard(); //grab all the pieces that need to move to their homeSqures 
     resetPieces();
     Promise.all(movePromises).then(()=>{
-      //console.log('all pieces moved')
       //move all pieces then save their new squares as home squares
       if (!pieceMap.get(p1pieces[0]).homeSquare){
         getHomeSquares(); 
@@ -162,11 +161,20 @@ function populateBoard(){
       if(piece && piece.homeSquare){
         let currSquare = boardNode.children[piece.rowCol[0]].children[piece.rowCol[1]]
         if (piece.homeSquare !== currSquare || piece.isCaptured){
-          movePromises.push(movePiece(pieceNode, piece.homeSquare, speedFactor = 30));
+          varyPieceReturnRandom(pieceNode,piece.homeSquare,Math.floor(Math.random()*30+30))
         }
       } else { 
-        movePromises.push(movePiece(pieceNode, square, speedFactor = 30)) 
+        varyPieceReturnRandom(pieceNode,square,Math.floor(Math.random()*50+50))
       }
+    }
+    function varyPieceReturnRandom(pieceNode,end,speed){
+  // movePromises.push(movePiece(pieceNode, piece.homeSquare, speedFactor = 60));    
+      movePromises.push(new Promise((resolve,reject)=>{
+        setTimeout(async ()=>{
+          await movePiece(pieceNode,end,speed)
+          resolve();
+        },Math.random()*1000)
+      }))
     }
   }
 }

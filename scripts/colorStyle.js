@@ -1,11 +1,22 @@
 //Coloring/styling
 
+function assignBorder(good,lastMove){
+  let to = lastMove.move[1];
+  if (good) { 
+    let toSquare = boardNode.children[to[0]].children[to[1]];
+    toSquare.classList.add('correct')
+  } else {
+    let toSquare = boardNode.children[to[0]].children[to[1]];
+    toSquare.classList.add('incorrect')
+  }
+}
+
 function highlightSquare(square){
   if (!square || !square.classList.contains("square")){ return }
   if (square.classList.contains("dark")){
-    square.style.backgroundColor = "rgb(210, 80, 50)";
+    square.style.backgroundColor = "rgb(180, 90, 70)";
   } else {
-    square.style.backgroundColor = "rgb(255, 200, 130)";
+    square.style.backgroundColor = "rgb(255, 210, 150)";
   }
 }
 
@@ -16,6 +27,8 @@ function unhighlightSquare(square){
   } else {
     square.style.backgroundColor = "rgb(219, 183, 183)";
   }
+  square.classList.remove('correct')
+  square.classList.remove('incorrect')
 }
 
 

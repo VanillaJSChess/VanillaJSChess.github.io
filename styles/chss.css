@@ -1,11 +1,13 @@
 :root{
   --square-dim-main:8vh;
   --square-dim-limit:8vw; 
+  --square-border-width:4px;
 }
 
 html, body{
- height:100%;
+ height: 100%;
  font-family: sans-serif;
+
  padding-top:0;
  margin-top:0;
  z-index:-200;
@@ -16,7 +18,7 @@ html, body{
  padding: 0 10px;
  min-height:100%;
  background-color:#e2e2e2;
- width: 70%;
+ width: calc(10 * var(--square-dim-limit));
  margin: auto;
  z-index:-100;
 }
@@ -137,7 +139,7 @@ button:active,
 
 
 .bottom-area{
- padding-bottom:50px;
+ /* padding-bottom:50px; */
 }
 
 #game-area{
@@ -157,8 +159,6 @@ button:active,
 #board{
   display:inline-block;
   font-size: 0;
-  //padding: 10px;
-  //padding-top: 0;
 }
 
 .square{
@@ -171,10 +171,28 @@ button:active,
   position: relative;
   z-index:0;
   display: flex;
-  box-sizing: content-box;
+  box-sizing: border-box;
   font-weight: bolder;
 }
 
+.square.correct{
+  border-right: var(--square-border-width) solid #339637!important;
+  border-left: var(--square-border-width) solid #339637!important;
+  border: var(--square-border-width) solid #339637;
+  border-radius:6px;
+}
+
+.square.incorrect{
+  border-radius:6px;
+  border-right: var(--square-border-width) solid #f44336!important;
+  border-left: var(--square-border-width) solid #f44336!important;
+  border: var(--square-border-width) solid #f44336;
+}
+
+.square.incorrect>.piece,.square.correct>.piece{
+  left:calc(-1 * var(--square-border-width))!important;
+  top:calc(-1 * var(--square-border-width))!important;
+}
 
 .br-text, .tr-text{
   position: absolute;
@@ -199,6 +217,7 @@ button:active,
 .square.dark{
   background-color: #824100;
   color: rgb(219, 183, 183);
+  box-sizing: border-box;
 }
 
 .avail-move{
@@ -250,22 +269,19 @@ button:active,
 }
 
 #p1graveyard, #p2graveyard{
-  width: 40px;
-  height: 20px;
+  width: var(--square-dim-main);
+  max-width: var(--square-dim-limit);
+  height: var(--square-dim-main);
+  max-height: var(--square-dim-limit);
   display: flex;
   justify-content:center;
   align-items:center;
   position:absolute;
 }
 
-#p1graveyard{
-  left: -40px;
-} 
+#p1graveyard{/* left: calc(-1 * var(--square-dim-limit) - .3rem); */} 
 
-#p2graveyard{
-  left: 325px;
-  top: 285px;
-}
+#p2graveyard{bottom: 0;right: 0;}
 
 #p1icon,#p2icon{
   border: 1px solid black; 
@@ -367,51 +383,51 @@ button:active,
 }
 
 .white.pawn{
-  background-image:url("../images/white-pawn.png");
+  background-image:url("../images/white-pawn.svg");
 }
 
 .black.pawn{
-  background-image:url("../images/black-pawn.png");
+  background-image:url("../images/black-pawn.svg");
 }
 
 .white.knight, .promotion-piece.p1knight{
-  background-image:url("../images/white-knight.png");
+  background-image:url("../images/white-knight.svg");
 }
 
 .black.knight, .promotion-piece.p2knight{
-  background-image:url("../images/black-knight.png");
+  background-image:url("../images/black-knight.svg");
 }
 
 .white.bishop, .promotion-piece.p1bishop{
-  background-image:url("../images/white-bishop.png");
+  background-image:url("../images/white-bishop.svg");
 }
 
 .black.bishop, .promotion-piece.p2bishop{
-  background-image:url("../images/black-bishop.png");
+  background-image:url("../images/black-bishop.svg");
 }
 
 .white.rook, .promotion-piece.p1rook{
-  background-image:url("../images/white-rook.png");
+  background-image:url("../images/white-rook.svg");
 }
 
 .black.rook, .promotion-piece.p2rook{
-  background-image:url("../images/black-rook.png");
+  background-image:url("../images/black-rook.svg");
 }
 
 .white.queen, .promotion-piece.p1queen {
-  background-image:url("../images/white-queen.png");
+  background-image:url("../images/white-queen.svg");
 }
 
 .black.queen, .promotion-piece.p2queen{
-  background-image:url("../images/black-queen.png");
+  background-image:url("../images/black-queen.svg");
 }
 
 .white.king{
-  background-image:url("../images/white-king.png");
+  background-image:url("../images/white-king.svg");
 }
 
 .black.king{
-  background-image:url("../images/black-king.png");
+  background-image:url("../images/black-king.svg");
 }
 
 #choose-promotion > .promotion-piece {
@@ -435,7 +451,6 @@ button:active,
 
 #board-with-promotion{
   position:relative;
-  //padding-bottom: 20px;
 }
 
 #choose-promotion {
@@ -725,6 +740,16 @@ button:focus{
   /* width: 36px; */
   /* height: 36px; */
  }
+  :root{
+    --square-border-width:3px;
+  }
+}
+
+
+@media screen and (max-height:600px){
+  :root{
+    --square-border-width:3px;
+  }
 }
 
 

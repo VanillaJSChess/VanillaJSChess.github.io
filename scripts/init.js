@@ -1,100 +1,109 @@
-function init() {
-  for (i = 0; i < 8; i++) {
-    getSquare(i,0).style.borderLeft = '1px solid black';
-    getSquare(i,7).style.borderRight = '3px solid black';
-  }
-  document.querySelectorAll('.gameRow')[7].style.borderBottom = '3px solid black';
-  document.querySelectorAll('.gameRow')[0].style.borderTop = '1px solid black';
-
-  for (i = 0; i < p1pieces.length; i++) {
-    dragElement(p1pieces[i]);
-    dragElement(p2pieces[i]);
-  }
-  dragBox(document.querySelector('#move-pgn-menu'));
-  resizeBox(document.querySelector('#resize-pgn-menu'));
-
-  promotionPieces.forEach(piece=>{
-    piece.addEventListener('click',()=>{
-      promotionSelected(piece);
-    })
-  })
-//   reset.addEventListener('click', callFuncIfNotThinking.bind(null,resetAll));
-  newGameButton.addEventListener('click', callFuncIfNotThinking.bind(null,newMatch));
-  toggleComputer.addEventListener('click', callFuncIfNotThinking.bind(null,toggleComputerPlayer));
-  toPrevMove.addEventListener('click',callFuncIfNotThinking.bind(null,showPrevMove));
-  toNextMove.addEventListener('click',callFuncIfNotThinking.bind(null,showNextMove));
-  
-  function toggleComputerPlayer(){
-    playingComputer = !playingComputer;
-    if (toggleComputer.innerText.indexOf('Off') > 0){
-      toggleComputer.innerText = 'Turn Computer On';
-    } else {
-      changeToggleText().then(()=>{
-        window.requestAnimationFrame(()=>{
-          if (!turn) {
-            doNormalComputerMove();
-          }
-        });
-      });
-    }
-  }
-  ffyes.addEventListener('click', (event)=>{
-    winner();
-    forfeit.classList.remove('forfeit-color')
-    forfeit.classList.add('new-game-color')
-    forfeit.innerText = 'Play Again';
-    forfeit.style.width = 'auto';
-
-  });
-  forfeitBanner.addEventListener('click', function(event){
-    hideForfeit();
-  });
-  forfeit.addEventListener('click', function(event){
-    if (winnerBool || drawBool){
-      newMatch();
-    } else {
-      forfeitBanner.classList.remove('hidden'); 
-      ffName.classList.remove('hidden');
-      ffYesNo.classList.remove('hidden')
-      forfeitBanner.classList.add('visible');
-      forfeit.classList.add('clicked')
-    }
-  });
-  pgn.addEventListener('click',()=>{
-    pgnMenu.classList.remove('hidden');
-  })
-  document.querySelector('#close-pgn').addEventListener('click',()=>{
-    pgnMenu.classList.add('hidden');
-  })
-  pgnSave.addEventListener('click', ()=>{
-    pgnText.value = algebraicNotation().join(', ')
-  });
-  pgnLoad.addEventListener('click', ()=>{
-    if (pgnText.value === "") {
-      return
-    }
-    newMatch().then(()=>{
-      readPGN().then(()=>{
-        pgnMenu.classList.add('hidden');
-      })
-    })
-  });
-
-  toggleFirst.addEventListener('click', callFuncIfNotThinking.bind(null,doToggleFirst));
-  resetAll();
-  createPieceLists();
-
-
-  //maybe should be 'click' for mobile bug?
-  document.addEventListener('mousedown',registerClicks);
-  document.addEventListener('keydown',(e)=>{
-    if (e.keyCode === 27) {
-      hideForfeit();
-      pgnMenu.classList.add('hidden');
-      hideOptions();
-    }
-  });
+for (i = 0; i < 8; i++) {
+  getSquare(i,0).style.borderLeft = '1px solid black';
+  getSquare(i,7).style.borderRight = '1px solid black';
 }
+document.querySelectorAll('.gameRow')[7].style.borderBottom = '1px solid black';
+document.querySelectorAll('.gameRow')[0].style.borderTop = '1px solid black';
+
+for (i = 0; i < p1pieces.length; i++) {
+  dragElement(p1pieces[i]);
+  dragElement(p2pieces[i]);
+}
+dragBox(document.querySelector('#move-pgn-menu'));
+resizeBox(document.querySelector('#resize-pgn-menu'));
+
+promotionPieces.forEach(piece=>{
+  piece.addEventListener('click',()=>{
+    promotionSelected(piece);
+  })
+})
+//   reset.addEventListener('click', callFuncIfNotThinking.bind(null,resetAll));
+newGameButton.addEventListener('click', callFuncIfNotThinking.bind(null,newMatch));
+toggleComputer.addEventListener('click', callFuncIfNotThinking.bind(null,toggleComputerPlayer));
+toPrevMove.addEventListener('click',callFuncIfNotThinking.bind(null,showPrevMove));
+toNextMove.addEventListener('click',callFuncIfNotThinking.bind(null,showNextMove));
+
+resizeGraveyard()
+window.addEventListener('resize',resizeGraveyard);
+
+window.addEventListener('keydown',event=>{
+  if (event.keyCode===27) {
+    unhighlightAllSquares();
+    hideAvailableMoveIcons();
+  }
+})
+
+function toggleComputerPlayer(){
+  playingComputer = !playingComputer;
+  if (toggleComputer.innerText.indexOf('Off') > 0){
+    toggleComputer.innerText = 'Turn Computer On';
+  } else {
+    changeToggleText().then(()=>{
+      window.requestAnimationFrame(()=>{
+        if (!turn) {
+          doNormalComputerMove();
+        }
+      });
+    });
+  }
+}
+ffyes.addEventListener('click', (event)=>{
+  winner();
+  forfeit.classList.remove('forfeit-color')
+  forfeit.classList.add('new-game-color')
+  forfeit.innerText = 'Play Again';
+  forfeit.style.width = 'auto';
+
+});
+forfeitBanner.addEventListener('click', function(event){
+  hideForfeit();
+});
+forfeit.addEventListener('click', function(event){
+  if (winnerBool || drawBool){
+    newMatch();
+  } else {
+    forfeitBanner.classList.remove('hidden'); 
+    ffName.classList.remove('hidden');
+    ffYesNo.classList.remove('hidden')
+    forfeitBanner.classList.add('visible');
+    forfeit.classList.add('clicked')
+  }
+});
+pgn.addEventListener('click',()=>{
+  pgnMenu.classList.remove('hidden');
+  pgnText.focus()
+})
+document.querySelector('#close-pgn').addEventListener('click',()=>{
+  pgnMenu.classList.add('hidden');
+})
+pgnSave.addEventListener('click', ()=>{
+  pgnText.value = algebraicNotation(moveHistory).join(', ')
+});
+pgnLoad.addEventListener('click', ()=>{
+  if (pgnText.value === "") {
+    return
+  }
+  newMatch().then(()=>{
+    readPGN().then(()=>{
+      pgnMenu.classList.add('hidden');
+    })
+  })
+});
+
+toggleFirst.addEventListener('click', callFuncIfNotThinking.bind(null,doToggleFirst));
+resetAll();
+createPieceLists();
+
+
+//maybe should be 'click' for mobile bug?
+document.addEventListener('mousedown',registerClicks);
+document.addEventListener('keydown',(e)=>{
+  if (e.keyCode === 27) {
+    hideForfeit();
+    pgnMenu.classList.add('hidden');
+    hideOptions();
+  }
+});
 
 function doToggleFirst(){
   return new Promise((resolve,reject)=>{
@@ -134,7 +143,11 @@ function registerClicks(e){
         hideAvailableMoveIcons();
       } else { //a square was clicked 
         if (!clickedSqaure.children[0].classList.contains('hidden')){ //check for a legal move 
-          completeMove(activePiece.parentElement,activePiece,clickedSqaure);
+          completeMove({
+            startParent:activePiece.parentElement,
+            piece:activePiece,
+            square:clickedSqaure,
+            testingLine});
           hideAvailableMoveIcons();
         }
       }
@@ -201,7 +214,3 @@ function createPieceLists(){
     document.querySelectorAll(pieceType[0]).forEach(piece=>new pieceType[1](piece))
   });
 }
-
-init();
-
-
