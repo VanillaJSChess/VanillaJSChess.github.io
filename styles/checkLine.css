@@ -1,0 +1,19 @@
+
+.square.correct{
+  border-right: var(--square-border-width) solid #339637!important;
+  border-left: var(--square-border-width) solid #339637!important;
+  border: var(--square-border-width) solid #339637;
+  border-radius:6px;
+}
+
+.square.incorrect{
+  border-radius:6px;
+  border-right: var(--square-border-width) solid #f44336!important;
+  border-left: var(--square-border-width) solid #f44336!important;
+  border: var(--square-border-width) solid #f44336;
+}
+
+.square.incorrect>.piece,.square.correct>.piece{
+  left:calc(-1 * var(--square-border-width))!important;
+  top:calc(-1 * var(--square-border-width))!important;
+}

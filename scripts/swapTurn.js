@@ -1,5 +1,6 @@
 function swapTurn(boardIndex) {
-  thinking.classList.remove('visible')
+  ////revamp
+//   thinking.classList.remove('visible')
   thinkingInProg = false;
   document.activeElement.blur();
   document.getElementById('game-area').click()

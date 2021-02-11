@@ -7,8 +7,10 @@ function resetAll() {
    flipKingAndQueen();
   }
 //   playingComputer = true;
-  p1s.innerText = 0; //reset scores 
-  p2s.innerText = 0;
+
+////revamp
+//   p1s.innerText = 0; //reset scores 
+//   p2s.innerText = 0;
   newMatch(); 
   switchSides(true); //ensures p1 is white and p2 is black
   setMoveIcons();
@@ -30,8 +32,9 @@ function switchSides(reset = false){
     p2is = 'white';
     turn = true;
   }
-  p2icon.style.backgroundColor = p1is;
-  p1icon.style.backgroundColor = p2is;
+  ////revamp
+//   p2icon.style.backgroundColor = p1is;
+//   p1icon.style.backgroundColor = p2is;
 
 
 
@@ -49,7 +52,8 @@ function switchSides(reset = false){
 function newMatch() {
   return new Promise((resolve,reject)=>{
     resetDisplayedToShown(); 
-    addOrRemoveThinking();
+    ////revamp
+//     addOrRemoveThinking();
     emptyHistoryCollections();
     resetFFbutton()
     unhighlightAllSquares();

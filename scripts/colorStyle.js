@@ -77,36 +77,42 @@ function colorPlayerIcons(){
     p1color = 'black';
   }
   if (turn) {
-    p1icon.style.visibility = 'visible';
-    ffName.innerText = 'Player 1 Forfeit?'
+    ////revamp
+//     p1icon.style.visibility = 'visible';
+//     ffName.innerText = 'Player 1 Forfeit?'
   } else {
-    p2icon.style.visibility = 'visible';
-    ffName.innerText = 'Player 2 Forfeit?'
-    }
+    ////revamp
+    
+//       p2icon.style.visibility = 'visible';
+//       ffName.innerText = 'Player 2 Forfeit?'
+  }
 }
 
 function clearIcons() {
-    p1icon.style.visibility = 'hidden';
-    p2icon.style.visibility = 'hidden'
+  ////revamp
+//     p1icon.style.visibility = 'hidden';
+//     p2icon.style.visibility = 'hidden'
 }
 
 function setMoveIcons() {
   clearIcons();
   if (turn) {
-    p1icon.style.visibility = 'visible';
+    ////revamp
+//     p1icon.style.visibility = 'visible';
   } else {
-    p2icon.style.visibility = 'visible';
+//     p2icon.style.visibility = 'visible';
   }
 }
 
 function clearWinner() {
   //restyle anything so it looks like it does before a win 
-  winner1.style.visibility = 'hidden';
-  winner2.style.visibility = 'hidden';
-  drawNode.style.visibility = 'hidden';
-  clearIcons();
-  winner1.style.backgroundColor = '#ffffff';
-  winner2.style.backgroundColor = '#ffffff';
+  ////revamp
+//   winner1.style.visibility = 'hidden';
+//   winner2.style.visibility = 'hidden';
+//   drawNode.style.visibility = 'hidden';
+//   clearIcons();
+//   winner1.style.backgroundColor = '#ffffff';
+//   winner2.style.backgroundColor = '#ffffff';
   winnerBool = false;
 }
 

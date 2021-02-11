@@ -15,24 +15,15 @@ pieceArea = document.querySelector('#piece-area'),
 boardNode = document.querySelector('#board'),
 //icons and score 
 p1icon = document.querySelector('#p1icon'), 
-p2icon = document.querySelector('#p2icon'), 
-p1s = document.querySelector('#p1s'), 
-p2s = document.querySelector('#p2s'), 
-//win or draw display
-winner1 = document.querySelector('#winner1'), 
-winner2 = document.querySelector('#winner2'), 
-drawNode =  document.querySelector('#draw'),
+p2icon = document.querySelector('#p2icon'),
 //buttons
-newGameButton = document.querySelector('#new'), 
-forfeit = document.querySelector('#forfeit'), 
-reset = document.querySelector('#reset'), 
-toggleFirst = document.querySelector('#toggleFirst'), 
-toggleComputer = document.querySelector('#toggleComputer'), 
+newGameButton = document.querySelector('#new-game'), 
+forfeit = document.querySelector('#forfeit'),
+toggleFirst = document.querySelector('#toggle-first'), 
+toggleComputer = document.querySelector('#toggle-computer'), 
 toPrevMove = document.querySelector('#prev-move'), 
 toNextMove = document.querySelector('#next-move'),
-pgn = document.querySelector('#pgn'),
-pgns = document.querySelector('.pgn-options').children,
-options = document.querySelectorAll('.options'),
+pgn = document.querySelector('#load-pgn'),
 allButtons = document.querySelectorAll('button'),
 pgnSave = document.querySelector('#pgn-save'),
 pgnLoad = document.querySelector('#pgn-load'),
@@ -51,11 +42,11 @@ activePiece, //previously clicked piece
 // posStrength, 
 turn, //is it p1 or p2 move
 thinkingInProg, //blocks button clicks while waiting on computer move 
+computerPlayer = false, 
 
 //change for testing line
-playingComputer = true, //should the computer try to move 
-computerPlayer = true, 
-testingLine = false, //should be inverse of playingComputer
+playingComputer = false, //should the computer try to move 
+testingLine = true, //should be inverse of playingComputer
 bookMoves=[];
 
 

@@ -4,56 +4,70 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>VanillaJS Chess</title>
+  <link rel="stylesheet" type="text/css" href="styles/layout.css">
+  <link rel="stylesheet" type="text/css" href="styles/board.css">
+  <link rel="stylesheet" type="text/css" href="styles/checkLine.css">
+  <link rel="stylesheet" type="text/css" href="styles/pieces.css">
+  <link rel="stylesheet" type="text/css" href="styles/pgnMenu.css">
   <link rel="stylesheet" type="text/css" href="styles/chss.css">
   <link rel="icon" href="images/black-pawn.png">
+  <script defer type="text/javascript" src="scripts/globalVars.js"></script>
+  <script defer type="text/javascript" src="scripts/tools.js"></script>
+  <script defer type="text/javascript" src="scripts/newGame.js"></script>
+  <script defer type="text/javascript" src="scripts/promotion.js"></script>
+  <script defer type="text/javascript" src="scripts/pieceClasses.js"></script>
+  <script defer type="text/javascript" src="scripts/handDrag.js"></script>
+  <script defer type="text/javascript" src="scripts/handleMoves.js"></script>
+  <script defer type="text/javascript" src="scripts/rateBoardstate.js"></script>
+  <script defer type="text/javascript" src="scripts/computerMove.js"></script>
+  <script defer type="text/javascript" src="scripts/swapTurn.js"></script>
+  <script defer type="text/javascript" src="scripts/postMove.js"></script>
+  <script defer type="text/javascript" src="scripts/checkRepetition.js"></script>
+  <script defer type="text/javascript" src="scripts/colorStyle.js"></script>
+  <script defer type="text/javascript" src="scripts/winnerLogic.js"></script>
+  <script defer type="text/javascript" src="scripts/autoMove.js"></script>
+  <script defer  type="text/javascript" src="scripts/troubleshooting.js"></script>
+  <script defer type="text/javascript" src="scripts/gameTracking.js"></script>
+  <script defer type="text/javascript" src="scripts/init.js"></script>
+  <script defer type="text/javascript" src="scripts/handlePGN.js"></script>
+  <script defer type="text/javascript" src="scripts/bookTest.js"></script>
 </head>
 
 <!-- By Chess_kdt45.svg: en:User:Cburnettderivative work: NikNaks93 (talk) - Chess_kdt45.svg, CC BY-SA 3.0, https://commons.wikimedia.org/w/index.php?curid=10403970 -->
 
 
-<body>
+<body>    
+  <div id="main-menu" class="collapsed">
+      <div id="load-pgn">Load PGN</div>
+      <div id="save-pgn">Save PGN</div>
+      <div id="toggle-first">Toggle First</div>
+      <div id="toggle-computer">Turn Computer Off</div>
+      <div id="new-game">New Game</div>
+  </div>
   <div id="main-container">
-    <div id="buttons">
-        <div class="options pgn-options">
-          <button class="centered activator" id="pgn">Save/Load</button>
-        </div>
-        <div class="options moving-options">
-          <button class="centered activator" id="options">Options</button>
-          <button class="centered" id="toggleFirst">Toggle First</button>
-          <button class="centered" id="toggleComputer">Turn Computer Off</button>
-        </div>
-        <button class="centered" id="new">New Game</button>
+    <nav>
+      <div class="menu-icon"></div>
+    </nav>
+    <div class="player1-data">
+        <div class="thinking"></div>
+        <div class="icon"></div>
+        <div class="player-name">Player 1:</div>
+        <div class="winner"></div>
     </div>
-    <div id="scbd">
-      <div id="p1">
-        <div id="placeholder"> 
-        placeholder
-      </div>
-      <span id="p1icon"></span>P1: <span id="p1s">0</span>
-      <div id="winner1">winner</div>
-      </div>
-      <div id="draw">draw</div>
-      <div id= "p2">
-      <div id="thinking"> 
-          Thinking
-          <div id="rotate-anim"> 
-              <div class="rotate1"></div>
-              <div class="rotate2"></div>
-          </div>
-        </div>
-        <span id="p2icon"></span>P2: <span id="p2s">0</span>
-        <div id="winner2">winner</div>
-      </div>
+    <div class="player2-data">
+        <div class="thinking"></div>
+        <div class="icon"></div>
+        <div class="player-name">Player 2:</div>
+        <div class="winner"></div>
     </div>
-<!--     <div id="pgn-menu"> -->
-    <div id="pgn-menu" class = "hidden">
+    <div id="pgn-menu" class="hidden">
       <div>
         <div id="close-pgn">X</div>
         <div id="move-pgn-menu">
           <hr><hr><hr>  
         </div>
         <form>
-          <label for="sometext">Algebraic Notation</label>
+          <span>Algebraic Notation</span>
           <textarea id="pgn-textarea" placeholder="Paste your PGN here"></textarea>
         </form>
       </div>
@@ -87,12 +101,12 @@
             <div class="piece p1piece white pawn"></div>
             <div class="piece p1piece white pawn"></div>
           </div>
-          <span id = "choose-promotion"> 
+          <div id = "choose-promotion"> 
             <div class = "promotion-piece"></div>
             <div class = "promotion-piece"></div>
             <div class = "promotion-piece"></div>
             <div class = "promotion-piece"></div>
-          </span>
+          </div>
           <div id="board">
             <div class="gameRow">
                <span class="square">
@@ -206,12 +220,11 @@
             <div class="piece p2piece black rook"></div>
           </div>
       </div>
-      
     </div>
     <div class="bottom-area">
       <div id="traverse-moves">
-        <button class="centered" id="prev-move"><</button>
-        <button class="centered" id="next-move">></button>
+        <button class="" id="prev-move"><</button>
+        <button class="" id="next-move">></button>
       </div>
       <div class="forfeit-area">
         <div class="forfeit-options">
@@ -224,32 +237,8 @@
           </div>
         </div>
       </div>
-
-
     </div>
-
-  <script type="text/javascript" src="scripts/globalVars.js"></script>
-  <script type="text/javascript" src="scripts/tools.js"></script>
-  <script type="text/javascript" src="scripts/newGame.js"></script>
-  <script type="text/javascript" src="scripts/promotion.js"></script>
-  <script type="text/javascript" src="scripts/pieceClasses.js"></script>
-  <script type="text/javascript" src="scripts/handDrag.js"></script>
-  <script type="text/javascript" src="scripts/handleMoves.js"></script>
-  <script type="text/javascript" src="scripts/rateBoardstate.js"></script>
-  <script type="text/javascript" src="scripts/buttonAnim.js"></script>
-  <script type="text/javascript" src="scripts/computerMove.js"></script>
-  <script type="text/javascript" src="scripts/swapTurn.js"></script>
-  <script type="text/javascript" src="scripts/postMove.js"></script>
-  <script type="text/javascript" src="scripts/checkRepetition.js"></script>
-  <script type="text/javascript" src="scripts/colorStyle.js"></script>
-  <script type="text/javascript" src="scripts/winnerLogic.js"></script>
-  <script type="text/javascript" src="scripts/autoMove.js"></script>
-  <script type="text/javascript" src="scripts/troubleshooting.js"></script>
-  <script type="text/javascript" src="scripts/gameTracking.js"></script>
-  <script type="text/javascript" src="scripts/init.js"></script>
-  <script type="text/javascript" src="scripts/handlePGN.js"></script>
-  <script type="text/javascript" src="scripts/bookTest.js"></script>
-
+  </div>  
 </body>
 
 </html>

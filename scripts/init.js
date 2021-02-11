@@ -197,6 +197,8 @@ function registerClicks(e){
 
   }
       function hideOptions(){
+        ////revamp
+        return //prop delete all this
         Array.from(options).map(buttons=>{
           buttons.children[0].classList.remove('clicked');
           Array.from(buttons.children).map(button=>{

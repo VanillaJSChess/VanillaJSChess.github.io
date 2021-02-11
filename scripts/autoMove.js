@@ -22,7 +22,7 @@ function stackPiece(piece) {
 graveyardOffsets = {true:{},false:{}}
 function movePiece(piece,loc,speedFactor=30){
   return new Promise((resolve,reject)=>{
-//     console.log('movepiece started', piece.classList)
+    if (onMobile) speedFactor=speedFactor/2;
     if (piece.parentElement.id === "piece-area"){
       changePieceParent(piece,loc);
       window.requestAnimationFrame(resolve);

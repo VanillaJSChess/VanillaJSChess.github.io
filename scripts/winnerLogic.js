@@ -31,7 +31,7 @@ function winner(player = turn) {
     clearWinner();
     winnerBool = true;
     if (undoneMoves.length < 1 && moveHistory.length > 0){ moveHistory[moveHistory.length -1].checkmate = true} 
-    if (player === computerPlayer) {
+    if (player !== computerPlayer) {
         p2s.innerText = Number(p2s.innerText) + 1;
         winner2.style.visibility = 'visible';
     } else {
