@@ -1,75 +1,74 @@
-
-.p1piece, .p2piece, .promotion-piece{
-  background:transparent;
+.p1piece,
+.p2piece,
+.promotion-piece {
+  background: transparent;
   position: absolute;
   background-position: center;
   background-size: contain;
   background-repeat: no-repeat;
-  width: var(--square-dim-main);
-  max-width: var(--square-dim-limit);
-  height: var(--square-dim-main);
-  max-height: var(--square-dim-limit);
 }
-
-.p1piece, .p2piece{
-  font-size:12px;
-  color:black;
-  text-align:center;
-}
-
-.p2piece{
-  color:white;
-}
+/* 
+#p1graveyard .piece,
+#p2graveyard .piece {
+  position:relative;
+} */
 
 .piece:hover {
   cursor: pointer;
 }
 
-
-.white.pawn{
-  background-image:url("../images/white-pawn.svg");
+.white.pawn {
+  background-image: url("../images/white-pawn.svg");
 }
 
-.black.pawn{
-  background-image:url("../images/black-pawn.svg");
+.black.pawn {
+  background-image: url("../images/black-pawn.svg");
 }
 
-.white.knight, .promotion-piece.p1knight{
-  background-image:url("../images/white-knight.svg");
+.white.knight,
+.promotion-piece.p1knight {
+  background-image: url("../images/white-knight.svg");
 }
 
-.black.knight, .promotion-piece.p2knight{
-  background-image:url("../images/black-knight.svg");
+.black.knight,
+.promotion-piece.p2knight {
+  background-image: url("../images/black-knight.svg");
 }
 
-.white.bishop, .promotion-piece.p1bishop{
-  background-image:url("../images/white-bishop.svg");
+.white.bishop,
+.promotion-piece.p1bishop {
+  background-image: url("../images/white-bishop.svg");
 }
 
-.black.bishop, .promotion-piece.p2bishop{
-  background-image:url("../images/black-bishop.svg");
+.black.bishop,
+.promotion-piece.p2bishop {
+  background-image: url("../images/black-bishop.svg");
 }
 
-.white.rook, .promotion-piece.p1rook{
-  background-image:url("../images/white-rook.svg");
+.white.rook,
+.promotion-piece.p1rook {
+  background-image: url("../images/white-rook.svg");
 }
 
-.black.rook, .promotion-piece.p2rook{
-  background-image:url("../images/black-rook.svg");
+.black.rook,
+.promotion-piece.p2rook {
+  background-image: url("../images/black-rook.svg");
 }
 
-.white.queen, .promotion-piece.p1queen {
-  background-image:url("../images/white-queen.svg");
+.white.queen,
+.promotion-piece.p1queen {
+  background-image: url("../images/white-queen.svg");
 }
 
-.black.queen, .promotion-piece.p2queen{
-  background-image:url("../images/black-queen.svg");
+.black.queen,
+.promotion-piece.p2queen {
+  background-image: url("../images/black-queen.svg");
 }
 
-.white.king{
-  background-image:url("../images/white-king.svg");
+.white.king {
+  background-image: url("../images/white-king.svg");
 }
 
-.black.king{
-  background-image:url("../images/black-king.svg");
+.black.king {
+  background-image: url("../images/black-king.svg");
 }

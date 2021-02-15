@@ -93,10 +93,11 @@ function newMatch() {
     }
   }
   function resetFFbutton(){
-    forfeit.innerText = 'Forfeit';
-    forfeit.classList.add('forfeit-color')
-    forfeit.classList.remove('new-game-color')
-    forfeit.style.width = '90px';
+    ////revamp
+    // forfeit.innerText = 'Forfeit';
+    // forfeit.classList.add('forfeit-color')
+    // forfeit.classList.remove('new-game-color')
+    // forfeit.style.width = '90px';
   }
   function resetPieces(){
   //remove the moves and statuses of each piece 

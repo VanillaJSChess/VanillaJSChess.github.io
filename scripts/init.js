@@ -1,10 +1,7 @@
-for (i = 0; i < 8; i++) {
-  getSquare(i,0).style.borderLeft = '1px solid black';
-  getSquare(i,7).style.borderRight = '1px solid black';
-}
-document.querySelectorAll('.gameRow')[7].style.borderBottom = '1px solid black';
-document.querySelectorAll('.gameRow')[0].style.borderTop = '1px solid black';
-
+// for (i = 0; i < 8; i++) {
+//   getSquare(i,0).style.borderLeft = '1px solid black';
+//   getSquare(i,7).style.borderRight = '1px solid black';
+// }
 for (i = 0; i < p1pieces.length; i++) {
   dragElement(p1pieces[i]);
   dragElement(p2pieces[i]);
@@ -47,17 +44,18 @@ function toggleComputerPlayer(){
     });
   }
 }
-ffyes.addEventListener('click', (event)=>{
-  winner();
-  forfeit.classList.remove('forfeit-color')
-  forfeit.classList.add('new-game-color')
-  forfeit.innerText = 'Play Again';
-  forfeit.style.width = 'auto';
+////revamp
+// ffyes.addEventListener('click', (event)=>{
+//   winner();
+//   forfeit.classList.remove('forfeit-color')
+//   forfeit.classList.add('new-game-color')
+//   forfeit.innerText = 'Play Again';
+//   forfeit.style.width = 'auto';
+// });
+// forfeitBanner.addEventListener('click', function(event){
+//   hideForfeit();
+// });
 
-});
-forfeitBanner.addEventListener('click', function(event){
-  hideForfeit();
-});
 forfeit.addEventListener('click', function(event){
   if (winnerBool || drawBool){
     newMatch();
@@ -123,11 +121,12 @@ function callFuncIfNotThinking(func){
 }
 
 function hideForfeit(){
-  forfeitBanner.classList.add('hidden');
-  ffName.classList.add('hidden');
-  ffYesNo.classList.add('hidden')
-  forfeitBanner.classList.remove('visible');
-  forfeit.classList.remove('clicked');
+  ////revamp
+//   forfeitBanner.classList.add('hidden');
+//   ffName.classList.add('hidden');
+//   ffYesNo.classList.add('hidden')
+//   forfeitBanner.classList.remove('visible');
+//   forfeit.classList.remove('clicked');
 }
 
 function registerClicks(e){
@@ -198,7 +197,7 @@ function registerClicks(e){
   }
       function hideOptions(){
         ////revamp
-        return //prop delete all this
+        return //prob delete all this
         Array.from(options).map(buttons=>{
           buttons.children[0].classList.remove('clicked');
           Array.from(buttons.children).map(button=>{

@@ -1,113 +1,103 @@
-:root{
-  --square-dim-main:8vh;
-  --square-dim-limit:8vw; 
-  --square-border-width:4px;
+:root {
+  --square-border-width: 4px;
+  --darkest-color: #010101;
+  --darker-color: #282828;
+  --dark-color: #545454;
+  --dark-color-hover: #4b4b4b;
+  --board-vh-limit: 70vh;
 }
 
-
-#p1graveyard, #p2graveyard{
-  width: var(--square-dim-main);
-  max-width: var(--square-dim-limit);
-  height: var(--square-dim-main);
-  max-height: var(--square-dim-limit);
+#p1graveyard,
+#p2graveyard {
+  height: 100%;
   display: flex;
-  justify-content:center;
-  align-items:center;
-  position:absolute;
+  justify-content: flex-start;
+  position: relative;
+  pointer-events: none;
 }
 
-
-#p2graveyard{bottom: 0;right: 0;}
-
-
-#forfeit{
-  z-index: 3;
-  height:32px;  
-  width:90px;
-  margin:5px auto;
-  
+#p1graveyard .sub-graveyard {
+    align-items: flex-end;
+    display: flex;
 }
 
-.forfeit-area{
-  padding:0;
+.sub-graveyard {width: calc(100vw / 8);/*   height: calc(100vw / 8); */max-width: calc(var(--board-vh-limit) / 8);/*   max-height: calc(var(--board-vh-limit) / 8); */margin-left: -1.1rem;position:relative;}
+
+.sub-graveyard .piece{
+    width: calc(100vw / 15);
+    height: calc(100vw / 15);
+    max-width: calc(var(--board-vh-limit) / 15);
+    max-height: calc(var(--board-vh-limit) / 15);
 }
 
-.forfeit-options{
-  position:relative;
-  /* background-color: white; */
-  /* padding-right: 10px; */
+.sub-graveyard:nth-of-type(1) {
+  margin-left:0rem;
 }
 
-.forfeit-banner{
-  background-color:#383838;
-  position:absolute;
+.forfeit-banner {
+  background-color: var(--dark-color);
+  position: absolute;
   color: whitesmoke;
-  white-space:nowrap;
-  border-radius:15px;
-  width:80px;
-  height:30px;
-  font-size:12px;
+  white-space: nowrap;
+  border-radius: 15px;
+  width: 80px;
+  height: 30px;
+  font-size: 12px;
   top: 6px;
-  left:0px;
-  transition: left 600ms ease,
-              visibility 600ms,
-              width 600ms, 
-              height 600ms;
+  left: 0px;
+  transition: left 600ms ease, visibility 600ms, width 600ms, height 600ms;
 }
 
-.forfeit-banner.visible{
-  transition: left 600ms ease,
-              visibility 600ms,
-              width 600ms, 
-              height 600ms 600ms;
-  left:90px;
-  height:45px;
-  width:110px;
-  visibility:visible;
+.forfeit-banner.visible {
+  transition: left 600ms ease, visibility 600ms, width 600ms, height 600ms 600ms;
+  left: 90px;
+  height: 45px;
+  width: 110px;
+  visibility: visible;
   text-align: right;
 }
 
-
-.forfeit-banner.hidden{
-/*   transition: left 600ms ease, visibility 600ms; */
-  visibility:hidden;
+.forfeit-banner.hidden {
+  /*   transition: left 600ms ease, visibility 600ms; */
+  visibility: hidden;
 }
 
-
-#ff-yes:hover, #ff-no:hover{
-  cursor:pointer;
+#ff-yes:hover,
+#ff-no:hover {
+  cursor: pointer;
 }
 
-#ff-yes, #ff-no{
-  display:inline-block;
+#ff-yes,
+#ff-no {
+  display: inline-block;
 }
 
-#ff-name{
-  position:absolute;
-  left:12px;
-  top:9px;
-  background-color:#383838;
-  display:block;
-  z-index:1;
-  visibility:visible;
+#ff-name {
+  position: absolute;
+  left: 12px;
+  top: 9px;
+  background-color: var(--dark-color);
+  display: block;
+  z-index: 1;
+  visibility: visible;
   transition: left 600ms, visibility 300ms 100ms;
 }
 
 #ff-name.hidden {
- visibility:hidden;
- left:-12px; 
- transition: left 500ms, visibility 300ms;
+  visibility: hidden;
+  left: -12px;
+  transition: left 500ms, visibility 300ms;
 }
 
 .ff-yes-no {
-  position:absolute;
-  left:30px;
-  top:25px;
+  position: absolute;
+  left: 30px;
+  top: 25px;
   transition: top 600ms 600ms;
 }
 
 .ff-yes-no.hidden {
-  top:9px;
+  top: 9px;
   transition: top 600ms;
 }
 
@@ -116,150 +106,91 @@
   position: relative;
 }
 
-#piece-area{
-  position:absolute;
-  height: 0;
-  width: 0;
-  top: 0;
-  left: 0;
-}
-
 #choose-promotion > .promotion-piece:hover {
-  cursor:pointer;
-}
-
-#board-with-promotion{
-  position:relative;
+  cursor: pointer;
 }
 
 #choose-promotion {
-  position:absolute;
-  margin:auto;
+  position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: calc( var(--square-dim-main) * 3);
-  max-width: calc( var(--square-dim-limit) * 3);
-  height: calc( var(--square-dim-main) * 3);
-  max-height: calc( var(--square-dim-limit) * 3);
-/*   min-width: calc( var(--square-dim-main) * 3);
+  /*   min-width: calc( var(--square-dim-main) * 3);
   min-height: calc( var(--square-dim-main) * 3); */
-  background-color: grey;
+  background-color: var(--dark-color);
   opacity: 90%;
-  border-radius: 15px;
+  border-radius: 0.1rem;
   z-index: 2;
-  box-shadow: 2px 2px 3px 1px #ccc;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  padding: 4px;
+  box-shadow: 0px 0px 1rem -2px #ccc;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
   visibility: hidden;
 }
 
-
-
-#toggle-computer,#toggle-first{
-  background-color:#f5b906;
+.forfeit-color,
+#traverse-moves button {
+  background-color: var(--dark-color);
 }
-#toggle-computer:hover, #toggle-computer.clicked, #toggle-first:hover{
-  background-color:#E8AC00;
+.forfeit-color:hover,
+#traverse-moves button:hover,
+#forfeit.clicked {
+  background-color: #313131;
 }
-#toggle-computer:active,#toggle-first:active{
-  background-color:#DCA000;
-}
-
-#toggle-computer,#toggle-first{
-  white-space: nowrap;
+.forfeit-color:active #traverse-moves button:active {
+  background-color: #282828;
 }
 
-#new,.new-game-color{
-  width:125px;
-  height:32px;
-  margin:5px auto;
-  background-color:#4CAF50;
-}
-#new:hover, .new-game-color:hover{
-  background-color:#3FA243;
-} 
-#new:active, .new-game-color:active{
-  background-color:#339637;
-}
-
-#pgn, #pgn-save, #pgn-load{
-  background-color:#99A3E3;
-  
-}
-#pgn:hover, #pgn.clicked,#pgn-save:hover,#pgn-load:hover{
- background-color:#8c96d6; 
-}
-#pgn:active,#pgn-save:active, #pgn-load:active{
- background-color:#7F89C9;
-}
-
-
-
-.forfeit-color, #traverse-moves button{
-  background-color:#383838;
-}
-.forfeit-color:hover, #traverse-moves button:hover, #forfeit.clicked{
-  background-color:#313131;
-}
-.forfeit-color:active. #traverse-moves button:active{
-  background-color:#282828;
-}
-
-#traverse-moves{
-  display:flex;
-  justify-content:center;
+#traverse-moves {
+  display: flex;
+  justify-content: center;
 }
 
 #traverse-moves button {
-  margin: 0 .5rem;
-  padding:.5rem 1.5rem;
-  font-size:2rem;
+  margin: 0 0.5rem;
+  width: 5rem;
+  font-size: 2rem;
 }
 
-button:focus{
-  outline-color:#757575;
+button:focus {
+  outline-color: #757575;
 }
 
-#thinking{
-  display:flex;
-  justify-content:center;
+#thinking {
+  display: flex;
+  justify-content: center;
   font-size: 15px;
-  margin-left:28px;
-  visibility:hidden;
+  margin-left: 28px;
+  visibility: hidden;
 }
 
-
-#thinking.visible{
-  visibility:visible;
+#thinking.visible {
+  visibility: visible;
 }
 
-#thinking *{
+#thinking * {
   margin: 0 2px;
-
 }
 
-.rotate-anim{
-  position:relative;
+.rotate-anim {
+  position: relative;
 }
 
-.rotate1{
-  position:absolute;
+.rotate1 {
+  position: absolute;
   border-top: 1pt solid black;
-  border-right: 1pt solid black;  
-  border-radius:50%;
+  border-right: 1pt solid black;
+  border-radius: 50%;
   padding: 5px;
-  animation: rotation 2s infinite linear;  
+  animation: rotation 2s infinite linear;
 }
 
-.rotate2{
-  position:absolute;
+.rotate2 {
+  position: absolute;
   border-bottom: 1pt solid black;
-  border-radius:50%;
+  border-radius: 50%;
   padding: 5px;
-  animation: rotation 1s infinite linear;  
+  animation: rotation 1s infinite linear;
 }
 
 @keyframes rotation {
@@ -271,59 +202,53 @@ button:focus{
   }
 }
 
-#placeholder{
+#placeholder {
   font-size: 15px;
-  visibility:hidden;
+  visibility: hidden;
 }
 
-
-
-@media screen and (max-width:768px),
-@media screen and (max-height:600px){
-  #main-container{
-    width: 90%;
-  }
-  :root{
-    --square-border-width:3px;
+@media screen and (max-width: 768px), screen and (max-height: 600px) {
+  :root {
+    --square-border-width: 3px;
   }
   #traverse-moves button {
     margin: 0.25rem;
-    padding:.5rem 1rem;
-    font-size:1rem;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
   }
 }
 
 #pgn-save.left {
-  left:-125px;
+  left: -125px;
 }
 
 #pgn-load.right {
-  left:125px;
+  left: 125px;
 }
 
-#toggle-computer.right, #toggle-first.left {
+#toggle-computer.right,
+#toggle-first.left {
   height: 32px;
-  top:0;
-  margin-top:5px;
-  visibility:visible;
+  top: 0;
+  margin-top: 5px;
+  visibility: visible;
 }
 
-#toggle-computer{
-  text-align: right;
+#toggle-computer {
 }
 
 #toggle-first.left {
   width: 125px;
-  left:-125px;
+  left: -125px;
 }
 
 #toggle-compute.right {
   width: 160px;
-  left:125px;
+  left: 125px;
 }
 
 .options > button {
-  width:125px;
-  height:32px;
-  margin:5px auto;
+  width: 125px;
+  height: 32px;
+  margin: 5px auto;
 }

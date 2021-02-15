@@ -8,9 +8,11 @@
   <link rel="stylesheet" type="text/css" href="styles/board.css">
   <link rel="stylesheet" type="text/css" href="styles/checkLine.css">
   <link rel="stylesheet" type="text/css" href="styles/pieces.css">
+  <link rel="stylesheet" type="text/css" href="styles/main-menu.css">
   <link rel="stylesheet" type="text/css" href="styles/pgnMenu.css">
   <link rel="stylesheet" type="text/css" href="styles/chss.css">
   <link rel="icon" href="images/black-pawn.png">
+  <script defer type="text/javascript" src="scripts/sidebar.js" ></script>
   <script defer type="text/javascript" src="scripts/globalVars.js"></script>
   <script defer type="text/javascript" src="scripts/tools.js"></script>
   <script defer type="text/javascript" src="scripts/newGame.js"></script>
@@ -34,40 +36,30 @@
 </head>
 
 <!-- By Chess_kdt45.svg: en:User:Cburnettderivative work: NikNaks93 (talk) - Chess_kdt45.svg, CC BY-SA 3.0, https://commons.wikimedia.org/w/index.php?curid=10403970 -->
-
-
-<body>    
-  <div id="main-menu" class="collapsed">
-      <div id="load-pgn">Load PGN</div>
-      <div id="save-pgn">Save PGN</div>
-      <div id="toggle-first">Toggle First</div>
-      <div id="toggle-computer">Turn Computer Off</div>
-      <div id="new-game">New Game</div>
-  </div>
-  <div id="main-container">
-    <nav>
-      <div class="menu-icon"></div>
-    </nav>
-    <div class="player1-data">
-        <div class="thinking"></div>
-        <div class="icon"></div>
-        <div class="player-name">Player 1:</div>
-        <div class="winner"></div>
-    </div>
-    <div class="player2-data">
-        <div class="thinking"></div>
-        <div class="icon"></div>
-        <div class="player-name">Player 2:</div>
-        <div class="winner"></div>
-    </div>
-    <div id="pgn-menu" class="hidden">
+<body>
+<!--   <div id="menu-placeholder"></div> -->
+  <div id="menu-container" class="left"> 
+      <div id="menu-tab">
+          <div id="menu-icon">
+              <div class="menu-line"></div>
+              <div class="menu-line"></div>
+              <div class="menu-line"></div>
+          </div>
+      </div>
+      <div id="menu-items">
+        <div id="new-game" class="menu-item">New Game</div>
+        <div id="show-pgn" class="menu-item">Save/Load PGN</div>
+        <div id="toggle-first" class="menu-item">Toggle First</div>
+        <div id="toggle-computer" class="menu-item">Turn Computer Off</div>
+      </div>
+  </div>  
+  <div id="pgn-menu" class="hidden">
       <div>
         <div id="close-pgn">X</div>
         <div id="move-pgn-menu">
           <hr><hr><hr>  
         </div>
         <form>
-          <span>Algebraic Notation</span>
           <textarea id="pgn-textarea" placeholder="Paste your PGN here"></textarea>
         </form>
       </div>
@@ -81,26 +73,44 @@
         </div>
       </div>
     </div>
+  <div id="main-container">
+    <nav id="navbar">
+      <div class="menu-icon">
+      </div>
+    </nav>
+    <div id="player2-area">
+      <div class="thinking"></div>
+      <div class="icon"></div>
+      <div class="player-name"></div>
+      <div class="winner"></div>
+      <div id="p1graveyard">
+        <div class="piece p1piece white rook"></div>
+        <div class="piece p1piece white knight"></div>
+        <div class="piece p1piece white bishop"></div>
+        <div class="piece p1piece white king"></div>
+        <div class="piece p1piece white queen"></div>
+        <div class="piece p1piece white bishop"></div>
+        <div class="piece p1piece white knight"></div>
+        <div class="piece p1piece white rook"></div>
+        <div class="piece p1piece white pawn"></div>
+        <div class="piece p1piece white pawn"></div>
+        <div class="piece p1piece white pawn"></div>
+        <div class="piece p1piece white pawn"></div>
+        <div class="piece p1piece white pawn"></div>
+        <div class="piece p1piece white pawn"></div>
+        <div class="piece p1piece white pawn"></div>
+        <div class="piece p1piece white pawn"></div>
+        <div class="sub-graveyard pos0"></div>
+        <div class="sub-graveyard pos1"></div>
+        <div class="sub-graveyard pos2"></div>
+        <div class="sub-graveyard pos3"></div>
+        <div class="sub-graveyard pos4"></div>
+        <div class="sub-graveyard pos5"></div>
+      </div>  
+    </div>
+    
     <div id="game-area">
         <div id="board-with-promotion">
-        <div id="p1graveyard">
-            <div class="piece p1piece white rook"></div>
-            <div class="piece p1piece white knight"></div>
-            <div class="piece p1piece white bishop"></div>
-            <div class="piece p1piece white king"></div>
-            <div class="piece p1piece white queen"></div>
-            <div class="piece p1piece white bishop"></div>
-            <div class="piece p1piece white knight"></div>
-            <div class="piece p1piece white rook"></div>
-            <div class="piece p1piece white pawn"></div>
-            <div class="piece p1piece white pawn"></div>
-            <div class="piece p1piece white pawn"></div>
-            <div class="piece p1piece white pawn"></div>
-            <div class="piece p1piece white pawn"></div>
-            <div class="piece p1piece white pawn"></div>
-            <div class="piece p1piece white pawn"></div>
-            <div class="piece p1piece white pawn"></div>
-          </div>
           <div id = "choose-promotion"> 
             <div class = "promotion-piece"></div>
             <div class = "promotion-piece"></div>
@@ -201,42 +211,53 @@
             </div>
           </div>
           <div id="piece-area"></div>
-          <div id="p2graveyard">
-            <div class="piece p2piece black pawn"></div>
-            <div class="piece p2piece black pawn"></div>
-            <div class="piece p2piece black pawn"></div>
-            <div class="piece p2piece black pawn"></div>
-            <div class="piece p2piece black pawn"></div>
-            <div class="piece p2piece black pawn"></div>
-            <div class="piece p2piece black pawn"></div>
-            <div class="piece p2piece black pawn"></div>
-            <div class="piece p2piece black rook"></div>
-            <div class="piece p2piece black knight"></div>
-            <div class="piece p2piece black bishop"></div>
-            <div class="piece p2piece black king"></div>
-            <div class="piece p2piece black queen"></div>
-            <div class="piece p2piece black bishop"></div>
-            <div class="piece p2piece black knight"></div>
-            <div class="piece p2piece black rook"></div>
-          </div>
       </div>
     </div>
-    <div class="bottom-area">
-      <div id="traverse-moves">
-        <button class="" id="prev-move"><</button>
-        <button class="" id="next-move">></button>
+    <div id="player1-area">
+      <div class="thinking"></div>
+      <div class="icon"></div>
+      <div class="player-name"></div>
+      <div class="winner"></div>
+      <div id="p2graveyard">
+        <div class="piece p2piece black pawn"></div>
+        <div class="piece p2piece black pawn"></div>
+        <div class="piece p2piece black pawn"></div>
+        <div class="piece p2piece black pawn"></div>
+        <div class="piece p2piece black pawn"></div>
+        <div class="piece p2piece black pawn"></div>
+        <div class="piece p2piece black pawn"></div>
+        <div class="piece p2piece black pawn"></div>
+        <div class="piece p2piece black rook"></div>
+        <div class="piece p2piece black knight"></div>
+        <div class="piece p2piece black bishop"></div>
+        <div class="piece p2piece black king"></div>
+        <div class="piece p2piece black queen"></div>
+        <div class="piece p2piece black bishop"></div>
+        <div class="piece p2piece black knight"></div>
+        <div class="piece p2piece black rook"></div>
+        <div class="sub-graveyard pos0"></div>
+        <div class="sub-graveyard pos1"></div>
+        <div class="sub-graveyard pos2"></div>
+        <div class="sub-graveyard pos3"></div>
+        <div class="sub-graveyard pos4"></div>
+        <div class="sub-graveyard pos5"></div>
       </div>
-      <div class="forfeit-area">
-        <div class="forfeit-options">
-          <button class = "centered forfeit-color" id="forfeit">Forfeit</button>
-          <div class="forfeit-banner hidden">
-              <div id="ff-name" class ="hidden">Player 1 Forfeit?</div>
-              <div class="ff-yes-no hidden">
-                <div id="ff-yes">Yes</div> | <div id="ff-no">No</div>
-              </div>
-          </div>
-        </div>
-      </div>
+    </div>
+    <div id="bottom-area">
+      <button class="" id="hint">
+        <img src="images/hint.svg" alt="hint"/>
+        Hint
+      </button>
+      <button class="" id="forfeit">
+        <img src="images/flag.svg" alt="resign"/>
+        Resign
+      </button>
+      <button class="" id="prev-move">
+        <img src="images/chevron-left.svg" alt="prev move"/>
+      </button>
+      <button class="" id="next-move">
+        <img src="images/chevron-right.svg" alt="next move"/>
+      </button>
     </div>
   </div>  
 </body>

@@ -1,69 +1,102 @@
-
-
-#board{
-  display:inline-block;
+#board {
+  display: inline-block;
+  width: 100%;
+  height: 100%;
 }
 
-.gameRow{
-  display:flex;
+.gameRow {
+  display: flex;
+  width: 100%;
+  height: calc(100% / 8);
 }
 
-.square{
-  width: var(--square-dim-limit);
-  max-width: var(--square-dim-main);
-  height: var(--square-dim-limit);
-  max-height: var(--square-dim-main);
+/* .gameRow:nth-of-type(1){
+  border-top: 1px solid black;
+}
+.gameRow:nth-of-type(8){
+  border-bottom: 1px solid black;
+}
+ */
+#piece-area,
+.square,
+.piece,
+#choose-promotion > .promotion-piece {
+  width: calc(100vw / 8);
+  height: calc(100vw / 8);
+  max-width: calc(var(--board-vh-limit) / 8);
+  max-height: calc(var(--board-vh-limit) / 8);
+}
+
+#piece-area {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 3;
+  pointer-events: none;
+}
+
+.square {
   font-size: 1.5vh;
   position: relative;
-  z-index:0;
   display: flex;
   box-sizing: border-box;
   font-weight: bolder;
 }
 
-.br-text, .tr-text{
+.br-text,
+.tr-text {
   position: absolute;
-  user-select:none;
+  user-select: none;
 }
 
-.br-text{
-  right:1px;
-  bottom:1px;
-}
-.tr-text{
-  left:1px;
-  top:1px;
+.square.incorrect > .br-text,
+.square.correct > .br-text {
+  right: calc(-1 * var(--square-border-width) + 1px) !important;
+  bottom: calc(-1 * var(--square-border-width) + 1px) !important;
 }
 
-.square{
+.br-text {
+  right: 1px;
+  bottom: 1px;
+}
+.tr-text {
+  left: 1px;
+  top: 1px;
+}
+
+.square {
   background-color: #dbb7b7;
   color: rgb(130, 65, 0);
 }
 
-.square.dark{
+.square.dark {
   background-color: #824100;
   color: rgb(219, 183, 183);
   box-sizing: border-box;
 }
 
-.avail-move{
-  margin:auto;
-  background-color: #a4ff3f;
-  opacity:80%;
-  display:block;
-  border-radius:50%;
+.avail-move {
+  margin: auto;
+  background-color: #a4ff3fc2;
+  opacity: 80%;
+  display: block;
+  border-radius: 50%;
   border: 1px solid black;
-  width: 2vh;
+  width: 20%;
   max-width: 2vw;
-  height: 2vh;
+  height: 20%;
   max-height: 2vw;
-  z-index:0;
+  z-index: 0;
 }
 
+.avail-move.hidden {
+  border: none;
+  width: 0;
+  height: 0;
+}
 
-.avail-move.hidden{
-  border:none;
-  width:0;
-  height:0;
-  margin:20px;
+#board-with-promotion {
+  position: relative;
+  width: 100%;
+  height: 100%;
 }

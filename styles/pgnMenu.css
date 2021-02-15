@@ -2,6 +2,7 @@
 #pgn-menu{
   font-size: 1rem;
   background-color:rgba(0, 56, 80, 0.95);
+  background-color: var(--darker-color);
   width:300px;
   height:300px;
   min-height: 160px;
@@ -65,7 +66,9 @@
   width: 25%;
   border-radius:1px;
   height: 2px;
-  background-image: linear-gradient(180deg, rgb(0, 95, 136), #3c3c3c);
+  background: linear-gradient(180deg, rgb(0, 95, 136), var(--darker-color));
+  background: linear-gradient(180deg, var(--dark-color), var(--darker-color));
+
 }
 
 #resize-pgn-menu {
@@ -80,10 +83,10 @@
 #resize-pgn-menu > hr{
   cursor:nwse-resize;
   border: 0;
-  /* border-radius:1px; */
   height: 1px;
   position:absolute;
-  background-color:#99a3e3ad;
+  background-color:var(--dark-color);
+  
   transform: rotate(135deg);
 }
 
@@ -121,3 +124,11 @@
   top: 37px;
 }
 
+
+#pgn-save,#pgn-load{
+  font-size:1rem;
+  padding:.5rem 1rem;
+  width:7rem;
+  border: none;
+  border-radius:.5rem;
+}
