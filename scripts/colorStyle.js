@@ -125,7 +125,8 @@ function changeToggleText(){
 
 function turnOnThinking(){
   return new Promise((resolve,reject)=>{
-    thinking.classList.add('visible')
+    ////revamp
+//     thinking.classList.add('visible')
     thinkingInProg = true;
     window.requestAnimationFrame(resolve);
   });

@@ -34,8 +34,13 @@ function movePiece(piece,loc,speedFactor=30){
     let dy;
     let dx = locPos.left - piecePos.left;
     let pieceTop;
-    let toGraveyard;
-    if (loc.id === 'p1graveyard' || loc.id === 'p2graveyard') {
+    let toGraveyard = false;
+    if (piece.parentElement.classList.contains('sub-graveyard')){
+        if (graveyardOffsets[isp1(piece)][piece.classList]){
+          graveyardOffsets[isp1(piece)][piece.classList]['count'] -= 1;  
+        }
+    }
+    if (loc.id === 'p1graveyard' || loc.id === 'p2graveyard' || loc.classList.contains('sub-graveyard')) {
       toGraveyard=true;
       let side = isp1(piece)
       let pieceType = pieceMap.get(piece).constructor.name.toLowerCase();
@@ -51,13 +56,18 @@ function movePiece(piece,loc,speedFactor=30){
       loc = graveyardOffsets[side][piece.classList]['slot'];
       locPos = loc.getBoundingClientRect();
       let graveyardY = (locPos.top + locPos.height / 2);
-      dy = graveyardY - piecePos.top;
+      dy = graveyardY - piecePos.top;// - squareWidth/4;
       dx = locPos.left - piecePos.left;
       pieceLeft = graveyardOffsets[side][piece.classList]['count'] * (squareWidth/8)
       loc.style.width = `calc(${pieceLeft}px + 100vw / 15)`;
+//       loc.style.height = `calc(${pieceLeft}px + 100vw / 15)`;
+//       loc.style.maxHeight = `calc(${pieceLeft}px + var(--board-vh-limit) / 15)`;
       loc.style.maxWidth = `calc(${pieceLeft}px + var(--board-vh-limit) / 15)`;
       dx += pieceLeft;
       pieceLeft = pieceLeft + 'px';
+      if (loc.parentElement.id === 'p2graveyard'){
+          dy -= squareWidth/4;
+      }
     } else {
       dy = locPos.top - piecePos.top
       pieceLeft = 'auto'

@@ -1,27 +1,45 @@
-// for (i = 0; i < 8; i++) {
-//   getSquare(i,0).style.borderLeft = '1px solid black';
-//   getSquare(i,7).style.borderRight = '1px solid black';
-// }
+//make pieces draggable
 for (i = 0; i < p1pieces.length; i++) {
   dragElement(p1pieces[i]);
   dragElement(p2pieces[i]);
 }
+
+//pgn menu
 dragBox(document.querySelector('#move-pgn-menu'));
 resizeBox(document.querySelector('#resize-pgn-menu'));
+pgnMove.addEventListener('mousedown',()=>{
+  pgnMenu.classList.add('grabbing');
+  pgnMove.classList.add('grabbing');
+})
 
+//promotions
 promotionPieces.forEach(piece=>{
   piece.addEventListener('click',()=>{
     promotionSelected(piece);
   })
 })
-//   reset.addEventListener('click', callFuncIfNotThinking.bind(null,resetAll));
+
+//menu buttons
+resizeMenu()
 newGameButton.addEventListener('click', callFuncIfNotThinking.bind(null,newMatch));
 toggleComputer.addEventListener('click', callFuncIfNotThinking.bind(null,toggleComputerPlayer));
 toPrevMove.addEventListener('click',callFuncIfNotThinking.bind(null,showPrevMove));
 toNextMove.addEventListener('click',callFuncIfNotThinking.bind(null,showNextMove));
 
+//graveyard
 resizeGraveyard()
 window.addEventListener('resize',resizeGraveyard);
+window.addEventListener('resize',resizeMenu);
+
+document.querySelectorAll('.close-alert-menu').forEach(close=>{
+  close.addEventListener('click',()=>{
+    close.parentElement.classList.add('hidden');
+  })  
+})
+alertNewGame.addEventListener('click',()=>{
+  newMatch();
+  alertMenu.classList.add('hidden');
+})
 
 window.addEventListener('keydown',event=>{
   if (event.keyCode===27) {
@@ -44,29 +62,21 @@ function toggleComputerPlayer(){
     });
   }
 }
-////revamp
-// ffyes.addEventListener('click', (event)=>{
-//   winner();
-//   forfeit.classList.remove('forfeit-color')
-//   forfeit.classList.add('new-game-color')
-//   forfeit.innerText = 'Play Again';
-//   forfeit.style.width = 'auto';
-// });
-// forfeitBanner.addEventListener('click', function(event){
-//   hideForfeit();
-// });
 
-forfeit.addEventListener('click', function(event){
-  if (winnerBool || drawBool){
-    newMatch();
-  } else {
-    forfeitBanner.classList.remove('hidden'); 
-    ffName.classList.remove('hidden');
-    ffYesNo.classList.remove('hidden')
-    forfeitBanner.classList.add('visible');
-    forfeit.classList.add('clicked')
-  }
+//forfeit 
+ffyes.addEventListener('click', ()=>{
+  winner();
+  ffMenu.classList.add('hidden'); 
 });
+ffno.addEventListener('click', ()=>{
+  ffMenu.classList.add('hidden'); 
+});
+forfeit.addEventListener('click', ()=>{
+    ffMenu.classList.toggle('hidden'); 
+    ffName.innerText = turn ? "Player 1 Forfeit?" : "Player 2 Forfeit?";
+});
+
+//pgn
 pgn.addEventListener('click',()=>{
   pgnMenu.classList.remove('hidden');
   pgnText.focus()
@@ -92,14 +102,11 @@ toggleFirst.addEventListener('click', callFuncIfNotThinking.bind(null,doToggleFi
 resetAll();
 createPieceLists();
 
-
-//maybe should be 'click' for mobile bug?
 document.addEventListener('mousedown',registerClicks);
 document.addEventListener('keydown',(e)=>{
   if (e.keyCode === 27) {
-    hideForfeit();
+    ffMenu.classList.add('hidden');
     pgnMenu.classList.add('hidden');
-    hideOptions();
   }
 });
 
@@ -120,21 +127,12 @@ function callFuncIfNotThinking(func){
   }
 }
 
-function hideForfeit(){
-  ////revamp
-//   forfeitBanner.classList.add('hidden');
-//   ffName.classList.add('hidden');
-//   ffYesNo.classList.add('hidden')
-//   forfeitBanner.classList.remove('visible');
-//   forfeit.classList.remove('clicked');
-}
-
 function registerClicks(e){
     let clickedElements = document.elementsFromPoint(e.clientX, e.clientY);
     checkForBoardMoves(clickedElements);
     checkForfeit(clickedElements);
     checkPGN(clickedElements);
-    buttonAnimation(clickedElements);
+    checkSidebar(clickedElements);
 
     function checkForBoardMoves(clickedElements){
       let clickedSqaure = clickedElements.find(item=>item.classList.contains('square'));
@@ -153,60 +151,26 @@ function registerClicks(e){
     }
 
     function checkPGN(clickedElements){
-      let selectedPgnMenu = Array.from(clickedElements).some(el=>(el.id==="pgn-menu"))
+      let selectedPgnMenu = Array.from(clickedElements).some(el=>(el.id==="pgn-menu" || el.id==="menu-tab"))
       if (!selectedPgnMenu){
         pgnMenu.classList.add('hidden');
       }
     }
     function checkForfeit(clickedElements){
-      let forfeitOrFFBanner = Array.from(clickedElements).some(el=>(el.classList.contains('forfeit-banner') || el.id==="forfeit"))
-      if (!forfeitOrFFBanner){
-        hideForfeit() 
+      let selectedFF = Array.from(clickedElements).some(el=>(el.id==='ff-menu'|| el.id==="forfeit"))
+      if (!selectedFF){
+        ffMenu.classList.add('hidden');
       }
     }
-
-    function buttonAnimation(clickedElements){
-      hideOptions();
-      let button = clickedElements[0] 
-      if (button === undefined || button.localName !== "button"){
-        return
-      }
-      
-      if (button.id==='options'){
-        let buttonOptions = button.parentElement.children;
-        showOptions(buttonOptions)
-      }
-
-      function showOptions(buttonOptions){
-
-        buttonOptions[0].classList.add('clicked')
-        if (buttonOptions[1]){
-          buttonOptions[1].classList.remove('centered');  
-          buttonOptions[1].classList.add('left');
-        }
-        if (buttonOptions[2]){
-          buttonOptions[2].classList.remove('centered');
-          buttonOptions[2].classList.add('right');  
+    function checkSidebar(clickedElements){
+      let selectedSidebar = Array.from(clickedElements).some(el=>(el.id==='menu-container'|| el.id==="forfeit"))
+      if (!selectedSidebar){
+        if ((window.innerWidth-mainContainer.offsetWidth)/2 < menuContainer.offsetWidth){
+          hideSidebar();        
         }
       }
-
-
     }
-
-
   }
-      function hideOptions(){
-        ////revamp
-        return //prob delete all this
-        Array.from(options).map(buttons=>{
-          buttons.children[0].classList.remove('clicked');
-          Array.from(buttons.children).map(button=>{
-            button.classList.add('centered')
-            button.classList.remove('left');
-            button.classList.remove('right');
-          })
-        });
-      }
 function createPieceLists(){
   //creates a class for each piece on board 
   let pieces = [['.pawn',Pawn],['.knight',Knight], ['.bishop',Bishop], 

@@ -15,7 +15,8 @@ function swapTurn(boardIndex) {
     return   
   }
   if (playingComputer && !turn) {
-    thinking.classList.add('visible')
+    ////revamp
+//     thinking.classList.add('visible')
     thinkingInProg = true;
     window.requestAnimationFrame(()=>{
       if (winnerBool || drawBool || midPromotion){ return }

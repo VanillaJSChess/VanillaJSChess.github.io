@@ -4,6 +4,9 @@
   --darker-color: #282828;
   --dark-color: #545454;
   --dark-color-hover: #4b4b4b;
+  --light-color: #848484;
+  --lighter-color: #bfbfbf;
+  --lightest-color: #ffffff;
   --board-vh-limit: 70vh;
 }
 
@@ -19,9 +22,10 @@
 #p1graveyard .sub-graveyard {
     align-items: flex-end;
     display: flex;
+    align-self: flex-end;
 }
 
-.sub-graveyard {width: calc(100vw / 8);/*   height: calc(100vw / 8); */max-width: calc(var(--board-vh-limit) / 8);/*   max-height: calc(var(--board-vh-limit) / 8); */margin-left: -1.1rem;position:relative;}
+.sub-graveyard {width: calc(100vw / 15);height: calc(100vw / 15);max-width: calc(var(--board-vh-limit) / 15);max-height: calc(var(--board-vh-limit) / 15);margin-left: -1.1rem;position:relative;}
 
 .sub-graveyard .piece{
     width: calc(100vw / 15);
@@ -34,32 +38,9 @@
   margin-left:0rem;
 }
 
-.forfeit-banner {
-  background-color: var(--dark-color);
-  position: absolute;
-  color: whitesmoke;
-  white-space: nowrap;
-  border-radius: 15px;
-  width: 80px;
-  height: 30px;
-  font-size: 12px;
-  top: 6px;
-  left: 0px;
-  transition: left 600ms ease, visibility 600ms, width 600ms, height 600ms;
-}
-
-.forfeit-banner.visible {
-  transition: left 600ms ease, visibility 600ms, width 600ms, height 600ms 600ms;
-  left: 90px;
-  height: 45px;
-  width: 110px;
-  visibility: visible;
-  text-align: right;
-}
-
-.forfeit-banner.hidden {
-  /*   transition: left 600ms ease, visibility 600ms; */
-  visibility: hidden;
+#ff-buttons{
+  display:flex;
+  justify-content:space-around;
 }
 
 #ff-yes:hover,
@@ -70,35 +51,13 @@
 #ff-yes,
 #ff-no {
   display: inline-block;
-}
-
-#ff-name {
-  position: absolute;
-  left: 12px;
-  top: 9px;
   background-color: var(--dark-color);
-  display: block;
-  z-index: 1;
-  visibility: visible;
-  transition: left 600ms, visibility 300ms 100ms;
-}
-
-#ff-name.hidden {
-  visibility: hidden;
-  left: -12px;
-  transition: left 500ms, visibility 300ms;
-}
-
-.ff-yes-no {
-  position: absolute;
-  left: 30px;
-  top: 25px;
-  transition: top 600ms 600ms;
-}
-
-.ff-yes-no.hidden {
-  top: 9px;
-  transition: top 600ms;
+  padding: .5rem 1rem;
+  font-size: 1.2rem;
+  width:2.5rem;
+  text-align:center;
+  border-radius:5px;
+  margin-top:1rem;
 }
 
 #choose-promotion > .promotion-piece {
@@ -128,16 +87,13 @@
   visibility: hidden;
 }
 
-.forfeit-color,
 #traverse-moves button {
   background-color: var(--dark-color);
 }
-.forfeit-color:hover,
-#traverse-moves button:hover,
-#forfeit.clicked {
+#traverse-moves button:hover{
   background-color: #313131;
 }
-.forfeit-color:active #traverse-moves button:active {
+#traverse-moves button:active {
   background-color: #282828;
 }
 

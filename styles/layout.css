@@ -46,6 +46,14 @@ nav {
   flex-grow: 1;
   display: flex;
   max-height: 5rem;
+  justify-content: space-between;
+}
+
+#hint.hidden{
+  visibility:hidden;
+  width:0;
+  margin: 0;
+  padding: 0;
 }
 
 #bottom-area button {
@@ -68,4 +76,21 @@ nav {
 #bottom-area button img {
   height: 50%;
   width: 50%;
+}
+
+#interactive,
+#navigation{
+  display:flex
+}
+
+@media screen and (max-height:600px){
+  html{
+    font-size:10px;
+  }
+}
+
+@media screen and (max-height:400px){
+  html{
+    font-size:7px;
+  }
 }

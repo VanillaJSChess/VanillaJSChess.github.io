@@ -10,6 +10,7 @@
   <link rel="stylesheet" type="text/css" href="styles/pieces.css">
   <link rel="stylesheet" type="text/css" href="styles/main-menu.css">
   <link rel="stylesheet" type="text/css" href="styles/pgnMenu.css">
+  <link rel="stylesheet" type="text/css" href="styles/game-alert.css">
   <link rel="stylesheet" type="text/css" href="styles/chss.css">
   <link rel="icon" href="images/black-pawn.png">
   <script defer type="text/javascript" src="scripts/sidebar.js" ></script>
@@ -54,25 +55,22 @@
       </div>
   </div>  
   <div id="pgn-menu" class="hidden">
-      <div>
-        <div id="close-pgn">X</div>
-        <div id="move-pgn-menu">
-          <hr><hr><hr>  
-        </div>
-        <form>
-          <textarea id="pgn-textarea" placeholder="Paste your PGN here"></textarea>
-        </form>
-      </div>
-      <div>
-        <div id="save-load-container">
-          <button id="pgn-save">Save</button>
-          <button id="pgn-load">Load</button>
-        </div>
-        <div id="resize-pgn-menu">
-          <hr><hr><hr>  
-        </div>
-      </div>
+    <div id="close-pgn" class="close-alert-menu">X</div>
+    <div id="move-pgn-menu">
+      <hr><hr><hr>  
     </div>
+    <!-- <form> -->
+      <textarea id="pgn-textarea" placeholder="Paste your PGN here"></textarea>
+    <!-- </form> -->
+    <div id="save-load-container">
+      <button id="pgn-save">Save</button>
+      <button id="pgn-load">Load</button>
+    </div>
+    <div id="resize-pgn-menu">
+      <hr><hr><hr>  
+      <div id="resize-grab"></div>
+    </div>
+  </div>
   <div id="main-container">
     <nav id="navbar">
       <div class="menu-icon">
@@ -82,7 +80,6 @@
       <div class="thinking"></div>
       <div class="icon"></div>
       <div class="player-name"></div>
-      <div class="winner"></div>
       <div id="p1graveyard">
         <div class="piece p1piece white rook"></div>
         <div class="piece p1piece white knight"></div>
@@ -107,9 +104,21 @@
         <div class="sub-graveyard pos4"></div>
         <div class="sub-graveyard pos5"></div>
       </div>  
-    </div>
-    
+    </div>   
     <div id="game-area">
+        <div id="game-alert" class="alert-menu hidden">
+          <div class="close-alert-menu">X</div>
+          <div id="winner" class="alert-menu-text"></div>
+          <div id="new-game-alert">New Game</div>
+        </div>
+        <div id="ff-menu" class="alert-menu hidden">
+          <div class="close-alert-menu">X</div>
+          <div id="ff-name" class="alert-menu-text"></div>
+          <div id="ff-buttons">
+            <div id="ff-yes">Yes</div>
+            <div id="ff-no">No</div>
+          </div>
+        </div> 
         <div id="board-with-promotion">
           <div id = "choose-promotion"> 
             <div class = "promotion-piece"></div>
@@ -217,7 +226,6 @@
       <div class="thinking"></div>
       <div class="icon"></div>
       <div class="player-name"></div>
-      <div class="winner"></div>
       <div id="p2graveyard">
         <div class="piece p2piece black pawn"></div>
         <div class="piece p2piece black pawn"></div>
@@ -244,22 +252,26 @@
       </div>
     </div>
     <div id="bottom-area">
-      <button class="" id="hint">
-        <img src="images/hint.svg" alt="hint"/>
-        Hint
-      </button>
-      <button class="" id="forfeit">
-        <img src="images/flag.svg" alt="resign"/>
-        Resign
-      </button>
-      <button class="" id="prev-move">
-        <img src="images/chevron-left.svg" alt="prev move"/>
-      </button>
-      <button class="" id="next-move">
-        <img src="images/chevron-right.svg" alt="next move"/>
-      </button>
+      <div id="interactive">
+        <button class="hidden" id="hint">
+          <img src="images/hint.svg" alt="hint"/>
+          Hint
+        </button>
+        <button class="" id="forfeit">
+          <img src="images/flag.svg" alt="resign"/>
+          Resign
+        </button>
+      </div>
+      <div id="navigation">
+        <button class="" id="prev-move">
+          <img src="images/chevron-left.svg" alt="prev move"/>
+        </button>
+        <button class="" id="next-move">
+          <img src="images/chevron-right.svg" alt="next move"/>
+        </button>
+      </div>
     </div>
-  </div>  
+  </div> 
 </body>
 
 </html>
