@@ -15,14 +15,14 @@ function stackPiece(piece) {
     } else {
       graveyard = p2graveyard;
     }
-    movePiece(piece, graveyard,15).then(resolve);
+    let speed = onMobile ? 8 : 15
+    movePiece(piece, graveyard,speed).then(resolve);
   })
 }
 
 graveyardOffsets = {true:{},false:{}}
-function movePiece(piece,loc,speedFactor=30){
+function movePiece(piece,loc,speedFactor= onMobile ? 10 :30){
   return new Promise((resolve,reject)=>{
-    if (onMobile) speedFactor=speedFactor/2;
     if (piece.parentElement.id === "piece-area"){
       changePieceParent(piece,loc);
       window.requestAnimationFrame(resolve);
@@ -58,19 +58,18 @@ function movePiece(piece,loc,speedFactor=30){
       let graveyardY = (locPos.top + locPos.height / 2);
       dy = graveyardY - piecePos.top;// - squareWidth/4;
       dx = locPos.left - piecePos.left;
-      pieceLeft = graveyardOffsets[side][piece.classList]['count'] * (squareWidth/8)
-      loc.style.width = `calc(${pieceLeft}px + 100vw / 15)`;
-//       loc.style.height = `calc(${pieceLeft}px + 100vw / 15)`;
-//       loc.style.maxHeight = `calc(${pieceLeft}px + var(--board-vh-limit) / 15)`;
-      loc.style.maxWidth = `calc(${pieceLeft}px + var(--board-vh-limit) / 15)`;
-      dx += pieceLeft;
+      
+      let count = graveyardOffsets[side][piece.classList]['count'];
+      loc.style.marginRight = `calc(${count} * var(--graveyard-unit))`;
       pieceLeft = pieceLeft + 'px';
-      if (loc.parentElement.id === 'p2graveyard'){
+//       if (loc.parentElement.id === 'p2graveyard'){
           dy -= squareWidth/4;
-      }
+//       } else {
+        
+//       }
     } else {
       dy = locPos.top - piecePos.top
-      pieceLeft = 'auto'
+      pieceLeft = null;
     }
     //set piece parent to pieceArea so that it is at the top layer, then change the top and left so the piece
     //is visually in the same position it was inside the square.
@@ -82,11 +81,15 @@ function movePiece(piece,loc,speedFactor=30){
     window.requestAnimationFrame(step);
     //console.log('step started', piece.classList)
     function step(){
-      if (count === speedFactor) {
+      if (count >= speedFactor-toGraveyard) {
         window.requestAnimationFrame(()=>{
           loc.appendChild(piece);
-          piece.style.top = 'auto';
-          piece.style.left = pieceLeft;
+          piece.style.top = null;
+          piece.style.left = null;
+          piece.style.width = null;
+          piece.style.height = null;
+          piece.style.maxWidth = null;
+          piece.style.maxHeight = null;
           resolve();
         });
       } else {
@@ -109,7 +112,7 @@ function movePiece(piece,loc,speedFactor=30){
     square.appendChild(piece);
     if (square !== pieceArea){
       Array.from(square.children).find(child=>child.classList.contains('piece')).style.zIndex = '1';
-      square.children[0].style.zIndex = '0';
+      square.children[0].style.zIndex = null;
     }  
   } 
 }

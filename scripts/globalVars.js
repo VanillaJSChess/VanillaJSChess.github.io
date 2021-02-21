@@ -54,7 +54,7 @@ mainContainer = document.querySelector('#main-container'),
 
 //change for testing line
 playingComputer = true, //should the computer try to move 
-testingLine = !playingComputer, //should be inverse of playingComputer
+testingLine = false, //should be inverse of playingComputer
 bookMoves=[];
 
 const onMobile = mobileCheck();

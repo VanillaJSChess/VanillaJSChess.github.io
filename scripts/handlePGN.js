@@ -74,37 +74,30 @@ function splitMoveString(pgnText){
     return pgnData
 }
 
-function readPGN(){
+async function readPGN(){
   //idea was to move each move 1 at a time. but what if they want to import and click through
   //what if they want to jump to a spot, or animate the game and change speeds. 
   //all options could be done by building moveHistory or undone moves
-  return new Promise((resolve,reject)=>{
-    let wasPlayingComputer = playingComputer;
-    playingComputer = false;
-  //   let pgnData = '1. Nf3 Nf6,2. Ne5 d6,3. Nxf7 Kxf7,4. e3 Nc6,5. Qh5+ Nxh5,6. f4 Nf6,7. h4 h6,8. h5 g5,9. hxg6+ Ke6,10. g7 Ng4,11. d3 Kf6,12. gxh8=Q+ Bg7,13. Qxd8 Nxd8'.split(',')
-  //   let pgnData = '1. Nf3 Nc6,2. g3 d6,3. Bg2 Be6,4. O-O Qd7,5. Nc3 O-O-O,6. h4'.split(',');
-    if (pgnText.value === "") {
-      return
+  let wasPlayingComputer = playingComputer;
+  playingComputer = false;
+//   let pgnData = '1. Nf3 Nf6,2. Ne5 d6,3. Nxf7 Kxf7,4. e3 Nc6,5. Qh5+ Nxh5,6. f4 Nf6,7. h4 h6,8. h5 g5,9. hxg6+ Ke6,10. g7 Ng4,11. d3 Kf6,12. gxh8=Q+ Bg7,13. Qxd8 Nxd8'.split(',')
+//   let pgnData = '1. Nf3 Nc6,2. g3 d6,3. Bg2 Be6,4. O-O Qd7,5. Nc3 O-O-O,6. h4'.split(',');
+  if (pgnText.value === "") return
+  let pgnData = splitMoveString(pgnText.value)
+  let p1Color = whoWentFirst(pgnData[0].split(' ')[0]);
+  if (p1Color !== firstMove) await doToggleFirst()
+  await checkEachMove();
+  
+  async function checkEachMove(){
+    let PGNboard = {}
+    PGNboard.state = createSimulatedBoard(boards[0].state)
+    boards.push(PGNboard)
+    for (const twoMoves of pgnData){
+      await findAndMakeMoves(twoMoves, PGNboard, p1Color);
     }
-    let pgnData = splitMoveString(pgnText.value)
-    let p1Color = whoWentFirst(pgnData[0].split(' ')[0]);
-    if (p1Color !== firstMove){
-      doToggleFirst().then(checkEachMove)
-    } else {
-      checkEachMove();  
-    }
-    async function checkEachMove(){
-      let PGNboard = {}
-      PGNboard.state = createSimulatedBoard(boards[0].state)
-      boards.push(PGNboard)
-      for (const twoMoves of pgnData){
-        await findAndMakeMoves(twoMoves, PGNboard, p1Color);
-      }
-      boards.pop()
-      setPGN(wasPlayingComputer)
-      resolve();
-    }
-  });
+    boards.pop()
+    setPGN(wasPlayingComputer)
+  }
 
   function createSimulatedBoard(board){
     let nextBoard = board.map(a=> Object.assign([],a)); //creates a board with all copied pieces 

@@ -49,32 +49,30 @@ function switchSides(reset = false){
   setMoveIcons();
 }
 
-function newMatch() {
-  return new Promise((resolve,reject)=>{
-    resetDisplayedToShown(); 
-    ////revamp
+async function newMatch() {
+  resetDisplayedToShown(); 
+  ////revamp
 //     addOrRemoveThinking();
-    emptyHistoryCollections();
-    resetFFbutton()
-    unhighlightAllSquares();
-    clearWinner();
-    turn = firstMove;  
-    colorPlayerIcons();
-    movePromises = populateBoard(); //grab all the pieces that need to move to their homeSqures 
-    resetPieces();
-    Promise.all(movePromises).then(()=>{
-      //move all pieces then save their new squares as home squares
-      if (!pieceMap.get(p1pieces[0]).homeSquare){
-        getHomeSquares(); 
-      }
-      boards[0].state = buildDisplayedBoardArray();
-      pickUpFromCurrentPosition() //gets all legal moves for current visible boardstate 
-      if (!turn && playingComputer){ //if the computer moves first 
-        doNormalComputerMove();
-      }
-      resolve();
-    });
-  });
+  emptyHistoryCollections();
+  changeToggleText()
+  unhighlightAllSquares();
+  winnerBool = false;
+  turn = firstMove;  
+  colorPlayerIcons();
+  movePromises = populateBoard(); //grab all the pieces that need to move to their homeSqures 
+  resetPieces();
+  await Promise.all(movePromises)
+  //move all pieces then save their new squares as home squares
+  if (!pieceMap.get(p1pieces[0]).homeSquare) getHomeSquares();
+  boards[0].state = buildDisplayedBoardArray();
+  pickUpFromCurrentPosition() //gets all legal moves for current visible boardstate 
+  //if the computer moves first 
+  if (!turn && playingComputer) doNormalComputerMove();
+  //do after board sets
+  canAnimate = true;
+//   pgnText.value = "1. Nf3 Nf6, 2. g3 g6, 3. Bg2 Bg7, 4. O-O O-O, 5. h4 g5, 6. h5 h6, 7. Nxg5 hxg5, 8. h6 Re8, 9. h7+ Kf8, 10. h8=Q+ Bxh8"
+//   readPGN()
+
   function emptyHistoryCollections(){
     //empty tracking done from last game
     prevStates = [];
@@ -91,13 +89,6 @@ function newMatch() {
       thinking.classList.add('visible');
       thinkingInProg = true; 
     }
-  }
-  function resetFFbutton(){
-    ////revamp
-    // forfeit.innerText = 'Forfeit';
-    // forfeit.classList.add('forfeit-color')
-    // forfeit.classList.remove('new-game-color')
-    // forfeit.style.width = '90px';
   }
   function resetPieces(){
   //remove the moves and statuses of each piece 
@@ -169,11 +160,15 @@ function populateBoard(){
           varyPieceReturnRandom(pieceNode,piece.homeSquare,Math.floor(Math.random()*30+30))
         }
       } else { 
-        varyPieceReturnRandom(pieceNode,square,Math.floor(Math.random()*50+50))
+//         console.log(
+//           pieceNode.classList,
+//           square.getBoundingClientRect().x,
+//           square.getBoundingClientRect().y)
+        let speed = onMobile ? Math.floor(Math.random()*20+20) : Math.floor(Math.random()*50+50);
+        varyPieceReturnRandom(pieceNode,square,speed)
       }
     }
-    function varyPieceReturnRandom(pieceNode,end,speed){
-  // movePromises.push(movePiece(pieceNode, piece.homeSquare, speedFactor = 60));    
+    function varyPieceReturnRandom(pieceNode,end,speed){ 
       movePromises.push(new Promise((resolve,reject)=>{
         setTimeout(async ()=>{
           await movePiece(pieceNode,end,speed)

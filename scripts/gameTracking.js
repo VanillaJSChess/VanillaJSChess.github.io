@@ -1,18 +1,35 @@
 
 //game tracking
 let undoneMoves = [];
-function showPrevMove(){
-  if (!canAnimate || displaySimulateIndex !== 0 ){ return }
-  let prevMove = moveHistory.pop();
-  if (prevMove) {
-    canAnimate = false;
-    if (prevMove.promotion){ 
-      //want to undo promotion by the piece not the square because the state isnt updated during movehistory naviagation 
-//       undoPromotion(boards[0].state[prevMove.move[1][0]][prevMove.move[1][1]])
-      undoPromotion(pieceMap.get(Array.from(boardNode.children[prevMove.move[1][0]].children[prevMove.move[1][1]].children).find(piece=>piece.classList.contains("piece"))))
+let movesOwed = 0
+async function showPrevMove(){
+  if (!holdingToPrevMove) movesOwed -= 1
+  if (moveHistory.length === 0 || movesOwed ===0 ){
+    movesOwed = 0;
+    holdingToPrevMove = false;
+  }
+  
+  if (!canAnimate) {
+    await waitXms(500);
+    return
+  }
+  while (moveHistory.length !== 0 && movesOwed < 0){
+    movesOwed += 1
+    let prevMove = moveHistory.pop();
+    if (moveHistory.length === 0){
+        movesOwed = 0;
+        holdingToPrevMove = false;
     }
-    if (prevMove.capture){
-      completeMoveFromState([prevMove.move[1],prevMove.move[0]],false).then(()=>{
+    if (prevMove) {
+      canAnimate = false; 
+      if (prevMove.promotion){ 
+        //get the first piece on the square in the prevmove 
+        undoPromotion(pieceMap
+          .get(Array.from(boardNode.children[prevMove.move[1][0]].children[prevMove.move[1][1]].children)
+          .find(piece=>piece.classList.contains("piece"))))
+      }
+      if (prevMove.capture){
+        await completeMoveFromState([prevMove.move[1],prevMove.move[0]],false)
         let startParent = prevMove.capture.piece.parentElement;
         let p = prevMove.capture.piece;
         let sq = boardNode.children[prevMove.move[1][0]].children[prevMove.move[1][1]];
@@ -21,36 +38,48 @@ function showPrevMove(){
         if (prevMove.enPassant){
           sq = boardNode.children[prevMove.enPassant[0]].children[[prevMove.enPassant[1]]];
         }
-        completeMove({startParent,piece:p,square:sq,shouldUpdate:false}).then(()=>{
-          canAnimate = true;
-        });
-      });
-    } else if (prevMove.castle){
-      Promise.all(
-        [completeMoveFromState([prevMove.move[1],prevMove.move[0]],false),
-         completeMoveFromState([prevMove.castle[1],prevMove.castle[0]],false)]).then(()=>{
-           canAnimate = true;
-        });
-    } else {
-      completeMoveFromState([prevMove.move[1],prevMove.move[0]],false).then(()=>{
+        await completeMove({startParent,piece:p,square:sq,shouldUpdate:false});
         canAnimate = true;
-      });
+      } else if (prevMove.castle){
+        await Promise.all(
+          [completeMoveFromState([prevMove.move[1],prevMove.move[0]],false),
+           completeMoveFromState([prevMove.castle[1],prevMove.castle[0]],false)])
+         canAnimate = true;
+      } else {
+        await completeMoveFromState([prevMove.move[1],prevMove.move[0]],false)
+        canAnimate = true;
+      }
+      if (holdingToPrevMove) movesOwed -= 1
+      unstickCount = 0;
+      undoneMoves.push(prevMove);
     }
-    undoneMoves.push(prevMove);
-    //console.log (moveHistory,undoneMoves);
   }
 }
 
-function showNextMove(){
-  if (!canAnimate || displaySimulateIndex !== 0 ){ return }
-  let nextMove = undoneMoves.pop();
-  if (nextMove) { 
-    canAnimate = false;
-    if (nextMove.promotion){ 
-      promotePiece(nextMove.move[0],nextMove.promotion)
+async function showNextMove(){
+  if (!holdingToNextMove) movesOwed += 1
+  if (undoneMoves.length === 0){
+    movesOwed = 0;
+    holdingToNextMove = false;
+  }
+  if (!canAnimate) {
+    await waitXms(500);
+    return
+  }
+  while (undoneMoves.length !== 0 && movesOwed > 0){
+    movesOwed -= 1
+    let nextMove = undoneMoves.pop();
+    if (undoneMoves.length === 0){
+        movesOwed = 0;
+        holdingToNextMove = false;
     }
-    if (nextMove.capture){
-      completeMoveFromState(nextMove.move,false).then(()=>{
+    if (nextMove) { 
+      canAnimate = false;
+      if (nextMove.promotion){ 
+        promotePiece(nextMove.move[0],nextMove.promotion)
+      }
+      if (nextMove.capture){
+        await completeMoveFromState(nextMove.move,false)
         let graveyard = nextMove.capture;
         let startParent = boardNode.children[nextMove.move[1][0]].children[nextMove.move[1][1]];
         if (nextMove.enPassant){
@@ -59,25 +88,30 @@ function showNextMove(){
         let piece = Array.from(startParent.children).find(piece=>piece.classList.contains("piece"));
         pieceMap.get(piece).isCaptured = true;
         nextMove.capture = pieceMap.get(piece);
-        completeMove({startParent,piece,square:graveyard,shouldUpdate:false}).then(()=>{
-          canAnimate = true;
-          if (undoneMoves.length === 0){ pickUpFromCurrentPosition()}
-        });
-      });
-    } else if (nextMove.castle){
-      Promise.all(
-      [completeMoveFromState(nextMove.move,false),
-       completeMoveFromState(nextMove.castle,false)]).then(()=>{
+        await completeMove({startParent,piece,square:graveyard,shouldUpdate:false})
         canAnimate = true;
         if (undoneMoves.length === 0){ pickUpFromCurrentPosition()}
-
-      });
-    } else {
-      completeMoveFromState(nextMove.move,false).then(()=>{
+      } else if (nextMove.castle){
+        await Promise.all(
+        [completeMoveFromState(nextMove.move,false),
+         completeMoveFromState(nextMove.castle,false)])
         canAnimate = true;
         if (undoneMoves.length === 0){ pickUpFromCurrentPosition()}
-      });
+      } else {
+        await completeMoveFromState(nextMove.move,false)
+        canAnimate = true;
+        if (undoneMoves.length === 0){ pickUpFromCurrentPosition()}
+      }
+      if (holdingToNextMove) movesOwed += 1
+      unstickCount = 0;
+      moveHistory.push(nextMove);
     }
-    moveHistory.push(nextMove);
   }
+}
+
+
+function waitXms(x){
+  return new Promise((resolve,reject)=>{
+    setTimeout(resolve,x)
+  })
 }

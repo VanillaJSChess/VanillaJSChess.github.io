@@ -3,7 +3,8 @@ for (i = 0; i < p1pieces.length; i++) {
   dragElement(p1pieces[i]);
   dragElement(p2pieces[i]);
 }
-
+resetAll();
+createPieceLists();
 //pgn menu
 dragBox(document.querySelector('#move-pgn-menu'));
 resizeBox(document.querySelector('#resize-pgn-menu'));
@@ -20,15 +21,53 @@ promotionPieces.forEach(piece=>{
 })
 
 //menu buttons
-resizeMenu()
 newGameButton.addEventListener('click', callFuncIfNotThinking.bind(null,newMatch));
 toggleComputer.addEventListener('click', callFuncIfNotThinking.bind(null,toggleComputerPlayer));
-toPrevMove.addEventListener('click',callFuncIfNotThinking.bind(null,showPrevMove));
-toNextMove.addEventListener('click',callFuncIfNotThinking.bind(null,showNextMove));
+let holdingToPrevMove = false;
+let holdingToNextMove = false;
+let keepMoving;
+let unstickCount = 0;
+toPrevMove.addEventListener('mousedown',callFuncIfNotThinking.bind(null,async ()=>{
+  holdingToPrevMove = true;
+  movesOwed = -1
+  await showPrevMove(); 
+  while (holdingToPrevMove && movesOwed !== 0 && unstickCount < 1000){
+    unstickCount +=1    
+    await showPrevMove();
+  }
+}));
+toNextMove.addEventListener('mousedown',callFuncIfNotThinking.bind(null,async ()=>{
+  holdingToNextMove = true;
+  movesOwed = 1
+  await showNextMove();  
+  while (holdingToNextMove && movesOwed !== 0 && unstickCount < 1000){
+    unstickCount +=1
+    await showNextMove();
+  }
+}));
+document.addEventListener('mouseup',()=>{
+  holdingToPrevMove = false
+  holdingToNextMove = false
+});
+mainContainer.addEventListener('mouseleave',()=>{
+  holdingToPrevMove = false
+  holdingToNextMove = false
+});
+toPrevMove.addEventListener('mouseleave',()=>{
+  holdingToPrevMove = false
+  holdingToNextMove = false
+});
+toNextMove.addEventListener('mouseleave',()=>{
+  holdingToPrevMove = false
+  holdingToNextMove = false
+});
+
 
 //graveyard
 resizeGraveyard()
 window.addEventListener('resize',resizeGraveyard);
+//menu
+resizeMenu()
 window.addEventListener('resize',resizeMenu);
 
 document.querySelectorAll('.close-alert-menu').forEach(close=>{
@@ -45,23 +84,11 @@ window.addEventListener('keydown',event=>{
   if (event.keyCode===27) {
     unhighlightAllSquares();
     hideAvailableMoveIcons();
+    document.querySelectorAll('.close-alert-menu').forEach(close=>{
+      close.parentElement.classList.add('hidden');
+    })
   }
 })
-
-function toggleComputerPlayer(){
-  playingComputer = !playingComputer;
-  if (toggleComputer.innerText.indexOf('Off') > 0){
-    toggleComputer.innerText = 'Turn Computer On';
-  } else {
-    changeToggleText().then(()=>{
-      window.requestAnimationFrame(()=>{
-        if (!turn) {
-          doNormalComputerMove();
-        }
-      });
-    });
-  }
-}
 
 //forfeit 
 ffyes.addEventListener('click', ()=>{
@@ -79,7 +106,9 @@ forfeit.addEventListener('click', ()=>{
 //pgn
 pgn.addEventListener('click',()=>{
   pgnMenu.classList.remove('hidden');
-  pgnText.focus()
+  if (!onMobile) {
+    pgnText.focus()    
+  }
 })
 document.querySelector('#close-pgn').addEventListener('click',()=>{
   pgnMenu.classList.add('hidden');
@@ -87,22 +116,20 @@ document.querySelector('#close-pgn').addEventListener('click',()=>{
 pgnSave.addEventListener('click', ()=>{
   pgnText.value = algebraicNotation(moveHistory).join(', ')
 });
-pgnLoad.addEventListener('click', ()=>{
-  if (pgnText.value === "") {
-    return
-  }
-  newMatch().then(()=>{
-    readPGN().then(()=>{
-      pgnMenu.classList.add('hidden');
-    })
-  })
+pgnLoad.addEventListener('click', async ()=>{
+  if (pgnText.value === "") return
+  await newMatch()
+  await readPGN()
+  pgnMenu.classList.add('hidden');
 });
 
 toggleFirst.addEventListener('click', callFuncIfNotThinking.bind(null,doToggleFirst));
-resetAll();
-createPieceLists();
 
 document.addEventListener('mousedown',registerClicks);
+//disables the doubletap to move on mobile 
+document.querySelectorAll(".square").forEach(square=>{
+  square.addEventListener("click", event => {});
+})
 document.addEventListener('keydown',(e)=>{
   if (e.keyCode === 27) {
     ffMenu.classList.add('hidden');
@@ -110,21 +137,31 @@ document.addEventListener('keydown',(e)=>{
   }
 });
 
-function doToggleFirst(){
-  return new Promise((resolve,reject)=>{
-    requestAnimationFrame(()=>{
-      flipKingAndQueen();
-      firstMove = !firstMove;
-      switchSides();
-      newMatch().then(resolve)
+async function toggleComputerPlayer(){
+  playingComputer = !playingComputer;
+  if (toggleComputer.innerText.indexOf('Off') > 0){
+    toggleComputer.innerText = 'Turn Computer On';
+  } else {
+    await changeToggleText()
+    window.requestAnimationFrame(()=>{
+      if (!turn) doNormalComputerMove();
     });
-  })
+  }
+}
+
+
+
+async function doToggleFirst(){
+  requestAnimationFrame(async ()=>{
+    flipKingAndQueen();
+    firstMove = !firstMove;
+    switchSides();
+    await newMatch()
+  });
 }
 
 function callFuncIfNotThinking(func){
-  if (!thinkingInProg){
-    func()
-  }
+  if (!thinkingInProg) func()
 }
 
 function registerClicks(e){
@@ -179,3 +216,8 @@ function createPieceLists(){
     document.querySelectorAll(pieceType[0]).forEach(piece=>new pieceType[1](piece))
   });
 }
+
+
+
+
+

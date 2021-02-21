@@ -38,9 +38,19 @@ nav {
 
 #player1-area,
 #player2-area {
-  height: fit-content;
   flex-grow: 1;
+  display: flex;
+  flex-direction: column;
 }
+
+#player1-area{
+  justify-content:flex-start;
+}
+#player2-area {
+  justify-content:flex-end;
+  /* background-color: aliceblue; */
+}
+
 
 #bottom-area {
   flex-grow: 1;
@@ -67,6 +77,19 @@ nav {
   flex-direction: column;
   justify-content: space-around;
   align-items: center;
+}
+
+#prev-move, #next-move{
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-size: 50%;
+}
+#prev-move{
+  background-image: url('../images/chevron-left.svg');
+}
+#next-move{
+  background-image: url('../images/chevron-right.svg');
 }
 
 #bottom-area button:hover {

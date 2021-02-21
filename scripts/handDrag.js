@@ -108,8 +108,8 @@ function dragElement(elmnt) {
   }
 
   function endDrag(piece,keepIcons=false){
-    elmnt.style.top = 'auto';
-    elmnt.style.left = 'auto';
+    elmnt.style.top = null;
+    elmnt.style.left = null;
     document.onmouseup = null;
     document.onmousemove = null;
 

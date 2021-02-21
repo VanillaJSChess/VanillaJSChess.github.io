@@ -21,14 +21,13 @@ function checkmateDisplayed(piecesOnBoard){
 }
 
 function draw(){
-  clearWinner();
-  drawNode.style.visibility = 'visible';
-  drawNode.style.color = 'black';
-  winnerBool = true
+  winnerBool = true;
+  alertMenu.classList.remove("hidden");
+  document.querySelector('#winner').innerText = "Draw"
+  thinkingInProg = false;
 }
 
 function winner(player = turn) {
-    clearWinner();
     winnerBool = true;
     let winner = document.querySelector('#winner');
     alertMenu.classList.remove("hidden");

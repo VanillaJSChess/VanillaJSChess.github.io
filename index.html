@@ -2,7 +2,8 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>VanillaJS Chess</title>
   <link rel="stylesheet" type="text/css" href="styles/layout.css">
   <link rel="stylesheet" type="text/css" href="styles/board.css">
@@ -34,10 +35,11 @@
   <script defer type="text/javascript" src="scripts/init.js"></script>
   <script defer type="text/javascript" src="scripts/handlePGN.js"></script>
   <script defer type="text/javascript" src="scripts/bookTest.js"></script>
+
 </head>
 
 <!-- By Chess_kdt45.svg: en:User:Cburnettderivative work: NikNaks93 (talk) - Chess_kdt45.svg, CC BY-SA 3.0, https://commons.wikimedia.org/w/index.php?curid=10403970 -->
-<body>
+<body class = "">
 <!--   <div id="menu-placeholder"></div> -->
   <div id="menu-container" class="left"> 
       <div id="menu-tab">
@@ -81,23 +83,24 @@
       <div class="icon"></div>
       <div class="player-name"></div>
       <div id="p1graveyard">
-        <div class="piece p1piece white rook"></div>
-        <div class="piece p1piece white knight"></div>
-        <div class="piece p1piece white bishop"></div>
-        <div class="piece p1piece white king"></div>
-        <div class="piece p1piece white queen"></div>
-        <div class="piece p1piece white bishop"></div>
-        <div class="piece p1piece white knight"></div>
-        <div class="piece p1piece white rook"></div>
-        <div class="piece p1piece white pawn"></div>
-        <div class="piece p1piece white pawn"></div>
-        <div class="piece p1piece white pawn"></div>
-        <div class="piece p1piece white pawn"></div>
-        <div class="piece p1piece white pawn"></div>
-        <div class="piece p1piece white pawn"></div>
-        <div class="piece p1piece white pawn"></div>
-        <div class="piece p1piece white pawn"></div>
-        <div class="sub-graveyard pos0"></div>
+        <div class="sub-graveyard pos0">
+          <div class="piece p1piece white rook"></div>
+          <div class="piece p1piece white knight"></div>
+          <div class="piece p1piece white bishop"></div>
+          <div class="piece p1piece white king"></div>
+          <div class="piece p1piece white queen"></div>
+          <div class="piece p1piece white bishop"></div>
+          <div class="piece p1piece white knight"></div>
+          <div class="piece p1piece white rook"></div>
+          <div class="piece p1piece white pawn"></div>
+          <div class="piece p1piece white pawn"></div>
+          <div class="piece p1piece white pawn"></div>
+          <div class="piece p1piece white pawn"></div>
+          <div class="piece p1piece white pawn"></div>
+          <div class="piece p1piece white pawn"></div>
+          <div class="piece p1piece white pawn"></div>
+          <div class="piece p1piece white pawn"></div>
+        </div>
         <div class="sub-graveyard pos1"></div>
         <div class="sub-graveyard pos2"></div>
         <div class="sub-graveyard pos3"></div>
@@ -119,104 +122,104 @@
             <div id="ff-no">No</div>
           </div>
         </div> 
-        <div id="board-with-promotion">
+        <div id="board-with-promotion" class="">
           <div id = "choose-promotion"> 
             <div class = "promotion-piece"></div>
             <div class = "promotion-piece"></div>
             <div class = "promotion-piece"></div>
             <div class = "promotion-piece"></div>
           </div>
-          <div id="board">
+          <div id="board" class="">
             <div class="gameRow">
-               <span class="square">
-                 <span class="avail-move hidden"></span>
-                 <span class="tr-text">8</span>
-               </span>
-               <span class="dark square"><span class="avail-move hidden"></span></span><span class="square"><span class="avail-move hidden"></span></span><span class="dark square"><span class="avail-move hidden"></span></span>
-               <span class="square"><span class="avail-move hidden"></span></span><span class="dark square"><span class="avail-move hidden"></span></span><span class="square"><span class="avail-move hidden"></span></span><span class="dark square"><span class="avail-move hidden"></span></span>
+               <div class="square">
+                 <div class="avail-move hidden"></div>
+                 <div class="tr-text">8</div>
+               </div>
+               <div class="dark square"><div class="avail-move hidden"></div></div><div class="square"><div class="avail-move hidden"></div></div><div class="dark square"><div class="avail-move hidden"></div></div>
+               <div class="square"><div class="avail-move hidden"></div></div><div class="dark square"><div class="avail-move hidden"></div></div><div class="square"><div class="avail-move hidden"></div></div><div class="dark square"><div class="avail-move hidden"></div></div>
             </div>
             <div class="gameRow">
-               <span class="dark square">
-                  <span class="avail-move hidden"></span>
-                  <span class="tr-text">7</span>
-               </span>
-               <span class="square"><span class="avail-move hidden"></span></span><span class="dark square"><span class="avail-move hidden"></span></span><span class="square"><span class="avail-move hidden"></span></span>
-               <span class="dark square"><span class="avail-move hidden"></span></span><span class="square"><span class="avail-move hidden"></span></span><span class="dark square"><span class="avail-move hidden"></span></span><span class="square"><span class="avail-move hidden"></span></span>
+               <div class="dark square">
+                  <div class="avail-move hidden"></div>
+                  <div class="tr-text">7</div>
+               </div>
+               <div class="square"><div class="avail-move hidden"></div></div><div class="dark square"><div class="avail-move hidden"></div></div><div class="square"><div class="avail-move hidden"></div></div>
+               <div class="dark square"><div class="avail-move hidden"></div></div><div class="square"><div class="avail-move hidden"></div></div><div class="dark square"><div class="avail-move hidden"></div></div><div class="square"><div class="avail-move hidden"></div></div>
+            </div>
+            <div class="gameRow ">
+               <div class="square ">
+                 <div class="avail-move hidden "></div>
+                 <div class="tr-text ">6</div>
+               </div>
+               <div class="dark square "><div class="avail-move hidden "></div></div><div class="square"><div class="avail-move hidden"></div></div><div class="dark square"><div class="avail-move hidden"></div></div>
+               <div class="square"><div class="avail-move hidden"></div></div><div class="dark square"><div class="avail-move hidden"></div></div><div class="square"><div class="avail-move hidden"></div></div><div class="dark square"><div class="avail-move hidden"></div></div>
             </div>
             <div class="gameRow">
-               <span class="square">
-                 <span class="avail-move hidden"></span>
-                 <span class="tr-text">6</span>
-               </span>
-               <span class="dark square"><span class="avail-move hidden"></span></span><span class="square"><span class="avail-move hidden"></span></span><span class="dark square"><span class="avail-move hidden"></span></span>
-               <span class="square"><span class="avail-move hidden"></span></span><span class="dark square"><span class="avail-move hidden"></span></span><span class="square"><span class="avail-move hidden"></span></span><span class="dark square"><span class="avail-move hidden"></span></span>
+               <div class="dark square">
+                 <div class="avail-move hidden"></div>
+                 <div class="tr-text">5</div>
+               </div>
+               <div class="square"><div class="avail-move hidden"></div></div><div class="dark square"><div class="avail-move hidden"></div></div><div class="square"><div class="avail-move hidden"></div></div>
+               <div class="dark square"><div class="avail-move hidden"></div></div><div class="square"><div class="avail-move hidden"></div></div><div class="dark square"><div class="avail-move hidden"></div></div><div class="square"><div class="avail-move hidden"></div></div>
             </div>
             <div class="gameRow">
-               <span class="dark square">
-                 <span class="avail-move hidden"></span>
-                 <span class="tr-text">5</span>
-               </span>
-               <span class="square"><span class="avail-move hidden"></span></span><span class="dark square"><span class="avail-move hidden"></span></span><span class="square"><span class="avail-move hidden"></span></span>
-               <span class="dark square"><span class="avail-move hidden"></span></span><span class="square"><span class="avail-move hidden"></span></span><span class="dark square"><span class="avail-move hidden"></span></span><span class="square"><span class="avail-move hidden"></span></span>
+               <div class="square">
+                 <div class="avail-move hidden"></div>
+                 <div class="tr-text">4</div>
+               </div>
+               <div class="dark square"><div class="avail-move hidden"></div></div><div class="square"><div class="avail-move hidden"></div></div><div class="dark square"><div class="avail-move hidden"></div></div>
+               <div class="square"><div class="avail-move hidden"></div></div><div class="dark square"><div class="avail-move hidden"></div></div><div class="square"><div class="avail-move hidden"></div></div><div class="dark square"><div class="avail-move hidden"></div></div>
             </div>
             <div class="gameRow">
-               <span class="square">
-                 <span class="avail-move hidden"></span>
-                 <span class="tr-text">4</span>
-               </span>
-               <span class="dark square"><span class="avail-move hidden"></span></span><span class="square"><span class="avail-move hidden"></span></span><span class="dark square"><span class="avail-move hidden"></span></span>
-               <span class="square"><span class="avail-move hidden"></span></span><span class="dark square"><span class="avail-move hidden"></span></span><span class="square"><span class="avail-move hidden"></span></span><span class="dark square"><span class="avail-move hidden"></span></span>
+               <div class="dark square">
+                 <div class="avail-move hidden"></div>
+                 <div class="tr-text">3</div>
+               </div>
+               <div class="square"><div class="avail-move hidden"></div></div><div class="dark square"><div class="avail-move hidden"></div></div><div class="square"><div class="avail-move hidden"></div></div>
+               <div class="dark square"><div class="avail-move hidden"></div></div><div class="square"><div class="avail-move hidden"></div></div><div class="dark square"><div class="avail-move hidden"></div></div><div class="square"><div class="avail-move hidden"></div></div>
             </div>
             <div class="gameRow">
-               <span class="dark square">
-                 <span class="avail-move hidden"></span>
-                 <span class="tr-text">3</span>
-               </span>
-               <span class="square"><span class="avail-move hidden"></span></span><span class="dark square"><span class="avail-move hidden"></span></span><span class="square"><span class="avail-move hidden"></span></span>
-               <span class="dark square"><span class="avail-move hidden"></span></span><span class="square"><span class="avail-move hidden"></span></span><span class="dark square"><span class="avail-move hidden"></span></span><span class="square"><span class="avail-move hidden"></span></span>
+               <div class="square">
+                 <div class="avail-move hidden"></div>
+                 <div class="tr-text">2</div>
+               </div>
+               <div class="dark square"><div class="avail-move hidden"></div></div><div class="square"><div class="avail-move hidden"></div></div><div class="dark square"><div class="avail-move hidden"></div></div>
+               <div class="square"><div class="avail-move hidden"></div></div><div class="dark square"><div class="avail-move hidden"></div></div><div class="square"><div class="avail-move hidden"></div></div><div class="dark square"><div class="avail-move hidden"></div></div>
             </div>
             <div class="gameRow">
-               <span class="square">
-                 <span class="avail-move hidden"></span>
-                 <span class="tr-text">2</span>
-               </span>
-               <span class="dark square"><span class="avail-move hidden"></span></span><span class="square"><span class="avail-move hidden"></span></span><span class="dark square"><span class="avail-move hidden"></span></span>
-               <span class="square"><span class="avail-move hidden"></span></span><span class="dark square"><span class="avail-move hidden"></span></span><span class="square"><span class="avail-move hidden"></span></span><span class="dark square"><span class="avail-move hidden"></span></span>
-            </div>
-            <div class="gameRow">
-               <span class="dark square">
-                 <span class="avail-move hidden"></span>
-                 <span class="br-text">a</span>
-                 <span class="tr-text">1</span>
-               </span>
-               <span class="square">
-                 <span class="avail-move hidden"></span>
-                 <span class="br-text">b</span>
-               </span>
-               <span class="dark square">
-                 <span class="avail-move hidden"></span>
-                 <span class="br-text">c</span>
-               </span>
-               <span class="square">
-                 <span class="avail-move hidden"></span>
-                 <span class="br-text">d</span>
-               </span>
-               <span class="dark square">
-                 <span class="avail-move hidden"></span>
-                 <span class="br-text">e</span>
-               </span>
-               <span class="square
-                 "><span class="avail-move hidden"></span>
-                 <span class="br-text">f</span>
-               </span>
-               <span class="dark square">
-                 <span class="avail-move hidden"></span>
-                 <span class="br-text">g</span>
-               </span>
-               <span class="square">
-               <span class="avail-move hidden"></span>
-                 <span class="br-text">h</span>
-               </span>
+               <div class="dark square">
+                 <div class="avail-move hidden"></div>
+                 <div class="br-text">a</div>
+                 <div class="tr-text">1</div>
+               </div>
+               <div class="square">
+                 <div class="avail-move hidden"></div>
+                 <div class="br-text">b</div>
+               </div>
+               <div class="dark square">
+                 <div class="avail-move hidden"></div>
+                 <div class="br-text">c</div>
+               </div>
+               <div class="square">
+                 <div class="avail-move hidden"></div>
+                 <div class="br-text">d</div>
+               </div>
+               <div class="dark square">
+                 <div class="avail-move hidden"></div>
+                 <div class="br-text">e</div>
+               </div>
+               <div class="square
+                 "><div class="avail-move hidden"></div>
+                 <div class="br-text">f</div>
+               </div>
+               <div class="dark square">
+                 <div class="avail-move hidden"></div>
+                 <div class="br-text">g</div>
+               </div>
+               <div class="square">
+               <div class="avail-move hidden"></div>
+                 <div class="br-text">h</div>
+               </div>
             </div>
           </div>
           <div id="piece-area"></div>
@@ -227,23 +230,24 @@
       <div class="icon"></div>
       <div class="player-name"></div>
       <div id="p2graveyard">
+        <div class="sub-graveyard pos0">
         <div class="piece p2piece black pawn"></div>
-        <div class="piece p2piece black pawn"></div>
-        <div class="piece p2piece black pawn"></div>
-        <div class="piece p2piece black pawn"></div>
-        <div class="piece p2piece black pawn"></div>
-        <div class="piece p2piece black pawn"></div>
-        <div class="piece p2piece black pawn"></div>
-        <div class="piece p2piece black pawn"></div>
-        <div class="piece p2piece black rook"></div>
-        <div class="piece p2piece black knight"></div>
-        <div class="piece p2piece black bishop"></div>
-        <div class="piece p2piece black king"></div>
-        <div class="piece p2piece black queen"></div>
-        <div class="piece p2piece black bishop"></div>
-        <div class="piece p2piece black knight"></div>
-        <div class="piece p2piece black rook"></div>
-        <div class="sub-graveyard pos0"></div>
+          <div class="piece p2piece black pawn"></div>
+          <div class="piece p2piece black pawn"></div>
+          <div class="piece p2piece black pawn"></div>
+          <div class="piece p2piece black pawn"></div>
+          <div class="piece p2piece black pawn"></div>
+          <div class="piece p2piece black pawn"></div>
+          <div class="piece p2piece black pawn"></div>
+          <div class="piece p2piece black rook"></div>
+          <div class="piece p2piece black knight"></div>
+          <div class="piece p2piece black bishop"></div>
+          <div class="piece p2piece black king"></div>
+          <div class="piece p2piece black queen"></div>
+          <div class="piece p2piece black bishop"></div>
+          <div class="piece p2piece black knight"></div>
+          <div class="piece p2piece black rook"></div>
+        </div>
         <div class="sub-graveyard pos1"></div>
         <div class="sub-graveyard pos2"></div>
         <div class="sub-graveyard pos3"></div>
@@ -263,12 +267,8 @@
         </button>
       </div>
       <div id="navigation">
-        <button class="" id="prev-move">
-          <img src="images/chevron-left.svg" alt="prev move"/>
-        </button>
-        <button class="" id="next-move">
-          <img src="images/chevron-right.svg" alt="next move"/>
-        </button>
+        <button class="" id="prev-move"></button>
+        <button class="" id="next-move"></button>
       </div>
     </div>
   </div> 

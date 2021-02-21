@@ -104,21 +104,9 @@ function setMoveIcons() {
   }
 }
 
-function clearWinner() {
-  //restyle anything so it looks like it does before a win 
-  ////revamp
-//   winner1.style.visibility = 'hidden';
-//   winner2.style.visibility = 'hidden';
-//   drawNode.style.visibility = 'hidden';
-//   clearIcons();
-//   winner1.style.backgroundColor = '#ffffff';
-//   winner2.style.backgroundColor = '#ffffff';
-  winnerBool = false;
-}
-
 function changeToggleText(){
   return new Promise((resolve,reject)=>{
-    toggleComputer.innerText = 'Turn Computer Off'; 
+    toggleComputer.innerText = playingComputer ? 'Turn Computer Off' :  'Turn Computer On'; 
     window.requestAnimationFrame(resolve);
   });
 }
@@ -134,7 +122,7 @@ function turnOnThinking(){
 
 function hideAvailableMoveIcons(){
   availMoveIcons.forEach(icon=>{
-    icon.style.zIndex = '0';
+    icon.style.zIndex = null;
     icon.classList.add('hidden');
   });
 }

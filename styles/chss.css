@@ -8,39 +8,77 @@
   --lighter-color: #bfbfbf;
   --lightest-color: #ffffff;
   --board-vh-limit: 70vh;
+  --graveyard-unit: 0.6rem;
+}
+
+* {
+  touch-action: manipulation;
 }
 
 #p1graveyard,
 #p2graveyard {
-  height: 100%;
+  height: fit-content;
   display: flex;
   justify-content: flex-start;
   position: relative;
   pointer-events: none;
 }
 
-#p1graveyard .sub-graveyard {
-    align-items: flex-end;
-    display: flex;
-    align-self: flex-end;
+#p1graveyard .sub-graveyard,
+#p2graveyard .sub-graveyard{
+  align-items: flex-end;
 }
 
-.sub-graveyard {width: calc(100vw / 15);height: calc(100vw / 15);max-width: calc(var(--board-vh-limit) / 15);max-height: calc(var(--board-vh-limit) / 15);margin-left: -1.1rem;position:relative;}
-
-.sub-graveyard .piece{
-    width: calc(100vw / 15);
-    height: calc(100vw / 15);
-    max-width: calc(var(--board-vh-limit) / 15);
-    max-height: calc(var(--board-vh-limit) / 15);
+#p1graveyard {
 }
 
+.sub-graveyard {
+  width: calc(100vw / 15);
+  height: calc(100vw / 15);
+  max-width: calc(var(--board-vh-limit) / 15);
+  max-height: calc(var(--board-vh-limit) / 15);
+  margin-left: calc(-1.2 * var(--graveyard-unit));
+  position: relative;
+}
+
+.sub-graveyard .piece {
+  width: calc(100vw / 15);
+  height: calc(100vw / 15);
+  max-width: calc(var(--board-vh-limit) / 15);
+  max-height: calc(var(--board-vh-limit) / 15);
+}
 .sub-graveyard:nth-of-type(1) {
-  margin-left:0rem;
+  margin-left: 0rem;
 }
 
-#ff-buttons{
-  display:flex;
-  justify-content:space-around;
+.sub-graveyard > *:nth-child(2){
+  margin-left:calc(1* var(--graveyard-unit));
+}
+.sub-graveyard > *:nth-child(3){
+  margin-left:calc(2* var(--graveyard-unit));
+}
+.sub-graveyard > *:nth-child(4){
+  margin-left:calc(3* var(--graveyard-unit));
+}
+.sub-graveyard > *:nth-child(5){
+  margin-left:calc(4* var(--graveyard-unit));
+}
+.sub-graveyard > *:nth-child(6){
+  margin-left:calc(5* var(--graveyard-unit));
+}
+.sub-graveyard > *:nth-child(7){
+  margin-left:calc(6* var(--graveyard-unit));
+}
+.sub-graveyard > *:nth-child(8){
+  margin-left:calc(7* var(--graveyard-unit));
+}
+
+
+
+
+#ff-buttons {
+  display: flex;
+  justify-content: space-around;
 }
 
 #ff-yes:hover,
@@ -52,12 +90,12 @@
 #ff-no {
   display: inline-block;
   background-color: var(--dark-color);
-  padding: .5rem 1rem;
+  padding: 0.5rem 1rem;
   font-size: 1.2rem;
-  width:2.5rem;
-  text-align:center;
-  border-radius:5px;
-  margin-top:1rem;
+  width: 2.5rem;
+  text-align: center;
+  border-radius: 5px;
+  margin-top: 1rem;
 }
 
 #choose-promotion > .promotion-piece {
@@ -90,7 +128,7 @@
 #traverse-moves button {
   background-color: var(--dark-color);
 }
-#traverse-moves button:hover{
+#traverse-moves button:hover {
   background-color: #313131;
 }
 #traverse-moves button:active {
@@ -163,17 +201,6 @@ button:focus {
   visibility: hidden;
 }
 
-@media screen and (max-width: 768px), screen and (max-height: 600px) {
-  :root {
-    --square-border-width: 3px;
-  }
-  #traverse-moves button {
-    margin: 0.25rem;
-    padding: 0.5rem 1rem;
-    font-size: 1rem;
-  }
-}
-
 #pgn-save.left {
   left: -125px;
 }
@@ -207,4 +234,32 @@ button:focus {
   width: 125px;
   height: 32px;
   margin: 5px auto;
+}
+
+
+@media screen and (max-width: 500px) and (max-height: 1000px) {
+  :root{
+    --graveyard-unit: 0.5rem;
+  }
+}
+
+@media screen and (max-width: 500px) and (max-height: 600px) {
+  :root{
+    --graveyard-unit: 0.5rem;
+  }
+  .sub-graveyard{
+    margin-left:0rem;
+  }
+}
+
+
+@media screen and (max-width:300px) and (min-height:601px){
+  #ff-yes,
+  #ff-no {
+    padding: 0.3rem 0.8rem;
+    font-size: 0.9rem;
+    width: 1.4rem;
+    border-radius: 5px;
+    margin-top: .8rem;
+  }
 }

@@ -18,7 +18,7 @@ function wrath(){
 
 // let ratedMoveLog = [];
 // let prevmove;
-let displaySimulateIndex = 0;
+// let displaySimulateIndex = 0;
 // let prevShownRatedMove;
 
 // function simulateMoveOnDisplay(index, moves = ratedMoveLog){
