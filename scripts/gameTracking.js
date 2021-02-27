@@ -1,10 +1,8 @@
-
 //game tracking
 let undoneMoves = [];
 let movesOwed = 0
 async function showPrevMove(){
-  if (!holdingToPrevMove) movesOwed -= 1
-  if (moveHistory.length === 0 || movesOwed ===0 ){
+  if (moveHistory.length === 0){
     movesOwed = 0;
     holdingToPrevMove = false;
   }
@@ -14,7 +12,6 @@ async function showPrevMove(){
     return
   }
   while (moveHistory.length !== 0 && movesOwed < 0){
-    movesOwed += 1
     let prevMove = moveHistory.pop();
     if (moveHistory.length === 0){
         movesOwed = 0;
@@ -49,7 +46,7 @@ async function showPrevMove(){
         await completeMoveFromState([prevMove.move[1],prevMove.move[0]],false)
         canAnimate = true;
       }
-      if (holdingToPrevMove) movesOwed -= 1
+      if (!holdingToPrevMove) movesOwed += 1
       unstickCount = 0;
       undoneMoves.push(prevMove);
     }
@@ -57,7 +54,6 @@ async function showPrevMove(){
 }
 
 async function showNextMove(){
-  if (!holdingToNextMove) movesOwed += 1
   if (undoneMoves.length === 0){
     movesOwed = 0;
     holdingToNextMove = false;
@@ -67,7 +63,6 @@ async function showNextMove(){
     return
   }
   while (undoneMoves.length !== 0 && movesOwed > 0){
-    movesOwed -= 1
     let nextMove = undoneMoves.pop();
     if (undoneMoves.length === 0){
         movesOwed = 0;
@@ -102,7 +97,7 @@ async function showNextMove(){
         canAnimate = true;
         if (undoneMoves.length === 0){ pickUpFromCurrentPosition()}
       }
-      if (holdingToNextMove) movesOwed += 1
+      if (!holdingToNextMove) movesOwed -= 1
       unstickCount = 0;
       moveHistory.push(nextMove);
     }

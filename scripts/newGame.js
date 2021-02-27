@@ -7,10 +7,6 @@ function resetAll() {
    flipKingAndQueen();
   }
 //   playingComputer = true;
-
-////revamp
-//   p1s.innerText = 0; //reset scores 
-//   p2s.innerText = 0;
   newMatch(); 
   switchSides(true); //ensures p1 is white and p2 is black
   setMoveIcons();
@@ -51,13 +47,12 @@ function switchSides(reset = false){
 
 async function newMatch() {
   resetDisplayedToShown(); 
-  ////revamp
-//     addOrRemoveThinking();
   emptyHistoryCollections();
   changeToggleText()
   unhighlightAllSquares();
   winnerBool = false;
   turn = firstMove;  
+  addOrRemoveThinking();
   colorPlayerIcons();
   movePromises = populateBoard(); //grab all the pieces that need to move to their homeSqures 
   resetPieces();
@@ -70,8 +65,8 @@ async function newMatch() {
   if (!turn && playingComputer) doNormalComputerMove();
   //do after board sets
   canAnimate = true;
-//   pgnText.value = "1. Nf3 Nf6, 2. g3 g6, 3. Bg2 Bg7, 4. O-O O-O, 5. h4 g5, 6. h5 h6, 7. Nxg5 hxg5, 8. h6 Re8, 9. h7+ Kf8, 10. h8=Q+ Bxh8"
-//   readPGN()
+  // pgnText.value = "1. Nf3 Nf6, 2. g3 g6, 3. Bg2 Bg7, 4. O-O O-O, 5. h4 g5, 6. h5 h6, 7. Nxg5 hxg5, 8. h6 Re8, 9. h7+ Kf8, 10. h8=Q+ Bxh8"
+  // readPGN()
 
   function emptyHistoryCollections(){
     //empty tracking done from last game
@@ -80,6 +75,7 @@ async function newMatch() {
     moveHistory = [];
     graveyardOffsets = {true:{},false:{}}
   }
+
 
   function addOrRemoveThinking() {
     if (turn){

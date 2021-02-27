@@ -78,13 +78,10 @@ function colorPlayerIcons(){
   }
   if (turn) {
     ////revamp
-//     p1icon.style.visibility = 'visible';
-//     ffName.innerText = 'Player 1 Forfeit?'
+    // p1icon.style.visibility = 'visible';
   } else {
     ////revamp
-    
-//       p2icon.style.visibility = 'visible';
-//       ffName.innerText = 'Player 2 Forfeit?'
+    //p2icon.style.visibility = 'visible';
   }
 }
 
@@ -113,8 +110,7 @@ function changeToggleText(){
 
 function turnOnThinking(){
   return new Promise((resolve,reject)=>{
-    ////revamp
-//     thinking.classList.add('visible')
+    thinking.classList.add('visible')
     thinkingInProg = true;
     window.requestAnimationFrame(resolve);
   });

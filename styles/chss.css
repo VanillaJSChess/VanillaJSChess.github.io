@@ -11,8 +11,17 @@
   --graveyard-unit: 0.6rem;
 }
 
+
+
 * {
   touch-action: manipulation;
+  -webkit-touch-callout:none;
+  -webkit-user-select:none;
+  -khtml-user-select:none;
+  -moz-user-select:none;
+  -ms-user-select:none;
+  user-select:none;
+  -webkit-tap-highlight-color:rgba(0,0,0,0);
 }
 
 #p1graveyard,
@@ -153,8 +162,8 @@ button:focus {
 #thinking {
   display: flex;
   justify-content: center;
-  font-size: 15px;
-  margin-left: 28px;
+  flex-grow: 1;
+  padding-top: .5rem;
   visibility: hidden;
 }
 

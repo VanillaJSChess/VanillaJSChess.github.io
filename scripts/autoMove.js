@@ -21,7 +21,7 @@ function stackPiece(piece) {
 }
 
 graveyardOffsets = {true:{},false:{}}
-function movePiece(piece,loc,speedFactor= onMobile ? 10 :30){
+function movePiece(piece,loc,speedFactor= onMobile ? 15 :30){
   return new Promise((resolve,reject)=>{
     if (piece.parentElement.id === "piece-area"){
       changePieceParent(piece,loc);

@@ -20,6 +20,7 @@ body {
 }
 
 #main-container {
+  user-select: none;
   margin: auto;
   display: flex;
   flex-direction: column;
@@ -77,6 +78,7 @@ nav {
   flex-direction: column;
   justify-content: space-around;
   align-items: center;
+  user-select: none;
 }
 
 #prev-move, #next-move{
@@ -103,7 +105,8 @@ nav {
 
 #interactive,
 #navigation{
-  display:flex
+  display:flex;
+  user-select: none;
 }
 
 @media screen and (max-height:600px){

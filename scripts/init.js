@@ -23,45 +23,62 @@ promotionPieces.forEach(piece=>{
 //menu buttons
 newGameButton.addEventListener('click', callFuncIfNotThinking.bind(null,newMatch));
 toggleComputer.addEventListener('click', callFuncIfNotThinking.bind(null,toggleComputerPlayer));
+
+
+//navigation
+if (!onMobile){
+  toPrevMove.addEventListener('mousedown',callFuncIfNotThinking.bind(null,handlePrevMoveClick));
+  toNextMove.addEventListener('mousedown',callFuncIfNotThinking.bind(null,handleNextMoveClick));
+} else {
+  toPrevMove.addEventListener('touchstart',callFuncIfNotThinking.bind(null,()=>{
+    console.log('click')
+    handlePrevMoveClick()
+  }));
+  toNextMove.addEventListener('touchstart',callFuncIfNotThinking.bind(null,()=>{
+    console.log('click')
+    handleNextMoveClick()
+  }));  
+}
+
+document.addEventListener('mouseup',endNavigationHold);
+mainContainer.addEventListener('mouseleave',endNavigationHold);
+toPrevMove.addEventListener('mouseleave',endNavigationHold);
+toNextMove.addEventListener('mouseleave',endNavigationHold);
+toPrevMove.addEventListener('touchend',endNavigationHold);
+toNextMove.addEventListener('touchend',endNavigationHold);
+
 let holdingToPrevMove = false;
 let holdingToNextMove = false;
 let keepMoving;
 let unstickCount = 0;
-toPrevMove.addEventListener('mousedown',callFuncIfNotThinking.bind(null,async ()=>{
-  holdingToPrevMove = true;
-  movesOwed = -1
-  await showPrevMove(); 
-  while (holdingToPrevMove && movesOwed !== 0 && unstickCount < 1000){
-    unstickCount +=1    
-    await showPrevMove();
-  }
-}));
-toNextMove.addEventListener('mousedown',callFuncIfNotThinking.bind(null,async ()=>{
+async function handleNextMoveClick() {
   holdingToNextMove = true;
-  movesOwed = 1
-  await showNextMove();  
-  while (holdingToNextMove && movesOwed !== 0 && unstickCount < 1000){
-    unstickCount +=1
-    await showNextMove();
+  if (movesOwed < 1) {
+    movesOwed = 1;
+  } else {
+    movesOwed += 1;
   }
-}));
-document.addEventListener('mouseup',()=>{
-  holdingToPrevMove = false
-  holdingToNextMove = false
-});
-mainContainer.addEventListener('mouseleave',()=>{
-  holdingToPrevMove = false
-  holdingToNextMove = false
-});
-toPrevMove.addEventListener('mouseleave',()=>{
-  holdingToPrevMove = false
-  holdingToNextMove = false
-});
-toNextMove.addEventListener('mouseleave',()=>{
-  holdingToPrevMove = false
-  holdingToNextMove = false
-});
+  console.log(movesOwed)
+  while (movesOwed > 0) {
+    await showNextMove();  
+    console.log('moved')
+  }
+}
 
+async function handlePrevMoveClick() {
+  holdingToPrevMove = true;
+  if (movesOwed > -1) {
+    movesOwed = -1;
+  } else {
+    movesOwed -= 1;
+  }
+  await showPrevMove(); 
+}
+
+function endNavigationHold(){
+  holdingToPrevMove = false
+  holdingToNextMove = false  
+}
 
 //graveyard
 resizeGraveyard()

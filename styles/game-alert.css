@@ -1,12 +1,12 @@
 .alert-menu {
   position: absolute;
   background-color: var(--lighter-color);
-  width: fit-content;
+  width: auto;
   visibility: visible;
   z-index: 2;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%) scale(1) rotateY(0deg);
   opacity: 0.98;
   border-radius: 1rem;
   padding: 1rem;
@@ -15,10 +15,12 @@
   flex-direction: column;
   box-shadow: 0px 0px 30px 0px black;
   font-size: 1rem;
+  transition: transform 200ms ease-out;
 }
 
 .alert-menu.hidden {
   visibility:hidden;
+  transform: translate(-50%, -50%) scale(.25) rotateY(120deg);
 }
 
 .close-alert-menu{

@@ -1,6 +1,5 @@
 function swapTurn(boardIndex) {
-  ////revamp
-//   thinking.classList.remove('visible')
+  thinking.classList.remove('visible')
   thinkingInProg = false;
   document.activeElement.blur();
   document.getElementById('game-area').click()
@@ -15,8 +14,7 @@ function swapTurn(boardIndex) {
     return   
   }
   if (playingComputer && !turn) {
-    ////revamp
-//     thinking.classList.add('visible')
+    thinking.classList.add('visible')
     thinkingInProg = true;
     window.requestAnimationFrame(()=>{
       if (winnerBool || drawBool || midPromotion){ return }

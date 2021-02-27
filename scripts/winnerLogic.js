@@ -37,8 +37,7 @@ function winner(player = turn) {
     } else {
       winner.innerText = "Player 1 Wins"
     }
-    ////revamp
-//     thinking.classList.remove('visible');
+    thinking.classList.remove('visible');
     thinkingInProg = false;
 }
 
