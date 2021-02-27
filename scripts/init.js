@@ -1,77 +1,131 @@
-for (i = 0; i < 8; i++) {
-  getSquare(i,0).style.borderLeft = '1px solid black';
-  getSquare(i,7).style.borderRight = '1px solid black';
-}
-document.querySelectorAll('.gameRow')[7].style.borderBottom = '1px solid black';
-document.querySelectorAll('.gameRow')[0].style.borderTop = '1px solid black';
-
+//make pieces draggable
 for (i = 0; i < p1pieces.length; i++) {
   dragElement(p1pieces[i]);
   dragElement(p2pieces[i]);
 }
+resetAll();
+createPieceLists();
+//pgn menu
 dragBox(document.querySelector('#move-pgn-menu'));
 resizeBox(document.querySelector('#resize-pgn-menu'));
+pgnMove.addEventListener('mousedown',()=>{
+  pgnMenu.classList.add('grabbing');
+  pgnMove.classList.add('grabbing');
+})
 
+//promotions
 promotionPieces.forEach(piece=>{
   piece.addEventListener('click',()=>{
     promotionSelected(piece);
   })
 })
-//   reset.addEventListener('click', callFuncIfNotThinking.bind(null,resetAll));
+
+//menu buttons
 newGameButton.addEventListener('click', callFuncIfNotThinking.bind(null,newMatch));
 toggleComputer.addEventListener('click', callFuncIfNotThinking.bind(null,toggleComputerPlayer));
-toPrevMove.addEventListener('click',callFuncIfNotThinking.bind(null,showPrevMove));
-toNextMove.addEventListener('click',callFuncIfNotThinking.bind(null,showNextMove));
 
+
+//navigation
+if (!onMobile){
+  toPrevMove.addEventListener('mousedown',callFuncIfNotThinking.bind(null,handlePrevMoveClick));
+  toNextMove.addEventListener('mousedown',callFuncIfNotThinking.bind(null,handleNextMoveClick));
+} else {
+  toPrevMove.addEventListener('touchstart',callFuncIfNotThinking.bind(null,()=>{
+    console.log('click')
+    handlePrevMoveClick()
+  }));
+  toNextMove.addEventListener('touchstart',callFuncIfNotThinking.bind(null,()=>{
+    console.log('click')
+    handleNextMoveClick()
+  }));  
+}
+
+document.addEventListener('mouseup',endNavigationHold);
+mainContainer.addEventListener('mouseleave',endNavigationHold);
+toPrevMove.addEventListener('mouseleave',endNavigationHold);
+toNextMove.addEventListener('mouseleave',endNavigationHold);
+toPrevMove.addEventListener('touchend',endNavigationHold);
+toNextMove.addEventListener('touchend',endNavigationHold);
+
+let holdingToPrevMove = false;
+let holdingToNextMove = false;
+let keepMoving;
+let unstickCount = 0;
+async function handleNextMoveClick() {
+  holdingToNextMove = true;
+  if (movesOwed < 1) {
+    movesOwed = 1;
+  } else {
+    movesOwed += 1;
+  }
+  console.log(movesOwed)
+  while (movesOwed > 0) {
+    await showNextMove();  
+    console.log('moved')
+  }
+}
+
+async function handlePrevMoveClick() {
+  holdingToPrevMove = true;
+  if (movesOwed > -1) {
+    movesOwed = -1;
+  } else {
+    movesOwed -= 1;
+  }
+  await showPrevMove(); 
+}
+
+function endNavigationHold(){
+  holdingToPrevMove = false
+  holdingToNextMove = false  
+}
+
+//graveyard
 resizeGraveyard()
 window.addEventListener('resize',resizeGraveyard);
+//menu
+resizeMenu()
+window.addEventListener('resize',resizeMenu);
+
+document.querySelectorAll('.close-alert-menu').forEach(close=>{
+  close.addEventListener('click',()=>{
+    close.parentElement.classList.add('hidden');
+  })  
+})
+alertNewGame.addEventListener('click',()=>{
+  newMatch();
+  alertMenu.classList.add('hidden');
+})
 
 window.addEventListener('keydown',event=>{
   if (event.keyCode===27) {
     unhighlightAllSquares();
     hideAvailableMoveIcons();
+    document.querySelectorAll('.close-alert-menu').forEach(close=>{
+      close.parentElement.classList.add('hidden');
+    })
   }
 })
 
-function toggleComputerPlayer(){
-  playingComputer = !playingComputer;
-  if (toggleComputer.innerText.indexOf('Off') > 0){
-    toggleComputer.innerText = 'Turn Computer On';
-  } else {
-    changeToggleText().then(()=>{
-      window.requestAnimationFrame(()=>{
-        if (!turn) {
-          doNormalComputerMove();
-        }
-      });
-    });
-  }
-}
-ffyes.addEventListener('click', (event)=>{
+//forfeit 
+ffyes.addEventListener('click', ()=>{
   winner();
-  forfeit.classList.remove('forfeit-color')
-  forfeit.classList.add('new-game-color')
-  forfeit.innerText = 'Play Again';
-  forfeit.style.width = 'auto';
+  ffMenu.classList.add('hidden'); 
+});
+ffno.addEventListener('click', ()=>{
+  ffMenu.classList.add('hidden'); 
+});
+forfeit.addEventListener('click', ()=>{
+    ffMenu.classList.toggle('hidden'); 
+    ffName.innerText = turn ? "Player 1 Forfeit?" : "Player 2 Forfeit?";
+});
 
-});
-forfeitBanner.addEventListener('click', function(event){
-  hideForfeit();
-});
-forfeit.addEventListener('click', function(event){
-  if (winnerBool || drawBool){
-    newMatch();
-  } else {
-    forfeitBanner.classList.remove('hidden'); 
-    ffName.classList.remove('hidden');
-    ffYesNo.classList.remove('hidden')
-    forfeitBanner.classList.add('visible');
-    forfeit.classList.add('clicked')
-  }
-});
+//pgn
 pgn.addEventListener('click',()=>{
   pgnMenu.classList.remove('hidden');
-  pgnText.focus()
+  if (!onMobile) {
+    pgnText.focus()    
+  }
 })
 document.querySelector('#close-pgn').addEventListener('click',()=>{
   pgnMenu.classList.add('hidden');
@@ -79,55 +133,52 @@ document.querySelector('#close-pgn').addEventListener('click',()=>{
 pgnSave.addEventListener('click', ()=>{
   pgnText.value = algebraicNotation(moveHistory).join(', ')
 });
-pgnLoad.addEventListener('click', ()=>{
-  if (pgnText.value === "") {
-    return
-  }
-  newMatch().then(()=>{
-    readPGN().then(()=>{
-      pgnMenu.classList.add('hidden');
-    })
-  })
+pgnLoad.addEventListener('click', async ()=>{
+  if (pgnText.value === "") return
+  await newMatch()
+  await readPGN()
+  pgnMenu.classList.add('hidden');
 });
 
 toggleFirst.addEventListener('click', callFuncIfNotThinking.bind(null,doToggleFirst));
-resetAll();
-createPieceLists();
 
-
-//maybe should be 'click' for mobile bug?
 document.addEventListener('mousedown',registerClicks);
+//disables the doubletap to move on mobile 
+document.querySelectorAll(".square").forEach(square=>{
+  square.addEventListener("click", event => {});
+})
 document.addEventListener('keydown',(e)=>{
   if (e.keyCode === 27) {
-    hideForfeit();
+    ffMenu.classList.add('hidden');
     pgnMenu.classList.add('hidden');
-    hideOptions();
   }
 });
 
-function doToggleFirst(){
-  return new Promise((resolve,reject)=>{
-    requestAnimationFrame(()=>{
-      flipKingAndQueen();
-      firstMove = !firstMove;
-      switchSides();
-      newMatch().then(resolve)
+async function toggleComputerPlayer(){
+  playingComputer = !playingComputer;
+  if (toggleComputer.innerText.indexOf('Off') > 0){
+    toggleComputer.innerText = 'Turn Computer On';
+  } else {
+    await changeToggleText()
+    window.requestAnimationFrame(()=>{
+      if (!turn) doNormalComputerMove();
     });
-  })
-}
-
-function callFuncIfNotThinking(func){
-  if (!thinkingInProg){
-    func()
   }
 }
 
-function hideForfeit(){
-  forfeitBanner.classList.add('hidden');
-  ffName.classList.add('hidden');
-  ffYesNo.classList.add('hidden')
-  forfeitBanner.classList.remove('visible');
-  forfeit.classList.remove('clicked');
+
+
+async function doToggleFirst(){
+  requestAnimationFrame(async ()=>{
+    flipKingAndQueen();
+    firstMove = !firstMove;
+    switchSides();
+    await newMatch()
+  });
+}
+
+function callFuncIfNotThinking(func){
+  if (!thinkingInProg) func()
 }
 
 function registerClicks(e){
@@ -135,7 +186,7 @@ function registerClicks(e){
     checkForBoardMoves(clickedElements);
     checkForfeit(clickedElements);
     checkPGN(clickedElements);
-    buttonAnimation(clickedElements);
+    checkSidebar(clickedElements);
 
     function checkForBoardMoves(clickedElements){
       let clickedSqaure = clickedElements.find(item=>item.classList.contains('square'));
@@ -154,58 +205,26 @@ function registerClicks(e){
     }
 
     function checkPGN(clickedElements){
-      let selectedPgnMenu = Array.from(clickedElements).some(el=>(el.id==="pgn-menu"))
+      let selectedPgnMenu = Array.from(clickedElements).some(el=>(el.id==="pgn-menu" || el.id==="menu-tab"))
       if (!selectedPgnMenu){
         pgnMenu.classList.add('hidden');
       }
     }
     function checkForfeit(clickedElements){
-      let forfeitOrFFBanner = Array.from(clickedElements).some(el=>(el.classList.contains('forfeit-banner') || el.id==="forfeit"))
-      if (!forfeitOrFFBanner){
-        hideForfeit() 
+      let selectedFF = Array.from(clickedElements).some(el=>(el.id==='ff-menu'|| el.id==="forfeit"))
+      if (!selectedFF){
+        ffMenu.classList.add('hidden');
       }
     }
-
-    function buttonAnimation(clickedElements){
-      hideOptions();
-      let button = clickedElements[0] 
-      if (button === undefined || button.localName !== "button"){
-        return
-      }
-      
-      if (button.id==='options'){
-        let buttonOptions = button.parentElement.children;
-        showOptions(buttonOptions)
-      }
-
-      function showOptions(buttonOptions){
-
-        buttonOptions[0].classList.add('clicked')
-        if (buttonOptions[1]){
-          buttonOptions[1].classList.remove('centered');  
-          buttonOptions[1].classList.add('left');
-        }
-        if (buttonOptions[2]){
-          buttonOptions[2].classList.remove('centered');
-          buttonOptions[2].classList.add('right');  
+    function checkSidebar(clickedElements){
+      let selectedSidebar = Array.from(clickedElements).some(el=>(el.id==='menu-container'|| el.id==="forfeit"))
+      if (!selectedSidebar){
+        if ((window.innerWidth-mainContainer.offsetWidth)/2 < menuContainer.offsetWidth){
+          hideSidebar();        
         }
       }
-
-
     }
-
-
   }
-      function hideOptions(){
-        Array.from(options).map(buttons=>{
-          buttons.children[0].classList.remove('clicked');
-          Array.from(buttons.children).map(button=>{
-            button.classList.add('centered')
-            button.classList.remove('left');
-            button.classList.remove('right');
-          })
-        });
-      }
 function createPieceLists(){
   //creates a class for each piece on board 
   let pieces = [['.pawn',Pawn],['.knight',Knight], ['.bishop',Bishop], 
@@ -214,3 +233,8 @@ function createPieceLists(){
     document.querySelectorAll(pieceType[0]).forEach(piece=>new pieceType[1](piece))
   });
 }
+
+
+
+
+

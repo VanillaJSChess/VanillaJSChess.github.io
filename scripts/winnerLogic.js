@@ -1,6 +1,6 @@
 //Winner logic
 
-let checkWinner = ()=>{
+function checkWinner() {
   if (turn) {
     return !Array.from(p2pieces).some(piece=>piece.parentElement.id==='');
   } else {
@@ -21,22 +21,21 @@ function checkmateDisplayed(piecesOnBoard){
 }
 
 function draw(){
-  clearWinner();
-  drawNode.style.visibility = 'visible';
-  drawNode.style.color = 'black';
-  winnerBool = true
+  winnerBool = true;
+  alertMenu.classList.remove("hidden");
+  document.querySelector('#winner').innerText = "Draw"
+  thinkingInProg = false;
 }
 
 function winner(player = turn) {
-    clearWinner();
     winnerBool = true;
+    let winner = document.querySelector('#winner');
+    alertMenu.classList.remove("hidden");
     if (undoneMoves.length < 1 && moveHistory.length > 0){ moveHistory[moveHistory.length -1].checkmate = true} 
-    if (player === computerPlayer) {
-        p2s.innerText = Number(p2s.innerText) + 1;
-        winner2.style.visibility = 'visible';
+    if (player !== computerPlayer) {
+      winner.innerText = "Player 2 Wins"
     } else {
-        p1s.innerText = Number(p1s.innerText) + 1;
-        winner1.style.visibility = 'visible';
+      winner.innerText = "Player 1 Wins"
     }
     thinking.classList.remove('visible');
     thinkingInProg = false;

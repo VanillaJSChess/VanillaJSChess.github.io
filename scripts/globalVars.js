@@ -5,38 +5,31 @@ p2pieces = document.querySelectorAll('.p2piece'),
 p1graveyard = document.querySelector('#p1graveyard'), 
 p2graveyard = document.querySelector('#p2graveyard'), 
 //forefeit buttons
-forfeitBanner = document.querySelector('.forfeit-banner'), 
+ffMenu = document.querySelector('#ff-menu'), 
 ffyes = document.querySelector('#ff-yes'), 
 ffno = document.querySelector('#ff-no'),
 ffName = document.querySelector('#ff-name'),
-ffYesNo = document.querySelector('.ff-yes-no'),
-//area used to drag pieces around. maybe not needed 
+//area used to drag pieces around
 pieceArea = document.querySelector('#piece-area'), 
 boardNode = document.querySelector('#board'),
 //icons and score 
-p1icon = document.querySelector('#p1icon'), 
-p2icon = document.querySelector('#p2icon'), 
-p1s = document.querySelector('#p1s'), 
-p2s = document.querySelector('#p2s'), 
-//win or draw display
-winner1 = document.querySelector('#winner1'), 
-winner2 = document.querySelector('#winner2'), 
-drawNode =  document.querySelector('#draw'),
+////revamp
+// p1icon = document.querySelector('#p1icon'), 
+// p2icon = document.querySelector('#p2icon'),
 //buttons
-newGameButton = document.querySelector('#new'), 
-forfeit = document.querySelector('#forfeit'), 
-reset = document.querySelector('#reset'), 
-toggleFirst = document.querySelector('#toggleFirst'), 
-toggleComputer = document.querySelector('#toggleComputer'), 
+newGameButton = document.querySelector('#new-game'), 
+forfeit = document.querySelector('#forfeit'),
+toggleFirst = document.querySelector('#toggle-first'), 
+toggleComputer = document.querySelector('#toggle-computer'), 
+pgn = document.querySelector('#show-pgn'),
 toPrevMove = document.querySelector('#prev-move'), 
 toNextMove = document.querySelector('#next-move'),
-pgn = document.querySelector('#pgn'),
-pgns = document.querySelector('.pgn-options').children,
-options = document.querySelectorAll('.options'),
 allButtons = document.querySelectorAll('button'),
+//pgn menu
 pgnSave = document.querySelector('#pgn-save'),
 pgnLoad = document.querySelector('#pgn-load'),
 pgnMenu =  document.querySelector('#pgn-menu'),
+pgnMove =  document.querySelector('#move-pgn-menu'),
 pgnText = document.querySelector('#pgn-textarea'),
 //promotion background and pieces 
 promotionBox = document.querySelector('#choose-promotion'),
@@ -46,18 +39,23 @@ availMoveIcons = document.querySelectorAll('.avail-move'), //icons to appear on 
 thinking = document.querySelector('#thinking'),
 firstMove = true, //p1 or p2 moves first 
 winnerBool = false, //if either side has won
-drawBool = false, //if either side has drawn
+drawBool = false, //if drawn
 activePiece, //previously clicked piece
+
+alertMenu  = document.querySelector('#game-alert'),
+alertNewGame  = document.querySelector('#new-game-alert'),
+alertClose  = document.querySelector('#close-alert'),
+
 // posStrength, 
 turn, //is it p1 or p2 move
 thinkingInProg, //blocks button clicks while waiting on computer move 
+computerPlayer = false, 
+mainContainer = document.querySelector('#main-container'),
 
 //change for testing line
 playingComputer = true, //should the computer try to move 
-computerPlayer = true, 
 testingLine = false, //should be inverse of playingComputer
 bookMoves=[];
-
 
 const onMobile = mobileCheck();
 let boards = [{state:[],rating:[]}] //hols displayed and all simulated moves 

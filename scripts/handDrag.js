@@ -5,13 +5,14 @@ function dragElement(elmnt) {
       pos3 = 0,
       pos4 = 0;
   let startParent;
-  let squareWidth = document.querySelector('.square').offsetWidth;
+  let squareWidth;
   if (onMobile){
     elmnt.addEventListener('click',dragMouseDown);
   } else {
     elmnt.onmousedown = dragMouseDown; 
   }
   function dragMouseDown(e) {
+    squareWidth = document.querySelector('.square').offsetWidth;
     e = e || window.event;
 
     if (delOnClick){
@@ -75,13 +76,8 @@ function dragElement(elmnt) {
     function elementDrag(e) {
       e = e || window.event;
       e.preventDefault();
-      // calculate the new cursor position:
-      pos1 = pos3 - e.clientX;
-      pos2 = pos4 - e.clientY;
-      pos3 = e.clientX;
-      pos4 = e.clientY;    
-      elmnt.style.left = (pos3 - leftBoundElmnt + leftBoundSquare - leftBoundRow - squareWidth/2) + 'px';
-      elmnt.style.top = (pos4 - topBoundElmnt + elmntBounds.height*rowCol[0]- squareWidth/2) + 'px';
+      elmnt.style.left = (e.clientX - leftBoundElmnt + leftBoundSquare - leftBoundRow - squareWidth/2) + 'px';
+      elmnt.style.top = (e.clientY - topBoundElmnt + elmntBounds.height*rowCol[0]- squareWidth/2) + 'px';
       handleSquareHighlightsDrag(document.elementsFromPoint(pos3,pos4).find(div=>div.classList.contains('square')));
     }
   }
@@ -112,8 +108,8 @@ function dragElement(elmnt) {
   }
 
   function endDrag(piece,keepIcons=false){
-    elmnt.style.top = 'auto';
-    elmnt.style.left = 'auto';
+    elmnt.style.top = null;
+    elmnt.style.left = null;
     document.onmouseup = null;
     document.onmousemove = null;
 
@@ -144,7 +140,7 @@ function dragBox(elmnt) {
     pos3 = e.clientX;
     pos4 = e.clientY;
     if (!initGrab) {
-      pgnMenu.style.left = pgnMenu.offsetLeft +150- pos1 + 'px';
+      pgnMenu.style.left = pgnMenu.offsetLeft + 150- pos1 + 'px';
       pgnMenu.style.top = pgnMenu.offsetTop + 150 - pos2 + 'px';
     }
     initGrab = false;
@@ -161,6 +157,8 @@ function dragBox(elmnt) {
 
     document.onmouseup = null;
     document.onmousemove = null;
+    pgnMenu.classList.remove('grabbing');
+    pgnMove.classList.remove('grabbing');
   }
 }
 
@@ -192,13 +190,13 @@ function resizeBox(elmnt) {
     if (!initGrab) {
       if (pos3> pgnMenu.offsetLeft + pgnText.offsetLeft + pgnText.offsetWidth ||
       pgnText.offsetWidth-6 >= 91 ){
-        pgnMenu.style.width = 8 + pos3 - pgnMenu.offsetLeft +'px'
-        pgnText.style.width = pgnMenu.offsetWidth-30 + 'px'
+        pgnMenu.style.width = -25 + pos3 - pgnMenu.offsetLeft +'px'
+        pgnText.style.width = pgnMenu.offsetWidth-35 + 'px'
       }
       
       if (pos4> pgnMenu.offsetTop + pgnText.offsetTop + pgnText.offsetHeight ||
       pgnText.offsetHeight-6 >= 73 ){
-        pgnMenu.style.height = 5 + pos4 - pgnMenu.offsetTop +'px'
+        pgnMenu.style.height = -25 + pos4 - pgnMenu.offsetTop +'px'
         pgnText.style.height = pgnMenu.offsetHeight-96 + 'px'
       }
     }

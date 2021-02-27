@@ -1,0 +1,235 @@
+#main-menu {
+  z-index: 1;
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--dark-color);
+  height: 100%;
+  width: 15%;
+  box-shadow: 0px 0px 36px 0px var(--darkest-color);
+  min-width: fit-content;
+}
+
+.menu-item {
+  width: 0%;
+  padding: 1.5rem;
+  margin: 0.2rem 0;
+  font-size: 1.4rem;
+  white-space: nowrap;
+  user-select: none;
+  cursor: pointer;
+  min-width: 0px;
+  overflow: hidden;
+  vertical-align: middle;
+  box-sizing: border-box;
+}
+
+#toggle-computer {
+  background-color: #e25284;
+}
+#toggle-computer:hover {
+  background-color: #da4c7b;
+}
+#toggle-computer:active {
+  background-color: #c74471;
+}
+
+#toggle-first {
+  background-color: #f5b906;
+}
+#toggle-first:hover {
+  background-color: #e8ac00;
+}
+#toggle-first:active {
+  background-color: #dca000;
+}
+
+#new-game,
+#new-game-alert
+ {
+  background-color: #4caf50;
+}
+#new-game:hover,
+#new-game-alert:hover
+ {
+  background-color: #3fa243;
+}
+#new-game:active,
+#new-game-alert:active
+ {
+  background-color: #339637;
+}
+
+#show-pgn,
+#pgn-save,
+#pgn-load {
+  background-color: #99a3e3;
+}
+#show-pgn:hover,
+#pgn-save:hover,
+#pgn-load:hover {
+  background-color: #8c96d6;
+}
+#show-pgn:active,
+#pgn-save:active,
+#pgn-load:active {
+  background-color: #7f89c9;
+}
+
+#main-menu-close {
+  height: 3rem;
+  background-color: var(--darker-color);
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+}
+
+body {
+  display: flex;
+}
+
+#menu-container,
+#menu-container *,
+#menu-placeholder {
+  transition: all 300ms ease-in-out;
+}
+
+#menu-container .menu-item{
+  transition: all 500ms ease-in-out;
+  
+}
+
+
+
+#menu-container {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  background: transparent;
+  transform: translateX(-234px);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  z-index: 5;
+  box-shadow: 0px 0px 0px 0px var(--darkest-color);
+}
+
+#menu-placeholder {
+  width: 0px;
+  /* padding-right: 50px; */
+}
+
+#menu-container.expanded {
+  transform: none;
+  box-shadow: 0px 0px 36px 0px var(--darkest-color);
+}
+
+#menu-tab {
+  z-index: 1;
+  min-height: 3rem;
+  background-color: var(--darker-color);
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+  width: 3rem;
+  transform: translate(234px, 5px);
+}
+
+#menu-tab.fullscreen{
+  transform: translate(234px, 0px);
+}
+
+#menu-tab.expanded {
+  border-radius: 0px;
+  transform: none;
+  width: 100%;
+}
+
+#menu-icon {
+  width: 2.2rem;
+  height: 2.2rem;
+  margin-right: 0.3rem;
+  background-color: var(--dark-color);
+  border-radius: 5px;
+  align-self: flex-end;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+.menu-line {
+  height: 4px;
+  width: 75%;
+  margin: 2px;
+  background-color: var(--darkest-color);
+  border-radius: 2px;
+  transform: none;
+}
+
+#menu-icon.expanded > .menu-line:nth-child(1) {
+  transform: rotate(-40deg) translate(-6px, -1px);
+  width: 18px;
+}
+
+#menu-icon.expanded > .menu-line:last-child {
+  transform: rotate(40deg) translate(-6px, 1px);
+  width: 18px;
+}
+
+#menu-items {
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+  justify-content: start;
+  padding-top: 5px;
+  background-color: var(--dark-color);
+  flex-grow: 1;
+}
+
+#menu-items.expanded > .menu-item {
+  width:100%;
+}
+
+
+@media screen and (max-height:600px){
+  .menu-line {
+    height: 2px;
+    margin: 1px;
+    border-radius: 1px;
+  }
+
+  #menu-icon.expanded > .menu-line:nth-child(1) {
+    transform: rotate(-40deg) translate(-3px, -2px);
+    width: 12px;
+  }
+
+  #menu-icon.expanded > .menu-line:last-child {
+    transform: rotate(40deg) translate(-3px, 2px);
+    width: 12px;
+  }
+}
+
+@media screen and (max-height:400px){
+  .menu-line {
+    height: 1px;
+    width:11px;
+  }
+  #menu-icon.expanded > .menu-line:nth-child(1) {
+    transform: rotate(-40deg) translate(-2px, -1px);
+    width: 7px;
+  }
+
+  #menu-icon.expanded > .menu-line:last-child {
+    transform: rotate(40deg) translate(-2px, 1px);
+    width: 7px;
+  }
+}
